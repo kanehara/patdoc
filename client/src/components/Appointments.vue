@@ -2,8 +2,12 @@
   <div>
     <h1>Appointments</h1>
     <div class="ui two item menu">
-      <a class="active item">Upcoming</a>
-      <a class="item">Past</a>
+      <a class="item"
+         @click="selectedTab = 'upcoming'"
+         :class="{active: selectedTab === 'upcoming'}">Upcoming</a>
+      <a class="item"
+         @click="selectedTab = 'past'"
+         :class="{active: selectedTab === 'past'}">Past</a>
     </div>
     <div class="appointments">
       <table class="ui celled table">
@@ -42,6 +46,11 @@
   import dateFormat from 'dateformat'
 
   export default {
+    data () {
+      return {
+        selectedTab: 'upcoming'
+      }
+    },
     computed: {
       ...mapGetters({
         upcomingAppointments: 'upcomingAppointments',
