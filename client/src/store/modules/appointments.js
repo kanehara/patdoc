@@ -23,6 +23,7 @@ const actions = {
       ? rootState.loggedInUser.id
       : userId
     const appointments = await user.getAppointment(id)
+    appointments.sort((a, b) => b.date - a.date)
     commit(types.RECEIVE_APPOINTMENTS, { appointments })
   }
 }
