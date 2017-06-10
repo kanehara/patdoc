@@ -4,6 +4,8 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import vuex from 'vuex'
+require('semantic-ui-icon/icon.min.css')
+require('semantic-ui-image/image.min.css')
 
 Vue.config.productionTip = false
 
