@@ -27,7 +27,7 @@ export default {
 }
 
 .header {
-  position: fixed;
+  position: absolute;
   top: 0;
   width: 100%;
   text-align: center;
