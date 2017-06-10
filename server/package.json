@@ -1,0 +1,10 @@
+{
+  "name": "pacdoc server",
+  "version": "1.0.0",
+  "description": "Node server for pacdoc",
+  "main": "index.js",
+  "scripts": {
+    "test": "N/A"
+  },
+  "author": "Yohei Kanehara (kanehara@umich.edu)"
+}
