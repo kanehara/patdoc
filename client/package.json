@@ -1,7 +1,7 @@
 {
   "name": "patdoc",
   "version": "1.0.0",
-  "description": "Patient Doctor App",
+  "description": "Patien doctor app",
   "author": "Yohei Kanehara (kanehara@umich.edu)",
   "private": true,
   "scripts": {
