@@ -9,43 +9,19 @@
          @click="selectedTab = 'past'"
          :class="{active: selectedTab === 'past'}">Past</a>
     </div>
-    <div class="appointments">
-      <table class="ui celled table">
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Time</th>
-            <th>Doctor</th>
-            <th>Subject</th>
-            <th>Notes</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="appointment in upcomingAppointments"
-              v-bind:class="{
-                positive: appointment.status === 'confirmed',
-                negative: appointment.status === 'cancelled',
-                warning: appointment.status === 'pending'
-              }">
-            <td>{{ appointment.date | formatDate }}</td>
-            <td>{{ appointment.date | formatTime }}</td>
-            <td>{{ appointment.doctor }}</td>
-            <td>{{ appointment.subject}}</td>
-            <td>{{ appointment.notes }}</td>
-            <td>{{ appointment.status }}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+    <AppointmentsTable :appointments="upcomingAppointments" v-if="selectedTab === 'upcoming'"></AppointmentsTable>
+    <AppointmentsTable :appointments="pastAppointments" v-if="selectedTab === 'past'"></AppointmentsTable>
   </div>
 </template>
 
 <script>
   import { mapGetters } from 'vuex'
-  import dateFormat from 'dateformat'
+  import AppointmentsTable from './AppointmentsTable'
 
   export default {
+    components: {
+      AppointmentsTable
+    },
     data () {
       return {
         selectedTab: 'upcoming'
@@ -59,14 +35,6 @@
     },
     created () {
       this.$store.dispatch('getAppointments', this.$route.params.id)
-    },
-    filters: {
-      formatDate (date) {
-        return dateFormat(date, 'shortDate')
-      },
-      formatTime (date) {
-        return dateFormat(date, 'shortTime')
-      }
     }
   }
 </script>
