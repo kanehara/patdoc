@@ -1,6 +1,11 @@
 <template>
   <div id="app">
-    <img src="assets/logo.png">
+    <div class="header">PatDoc</div>
+    <div class="sidebar">
+      <router-link to="/profile">Profile</router-link>
+      <router-link to="/appointments">Appointments</router-link>
+      <router-link to="/medicalRecord">Medical Record</router-link>
+    </div>
     <router-view></router-view>
   </div>
 </template>
@@ -11,7 +16,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="less">
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -19,5 +24,14 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+
+.header {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  text-align: center;
+  font-size: 1.5em;
+  padding: .25em 0;
 }
 </style>
