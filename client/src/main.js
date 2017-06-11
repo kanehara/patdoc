@@ -11,6 +11,7 @@ require('semantic-ui-menu/menu.min.css')
 require('semantic-ui-table/table.min.css')
 require('semantic-ui-button/button.min.css')
 require('semantic-ui-item/item.min.css')
+require('semantic-ui-form/form.min.css')
 
 Vue.config.productionTip = false
 

@@ -21,7 +21,7 @@ const getters = {
 
 const state = {
   // TODO: set state on login
-  loggedInUserType: USER_TYPES.PATIENT
+  loggedInUserType: USER_TYPES.DOCTOR
 }
 
 export default new Vuex.Store({

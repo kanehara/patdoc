@@ -1,4 +1,4 @@
-<template>
+<template xmlns="http://www.w3.org/1999/html">
   <div>
     <div class="ui divided items">
       <template v-for="appointment in appointments">
@@ -18,7 +18,8 @@
           <div slot="actions">
             <div v-if="isUserDoctor && appointment.status === 'Pending'">
               <div class="ui primary icon button confirm">Confirm</div>
-              <div class="ui primary icon button cancel">Cancel</div>
+              <div class="ui primary icon button cancel"
+                   @click="openModal(appointment.id)">Cancel</div>
             </div>
             <div v-if="isUserPatient" class="ui primary icon button cancel"
                  @click="openModal(appointment.id)">
@@ -29,17 +30,40 @@
       </template>
     </div>
     <Modal v-if="showModal">
-      <h1 slot="header">Are you sure?</h1>
-      <p slot="body">Are you sure you want to delete your appointment?</p>
-      <template v-if="isUserPatient" slot="footer">
-        <div class="ui primary icon button"
-             @click="confirmModal">
-          Confirm
+      <template v-if="isUserPatient">
+        <h1 slot="header">Are you sure?</h1>
+        <p slot="body">Are you sure you want to delete your appointment?</p>
+        <template slot="footer">
+          <div class="ui primary icon button"
+               @click="confirmModal">
+            Confirm
+          </div>
+          <div class="ui secondary icon button"
+             @click="closeModal">
+            Cancel
+          </div>
+        </template>
+      </template>
+      <template v-if="isUserDoctor">
+        <h1 slot="header">Reason for Cancellation</h1>
+        <div slot="body">
+          <div class="ui form">
+            <div class="field">
+              <label>Please provide a reason for your cancellation</label>
+              <textarea rows="2"></textarea>
+            </div>
+          </div>
         </div>
-        <div class="ui secondary icon button"
-           @click="closeModal">
-          Cancel
-        </div>
+        <template slot="footer">
+          <div class="ui primary icon button"
+               @click="confirmModal">
+            Confirm
+          </div>
+          <div class="ui secondary icon button"
+             @click="closeModal">
+            Cancel
+          </div>
+        </template>
       </template>
     </Modal>
   </div>
@@ -99,7 +123,7 @@
 
   // Important for overriding semantic
   .button {
-    width: 85%;
+    width: 90%;
     margin: 5px 0;
 
     &.secondary {
@@ -126,6 +150,16 @@
   .cancel {
     &.button {
       background-color: @cancelRed !important;
+    }
+  }
+
+  .modal-container {
+    textarea {
+      width: 80%;
+    }
+
+    .button {
+      width: initial;
     }
   }
 </style>
