@@ -11,15 +11,15 @@ const state = {
 const getters = {
   pastAppointments: state => {
     return state.appointments
-      .filter(a => a.date < new Date())
+      .filter(a => new Date(a.date) < new Date())
       .filter(a => a.status === 'Confirmed')
-      .sort((a, b) => b.date - a.date)
+      .sort((a, b) => new Date(b.date) - new Date(a.date))
   },
 
   upcomingAppointments: state => {
     return state.appointments
-      .filter(a => a.date >= new Date())
-      .sort((a, b) => a.date - b.date)
+      .filter(a => new Date(a.date) >= new Date())
+      .sort((a, b) => new Date(a.date) - new Date(b.date))
   }
 }
 
