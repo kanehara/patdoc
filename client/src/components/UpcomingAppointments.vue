@@ -6,7 +6,8 @@
           :date="appointment.date"
           :person="appointment.doctor"
           :subject="appointment.subject"
-          :notes="appointment.notes">
+          :notes="appointment.notes"
+          :declinationReason="appointment.declinationReason">
           <div class="status" slot="status">
             <span :class="{
               confirmed: appointment.status === 'Confirmed',
@@ -81,7 +82,6 @@
         this.closeModal()
       },
       confirmDeclination (declinationReason) {
-        console.log(declinationReason)
         const { patientId, appointmentIdSelected: appointmentId } = this
         this.declineAppointment({ patientId, appointmentId, declinationReason })
         this.closeModal()

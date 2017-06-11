@@ -47,7 +47,7 @@ const actions = {
   async [actionTypes.DECLINE_APPOINTMENT] ({commit}, { patientId, appointmentId, declinationReason }) {
     try {
       await appointmentService.declineAppointment({ patientId, appointmentId, declinationReason })
-      commit(mutationTypes.DECLINE_APPOINTMENT, { appointmentId })
+      commit(mutationTypes.DECLINE_APPOINTMENT, { appointmentId, declinationReason })
     } catch (err) {
       console.log(`Failed to decline appointment with error: ${err}`)
       // TODO: display FE error message
