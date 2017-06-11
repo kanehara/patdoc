@@ -1,15 +1,4 @@
-const users = {
-  1: {
-
-  },
-  2: {
-
-  },
-  3: {
-
-  }
-}
-
+// Map of user ID to their appointments
 const appointments = {
   1: [
     {
@@ -60,33 +49,18 @@ const appointments = {
   3: []
 }
 
-const medicalRecords = {
-  1: {
-  },
-  2: {
-  },
-  3: {
-  }
-}
-
 export default {
-
-  getAllUsers () {
-    return Promise.resolve(Object.values(users))
-  },
-
-  getUser (userId) {
-    return users[userId] ? Promise.resolve(users[userId])
-      : Promise.reject(`Cannot find user with id: ${userId}`)
-  },
-
   getAppointment (userId) {
     return appointments[userId] ? Promise.resolve(appointments[userId])
       : Promise.reject(`Cannot find appointments for user with id: ${userId}`)
   },
 
-  getMedicalRecord (userId) {
-    return medicalRecords[userId] ? Promise.resolve(medicalRecords[userId])
-      : Promise.reject(`Cannot find medical record for user with id : ${userId}`)
+  cancelAppointment (userId, appointmentIds) {
+    appointmentIds.forEach(id => {
+      const idx = appointments[userId].findIndex(a => a.id === id)
+      if (idx !== -1) {
+        delete appointments[userId][idx]
+      }
+    })
   }
 }
