@@ -15,6 +15,7 @@
   "dependencies": {
     "less": "^2.7.2",
     "less-loader": "^4.0.4",
+    "semantic-ui-button": "^2.2.10",
     "semantic-ui-icon": "^2.2.10",
     "semantic-ui-image": "^2.2.10",
     "semantic-ui-menu": "^2.2.10",
