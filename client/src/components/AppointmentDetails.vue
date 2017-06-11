@@ -1,7 +1,7 @@
 <template>
   <div class="item">
     <div class="image">
-      <img class="image" src="../assets/placeholder.png">
+      <img src="../assets/placeholder.png">
     </div>
     <div class="content">
       <div class="subject">{{ subject }}</div>
