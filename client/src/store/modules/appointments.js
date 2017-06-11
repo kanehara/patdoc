@@ -1,6 +1,5 @@
-import user from '../../api/user'
+import appointmentService from '@/service/appointment.service'
 import * as types from '../mutation-types'
-import USER_TYPES from '../user-types'
 
 // Initial state
 const state = {
@@ -22,12 +21,24 @@ const getters = {
 }
 
 const actions = {
-  async getAppointments ({commit, rootState}, userId) {
-    const id = rootState.loggedInUser.type === USER_TYPES.PATIENT
-      ? rootState.loggedInUser.id
-      : userId
-    const appointments = await user.getAppointment(id)
-    commit(types.RECEIVE_APPOINTMENTS, { appointments })
+  async getAppointments ({commit}, userId) {
+    try {
+      const appointments = await appointmentService.getAppointment(userId)
+      commit(types.RECEIVE_APPOINTMENTS, { appointments })
+    } catch (err) {
+      console.log(`Failed to get appointments with error: ${err}`)
+      // TODO: display FE error message
+    }
+  },
+
+  async cancelAppointments ({commit, state}, { userId, appointmentIds }) {
+    try {
+      await appointmentService.cancelAppointment(userId, appointmentIds)
+      commit(types.CANCEL_APPOINTMENT, { appointmentIds })
+    } catch (err) {
+      console.log(`Failed to cancel appointments with error: ${err}`)
+      // TODO: display FE error message
+    }
   }
 }
 
@@ -40,11 +51,13 @@ const mutations = {
     state.appointments.push(appointment)
   },
 
-  [types.REMOVE_APPOINTMENT] (state, { id }) {
-    const i = state.appointments.findIndex(a => a.id === id)
-    if (i !== -1) {
-      delete state.appointments[i]
-    }
+  [types.CANCEL_APPOINTMENT] (state, { ids }) {
+    ids.forEach(id => {
+      const i = state.appointments.findIndex(a => a.id === id)
+      if (i !== -1) {
+        delete state.appointments[i]
+      }
+    })
   }
 }
 
