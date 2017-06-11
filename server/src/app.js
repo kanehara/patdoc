@@ -1,13 +1,7 @@
 import express from 'express'
-import morgan from 'morgan'
-import bodyParser from 'body-parser'
-import logger from './logger'
+import { initAppointmentsRoutes } from './routes'
 
 const app = express()
-
-app.use(morgan('combined', {stream: logger.stream}))
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: false }))
 
 /**
  * Health check endpoint
@@ -15,5 +9,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.get('/healthz', (req, res) => {
   res.send('Healthy as a horse')
 })
+
+initAppointmentsRoutes(app)
 
 export default app

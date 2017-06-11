@@ -1,5 +1,7 @@
 import app from './app'
 import http from 'http'
+import morgan from 'morgan'
+import bodyParser from 'body-parser'
 import logger from './logger'
 
 /**
@@ -7,6 +9,17 @@ import logger from './logger'
  */
 const port = process.env.PORT || '3000'
 app.set('port', port)
+
+/**
+ * Logger
+ */
+app.use(morgan('combined', {stream: logger.stream}))
+
+/**
+ * Body parser
+ */
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: false }))
 
 /**
  * Create HTTP server.
