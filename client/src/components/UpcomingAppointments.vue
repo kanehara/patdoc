@@ -8,15 +8,20 @@
         :notes="appointment.notes">
         <div class="status" slot="status">
           <span :class="{
-            confirmed: appointment.status === 'Confirmed',
+            confirm: appointment.status === 'Confirmed',
             pending: appointment.status === 'Pending'
           }">
             {{ appointment.status }}
           </span>
         </div>
         <div slot="actions">
-          <div class="ui primary icon button">Confirm</div>
-          <div class="ui primary icon button">Cancel</div>
+          <div v-if="isUserDoctor && appointment.status === 'Pending'">
+            <div class="ui primary icon button confirm">Confirm</div>
+            <div class="ui primary icon button cancel">Cancel</div>
+          </div>
+          <div v-if="isUserPatient"
+               class="ui primary icon button cancel">Cancel
+          </div>
         </div>
       </AppointmentDetails>
     </template>
@@ -24,7 +29,7 @@
 </template>
 
 <script>
-  import { mapActions } from 'vuex'
+  import { mapActions, mapGetters } from 'vuex'
   import * as actionTypes from '../store/action-types'
   import AppointmentDetails from './AppointmentDetails'
 
@@ -37,13 +42,17 @@
       ...mapActions({
         cancelAppointments: actionTypes.CANCEL_APPOINTMENTS
       })
+    },
+    computed: {
+      ...mapGetters(['isUserDoctor', 'isUserPatient'])
     }
   }
 </script>
 
 <style lang="less" scoped>
-  @confirmGreen: #0f9733;
+  @confirmGreen: #0fbf40;
   @pendingYellow: #ec8e22;
+  @cancelRed: #ed0f00;
 
   .status {
     text-align: left;
@@ -55,11 +64,22 @@
     margin: 5px 0;
   }
 
-  .confirmed {
+  // Important for overriding semantic
+  .confirm {
     color: @confirmGreen;
+
+    &.button {
+      background-color: @confirmGreen !important;
+    }
   }
 
   .pending {
     color: @pendingYellow;
+  }
+
+  .cancel {
+    &.button {
+      background-color: @cancelRed !important;
+    }
   }
 </style>
