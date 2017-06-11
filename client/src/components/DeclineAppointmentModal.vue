@@ -2,6 +2,7 @@
   <Modal>
     <h1 slot="header">Reason for Declining</h1>
     <div slot="body">
+      <div v-if="showRequiredMessage">Reason for declining required!</div>
       <div class="ui form">
         <div class="field">
           <textarea v-model.trim="declinationReason"
@@ -18,7 +19,7 @@
         Cancel
       </div>
       <div class="ui primary icon button"
-           @click="$emit('confirm')">
+           @click="confirmDeclination">
         Confirm
       </div>
     </template>
@@ -29,9 +30,23 @@
   import Modal from './Modal'
 
   export default {
-    props: ['declinationReason'],
+    data () {
+      return {
+        showRequiredMessage: false,
+        declinationReason: ''
+      }
+    },
     components: {
       Modal
+    },
+    methods: {
+      confirmDeclination () {
+        if (this.declinationReason.length) {
+          this.$emit('confirm', this.declinationReason)
+        } else {
+          this.showRequiredMessage = true
+        }
+      }
     }
   }
 </script>
