@@ -1,11 +1,6 @@
 <template>
   <div id="app">
     <div class="header">PatDoc</div>
-    <div class="sidebar">
-      <router-link to="/profile">Profile</router-link>
-      <router-link to="/appointments">Appointments</router-link>
-      <router-link to="/medicalRecord">Medical Record</router-link>
-    </div>
     <router-view></router-view>
   </div>
 </template>
