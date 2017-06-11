@@ -32,7 +32,7 @@
     <Modal v-if="showModal">
       <template v-if="isUserPatient">
         <h1 slot="header">Are you sure?</h1>
-        <p slot="body">Are you sure you want to delete your appointment?</p>
+        <p slot="body">Are you sure you want to cancel your appointment?</p>
         <template slot="footer">
           <div class="ui primary icon button"
                @click="confirmModal">
