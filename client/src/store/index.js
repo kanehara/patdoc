@@ -13,11 +13,8 @@ const actions = {}
 const getters = {}
 
 const state = {
-  loggedInUser: {
-    // TODO: set state on login
-    type: USER_TYPES.PATIENT,
-    id: 1
-  }
+  // TODO: set state on login
+  loggedInUserType: USER_TYPES.PATIENT
 }
 
 export default new Vuex.Store({
