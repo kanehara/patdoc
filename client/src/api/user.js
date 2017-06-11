@@ -10,50 +10,46 @@ const users = {
   }
 }
 
-const yesterday = new Date()
-yesterday.setDate(yesterday.getDate() - 1)
-const tomorrow = new Date()
-tomorrow.setDate(tomorrow.getDate() + 1)
 const appointments = {
   1: [
     {
       id: 1,
-      date: tomorrow,
+      date: new Date('October 13, 2017 11:13:00'),
       subject: 'Wart removal',
       notes: 'I need a wart removed from my thumb.',
       doctor: 'Dr. Hans Zimmer',
       status: 'confirmed'
     }, {
       id: 2,
-      date: tomorrow,
+      date: new Date('October 14, 2017 11:13:00'),
       subject: 'Wart removal',
       notes: 'I need a wart removed from my thumb.',
       doctor: 'Dr. Hans Zimmer',
       status: 'cancelled'
     }, {
       id: 3,
-      date: tomorrow,
+      date: new Date('October 13, 2017 01:13:00'),
       subject: 'Wart removal',
       notes: 'I need a wart removed from my thumb.',
       doctor: 'Dr. Hans Zimmer',
       status: 'pending'
     }, {
       id: 4,
-      date: yesterday,
+      date: new Date('January 13, 2017 11:13:00'),
       subject: 'Wart removal',
       notes: 'I need a wart removed from my thumb.',
       doctor: 'Dr. Hans Zimmer',
       status: 'confirmed'
     }, {
       id: 5,
-      date: yesterday,
+      date: new Date('March 13, 2017 11:13:00'),
       subject: 'Wart removal',
       notes: 'I need a wart removed from my thumb.',
       doctor: 'Dr. Hans Zimmer',
       status: 'confirmed'
     }, {
       id: 6,
-      date: yesterday,
+      date: new Date('May 13, 2017 11:13:00'),
       subject: 'Wart removal',
       notes: 'I need a wart removed from my thumb.',
       doctor: 'Dr. Hans Zimmer',
