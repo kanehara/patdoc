@@ -1,7 +1,7 @@
 <template>
   <div class="item">
     <div class="image">
-      <img class="image" src="../assets/placeholder.png">
+      <img src="../assets/placeholder.png">
     </div>
     <div class="content">
       <div class="subject">{{ subject }}</div>
@@ -12,8 +12,8 @@
         <div><b>Time:</b>{{ date | formatTime }}</div>
       </div>
       <div class="description">
-        <div><b>Notes:</b></div>
-        <p>{{ notes }}</p>
+        <div v-if="notes && notes.length"><b>Notes:</b> {{ notes }}</div>
+        <div v-if="declinationReason && declinationReason.length"><b>Reason for Declining:</b> {{ declinationReason }}</div>
       </div>
     </div>
     <div class="actions">
@@ -26,7 +26,7 @@
   import dateFormat from 'dateformat'
 
   export default {
-    props: ['date', 'person', 'subject', 'notes'],
+    props: ['date', 'person', 'subject', 'notes', 'declinationReason'],
     filters: {
       formatDate (date) {
         return dateFormat(date, 'shortDate')

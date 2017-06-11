@@ -50,6 +50,7 @@
       flex-wrap: wrap;
       text-align: left;
       margin: 35px;
+      font-size: 20px;
     }
   }
 </style>
