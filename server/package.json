@@ -6,5 +6,8 @@
   "scripts": {
     "test": "N/A"
   },
-  "author": "Yohei Kanehara (kanehara@umich.edu)"
+  "author": "Yohei Kanehara (kanehara@umich.edu)",
+  "dependencies": {
+    "express": "^4.15.3"
+  }
 }
