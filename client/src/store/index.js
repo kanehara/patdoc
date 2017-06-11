@@ -10,7 +10,14 @@ const debug = process.env.NODE_ENV !== 'production'
 
 const actions = {}
 
-const getters = {}
+const getters = {
+  isUserPatient: state => {
+    return state.loggedInUserType === USER_TYPES.PATIENT
+  },
+  isUserDoctor: state => {
+    return state.loggedInUserType === USER_TYPES.DOCTOR
+  }
+}
 
 const state = {
   // TODO: set state on login
