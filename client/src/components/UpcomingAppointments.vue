@@ -1,31 +1,47 @@
 <template>
-  <div class="ui divided items">
-    <template v-for="appointment in appointments">
-      <AppointmentDetails
-        :date="appointment.date"
-        :person="appointment.doctor"
-        :subject="appointment.subject"
-        :notes="appointment.notes">
-        <div class="status" slot="status">
-          <span :class="{
-            confirm: appointment.status === 'Confirmed',
-            pending: appointment.status === 'Pending'
-          }">
-            {{ appointment.status }}
-          </span>
-        </div>
-        <div slot="actions">
-          <div v-if="isUserDoctor && appointment.status === 'Pending'">
-            <div class="ui primary icon button confirm">Confirm</div>
-            <div class="ui primary icon button cancel">Cancel</div>
+  <div>
+    <div class="ui divided items">
+      <template v-for="appointment in appointments">
+        <AppointmentDetails
+          :date="appointment.date"
+          :person="appointment.doctor"
+          :subject="appointment.subject"
+          :notes="appointment.notes">
+          <div class="status" slot="status">
+            <span :class="{
+              confirm: appointment.status === 'Confirmed',
+              pending: appointment.status === 'Pending'
+            }">
+              {{ appointment.status }}
+            </span>
           </div>
-          <div v-if="isUserPatient" class="ui primary icon button cancel"
-               @click="cancelAppointment({ patientId, appointmentId: appointment.id })">
-            Cancel
+          <div slot="actions">
+            <div v-if="isUserDoctor && appointment.status === 'Pending'">
+              <div class="ui primary icon button confirm">Confirm</div>
+              <div class="ui primary icon button cancel">Cancel</div>
+            </div>
+            <div v-if="isUserPatient" class="ui primary icon button cancel"
+                 @click="openModal(appointment.id)">
+              Cancel
+            </div>
           </div>
+        </AppointmentDetails>
+      </template>
+    </div>
+    <Modal v-if="showModal">
+      <h1 slot="header">Are you sure?</h1>
+      <p slot="body">Are you sure you want to delete your appointment?</p>
+      <template v-if="isUserPatient" slot="footer">
+        <div class="ui primary icon button"
+             @click="confirmModal">
+          Confirm
         </div>
-      </AppointmentDetails>
-    </template>
+        <div class="ui secondary icon button"
+           @click="closeModal">
+          Cancel
+        </div>
+      </template>
+    </Modal>
   </div>
 </template>
 
@@ -33,16 +49,35 @@
   import { mapActions, mapGetters } from 'vuex'
   import * as actionTypes from '../store/action-types'
   import AppointmentDetails from './AppointmentDetails'
+  import Modal from './Modal'
 
   export default {
+    data () {
+      return {
+        showModal: false,
+        appointmentIdToCancel: null
+      }
+    },
     components: {
-      AppointmentDetails
+      AppointmentDetails,
+      Modal
     },
     props: ['appointments', 'patientId'],
     methods: {
       ...mapActions({
         cancelAppointment: actionTypes.CANCEL_APPOINTMENT
-      })
+      }),
+      openModal (appointmentId) {
+        this.showModal = true
+        this.appointmentIdToCancel = appointmentId
+      },
+      confirmModal () {
+        this.cancelAppointment({ patientId: this.patientId, appointmentId: this.appointmentIdToCancel })
+        this.showModal = false
+      },
+      closeModal () {
+        this.showModal = false
+      }
     },
     computed: {
       ...mapGetters(['isUserDoctor', 'isUserPatient'])
@@ -54,18 +89,28 @@
   @confirmGreen: #0fbf40;
   @pendingYellow: #ec8e22;
   @cancelRed: #ed0f00;
+  @secondaryGray: #979797;
+  @secondaryGrayHover: #828282;
 
   .status {
     text-align: left;
     font-weight: bold;
   }
 
+  // Important for overriding semantic
   .button {
-    width: 100%;
+    width: 85%;
     margin: 5px 0;
+
+    &.secondary {
+      background-color: @secondaryGray;
+
+      &:hover {
+        background-color: @secondaryGrayHover;
+      }
+    }
   }
 
-  // Important for overriding semantic
   .confirm {
     color: @confirmGreen;
 
