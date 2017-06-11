@@ -50,7 +50,7 @@
           <div class="ui form">
             <div class="field">
               <label>Please provide a reason for your cancellation</label>
-              <textarea rows="2"></textarea>
+              <textarea rows="3"></textarea>
             </div>
           </div>
         </div>
@@ -156,6 +156,7 @@
   .modal-container {
     textarea {
       width: 80%;
+      resize: none;
     }
 
     .button {
