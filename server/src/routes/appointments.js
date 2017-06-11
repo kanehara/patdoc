@@ -50,13 +50,13 @@ const MOCK_APPOINTMENTS = {
 }
 
 export function initAppointmentsRoutes (app) {
-  app.get('/users/:userId/appointments', ({params: { userId }}, res) => {
-    const appointments = MOCK_APPOINTMENTS[userId]
+  app.get('/patients/:patientId/appointments', ({params: { patientId }}, res) => {
+    const appointments = MOCK_APPOINTMENTS[patientId]
     appointments ? res.send(appointments) : res.sendStatus(404)
   })
 
-  app.get('/users/:userId/appointments/:appointmentId', ({params: { userId, appointmentId }}, res) => {
-    const appointments = MOCK_APPOINTMENTS[userId]
+  app.get('/patients/:patientId/appointments/:appointmentId', ({params: { patientId, appointmentId }}, res) => {
+    const appointments = MOCK_APPOINTMENTS[patientId]
     if (appointments) {
       const appointment = appointments.find(a => a.id === Number(appointmentId))
       appointment ? res.send(appointment) : res.sendStatus(404)
@@ -65,16 +65,16 @@ export function initAppointmentsRoutes (app) {
     }
   })
 
-  app.put('/users/:userId/appointments', ({params: { userId }, body}, res) => {
-    if (MOCK_APPOINTMENTS[userId]) {
-      MOCK_APPOINTMENTS[userId].push(body)
+  app.put('/patients/:patientId/appointments', ({params: { patientId }, body}, res) => {
+    if (MOCK_APPOINTMENTS[patientId]) {
+      MOCK_APPOINTMENTS[patientId].push(body)
     } else {
-      MOCK_APPOINTMENTS[userId] = [body]
+      MOCK_APPOINTMENTS[patientId] = [body]
     }
   })
 
-  app.delete('/users/:userId/appointments/:appointmentId', ({params: { userId, appointmentId }}, res) => {
-    const appointments = MOCK_APPOINTMENTS[userId]
+  app.delete('/patients/:patientId/appointments/:appointmentId', ({params: { patientId, appointmentId }}, res) => {
+    const appointments = MOCK_APPOINTMENTS[patientId]
     if (appointments) {
       const idx = appointments.findIndex(a => a.id === Number(appointmentId))
       idx !== -1 ? appointments.slice(idx, 1) : res.send(404)
