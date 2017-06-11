@@ -17,17 +17,17 @@
 </template>
 
 <script>
-export default {
-  data () {
-    return {
-      name: 'Yohei Kanehara',
-      age: 24,
-      email: 'kanehara@umich.edu',
-      address: '1850 N Clark St. Chicago, IL 60614',
-      phoneNumber: 2488913545
+  export default {
+    data () {
+      return {
+        name: 'Yohei Kanehara',
+        age: 24,
+        email: 'kanehara@umich.edu',
+        address: '1850 N Clark St. Chicago, IL 60614',
+        phoneNumber: 2488913545
+      }
     }
   }
-}
 </script>
 
 <style lang=less scoped>

@@ -1,16 +1,18 @@
-import user from '../../api/user'
-import * as types from '../mutation-types'
-import USER_TYPES from '../user-types'
+import appointmentService from '@/service/appointment.service'
+import * as mutationTypes from '../mutation-types'
+import * as actionTypes from '../action-types'
 
 // Initial state
 const state = {
-  appointments: []
+  appointments: [],
+  selected: []
 }
 
 const getters = {
   pastAppointments: state => {
     return state.appointments
       .filter(a => a.date < new Date())
+      .filter(a => a.status === 'Confirmed')
       .sort((a, b) => b.date - a.date)
   },
 
@@ -22,28 +24,40 @@ const getters = {
 }
 
 const actions = {
-  async getAppointments ({commit, rootState}, userId) {
-    const id = rootState.loggedInUser.type === USER_TYPES.PATIENT
-      ? rootState.loggedInUser.id
-      : userId
-    const appointments = await user.getAppointment(id)
-    commit(types.RECEIVE_APPOINTMENTS, { appointments })
+  async [actionTypes.GET_APPOINTMENTS] ({commit}, patientId) {
+    try {
+      const appointments = await appointmentService.getAppointment(patientId)
+      commit(mutationTypes.RECEIVE_APPOINTMENTS, { appointments })
+    } catch (err) {
+      console.log(`Failed to get appointments with error: ${err}`)
+      // TODO: display FE error message
+    }
+  },
+
+  async [actionTypes.CANCEL_APPOINTMENT] ({commit, state}, { patientId, appointmentId }) {
+    try {
+      await appointmentService.cancelAppointment(patientId, appointmentId)
+      commit(mutationTypes.CANCEL_APPOINTMENT, { appointmentId })
+    } catch (err) {
+      console.log(`Failed to cancel appointments with error: ${err}`)
+      // TODO: display FE error message
+    }
   }
 }
 
 const mutations = {
-  [types.RECEIVE_APPOINTMENTS] (state, { appointments }) {
+  [mutationTypes.RECEIVE_APPOINTMENTS] (state, { appointments }) {
     state.appointments = appointments
   },
 
-  [types.ADD_APPOINTMENT] (state, { appointment }) {
+  [mutationTypes.ADD_APPOINTMENT] (state, { appointment }) {
     state.appointments.push(appointment)
   },
 
-  [types.REMOVE_APPOINTMENT] (state, { id }) {
-    const i = state.appointments.findIndex(a => a.id === id)
+  [mutationTypes.CANCEL_APPOINTMENT] (state, { appointmentId }) {
+    const i = state.appointments.findIndex(a => a && a.id === appointmentId)
     if (i !== -1) {
-      delete state.appointments[i]
+      state.appointments.splice(i, 1)
     }
   }
 }

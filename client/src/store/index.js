@@ -10,14 +10,18 @@ const debug = process.env.NODE_ENV !== 'production'
 
 const actions = {}
 
-const getters = {}
+const getters = {
+  isUserPatient: state => {
+    return state.loggedInUserType === USER_TYPES.PATIENT
+  },
+  isUserDoctor: state => {
+    return state.loggedInUserType === USER_TYPES.DOCTOR
+  }
+}
 
 const state = {
-  loggedInUser: {
-    // TODO: set state on login
-    type: USER_TYPES.PATIENT,
-    id: 1
-  }
+  // TODO: set state on login
+  loggedInUserType: USER_TYPES.DOCTOR
 }
 
 export default new Vuex.Store({
