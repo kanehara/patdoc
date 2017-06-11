@@ -9,11 +9,15 @@ const state = {
 
 const getters = {
   pastAppointments: state => {
-    return state.appointments.filter(a => a.date < new Date())
+    return state.appointments
+      .filter(a => a.date < new Date())
+      .sort((a, b) => b.date - a.date)
   },
 
   upcomingAppointments: state => {
-    return state.appointments.filter(a => a.date >= new Date())
+    return state.appointments
+      .filter(a => a.date >= new Date())
+      .sort((a, b) => a.date - b.date)
   }
 }
 
@@ -23,7 +27,6 @@ const actions = {
       ? rootState.loggedInUser.id
       : userId
     const appointments = await user.getAppointment(id)
-    appointments.sort((a, b) => b.date - a.date)
     commit(types.RECEIVE_APPOINTMENTS, { appointments })
   }
 }
