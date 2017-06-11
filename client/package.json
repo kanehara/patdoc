@@ -13,6 +13,7 @@
     "lint": "eslint --ext .js,.vue src test/unit/specs"
   },
   "dependencies": {
+    "axios": "^0.16.2",
     "less": "^2.7.2",
     "less-loader": "^4.0.4",
     "semantic-ui-button": "^2.2.10",
