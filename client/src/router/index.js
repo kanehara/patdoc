@@ -19,16 +19,20 @@ export default new Router({
       component: PatientFrame,
       children: [
         {
-          path: ':id',
-          redirect: ':id/profile'
+          path: '',
+          redirect: '/'
         }, {
-          path: ':id/profile',
+          path: ':patientId',
+          redirect: ':patientId/profile'
+        }, {
+          path: ':patientId/profile',
           component: Profile
         }, {
-          path: ':id/appointments',
-          component: Appointments
+          path: ':patientId/appointments',
+          component: Appointments,
+          props: true
         }, {
-          path: ':id/medicalRecord',
+          path: ':patientId/medicalRecord',
           component: MedicalRecord
         }
       ]
