@@ -20,9 +20,14 @@
           </div>
           <div slot="actions">
             <div v-if="isUserDoctor && appointment.status === 'Pending'">
-              <div class="ui primary icon button confirmed">Accept</div>
+              <div class="ui primary icon button confirmed"
+                   @click="acceptAppointment({ appointmentId: appointment.id, patientId })">
+                Accept
+              </div>
               <div class="ui primary icon button cancel"
-                   @click="openModal(appointment.id)">Decline</div>
+                   @click="openModal(appointment.id)">
+                Decline
+              </div>
             </div>
             <div v-if="isUserPatient" class="ui primary icon button cancel"
                  @click="openModal(appointment.id)">
@@ -70,7 +75,8 @@
     methods: {
       ...mapActions({
         cancelAppointment: actionTypes.CANCEL_APPOINTMENT,
-        declineAppointment: actionTypes.DECLINE_APPOINTMENT
+        declineAppointment: actionTypes.DECLINE_APPOINTMENT,
+        acceptAppointment: actionTypes.ACCEPT_APPOINTMENT
       }),
       openModal (appointmentId) {
         this.showModal = true

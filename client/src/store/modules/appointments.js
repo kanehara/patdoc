@@ -52,6 +52,16 @@ const actions = {
       console.log(`Failed to decline appointment with error: ${err}`)
       // TODO: display FE error message
     }
+  },
+
+  async [actionTypes.ACCEPT_APPOINTMENT] ({commit}, { patientId, appointmentId }) {
+    try {
+      await appointmentService.acceptAppointment({ patientId, appointmentId })
+      commit(mutationTypes.ACCEPT_APPOINTMENT, { appointmentId })
+    } catch (err) {
+      console.log(`Failed to accept appointment with error: ${err}`)
+      // TODO: display FE error message
+    }
   }
 }
 
@@ -79,6 +89,11 @@ const mutations = {
     const appointment = findAppointment(appointmentId)
     appointment.status = 'Declined'
     appointment.declinationReason = declinationReason
+  },
+
+  [mutationTypes.ACCEPT_APPOINTMENT] (state, { appointmentId }) {
+    const appointment = findAppointment(appointmentId)
+    appointment.status = 'Confirmed'
   }
 }
 

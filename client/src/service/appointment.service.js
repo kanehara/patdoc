@@ -79,5 +79,10 @@ export default {
     const appointment = await getAppointment({ patientId, appointmentId })
     appointment.status = 'Declined'
     appointment.declinationReason = declinationReason
+  },
+
+  async acceptAppointment ({ patientId, appointmentId }) {
+    const appointment = await getAppointment({ patientId, appointmentId })
+    appointment.status = 'Confirmed'
   }
 }
