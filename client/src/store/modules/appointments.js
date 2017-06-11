@@ -26,7 +26,7 @@ const getters = {
 const actions = {
   async [actionTypes.GET_APPOINTMENTS] ({commit}, patientId) {
     try {
-      const appointments = await appointmentService.getAppointment(patientId)
+      const appointments = await appointmentService.getAppointments({ patientId })
       commit(mutationTypes.RECEIVE_APPOINTMENTS, { appointments })
     } catch (err) {
       console.log(`Failed to get appointments with error: ${err}`)
@@ -36,12 +36,39 @@ const actions = {
 
   async [actionTypes.CANCEL_APPOINTMENT] ({commit, state}, { patientId, appointmentId }) {
     try {
-      await appointmentService.cancelAppointment(patientId, appointmentId)
+      await appointmentService.cancelAppointment({ patientId, appointmentId })
       commit(mutationTypes.CANCEL_APPOINTMENT, { appointmentId })
     } catch (err) {
       console.log(`Failed to cancel appointments with error: ${err}`)
       // TODO: display FE error message
     }
+  },
+
+  async [actionTypes.DECLINE_APPOINTMENT] ({commit}, { patientId, appointmentId, declinationReason }) {
+    try {
+      await appointmentService.declineAppointment({ patientId, appointmentId, declinationReason })
+      commit(mutationTypes.DECLINE_APPOINTMENT, { appointmentId, declinationReason })
+    } catch (err) {
+      console.log(`Failed to decline appointment with error: ${err}`)
+      // TODO: display FE error message
+    }
+  },
+
+  async [actionTypes.ACCEPT_APPOINTMENT] ({commit}, { patientId, appointmentId }) {
+    try {
+      await appointmentService.acceptAppointment({ patientId, appointmentId })
+      commit(mutationTypes.ACCEPT_APPOINTMENT, { appointmentId })
+    } catch (err) {
+      console.log(`Failed to accept appointment with error: ${err}`)
+      // TODO: display FE error message
+    }
+  }
+}
+
+const findAppointment = appointmentId => {
+  const i = state.appointments.findIndex(a => a && a.id === appointmentId)
+  if (i !== -1) {
+    return state.appointments[i]
   }
 }
 
@@ -55,10 +82,18 @@ const mutations = {
   },
 
   [mutationTypes.CANCEL_APPOINTMENT] (state, { appointmentId }) {
-    const i = state.appointments.findIndex(a => a && a.id === appointmentId)
-    if (i !== -1) {
-      state.appointments.splice(i, 1)
-    }
+    findAppointment(appointmentId).status = 'Cancelled'
+  },
+
+  [mutationTypes.DECLINE_APPOINTMENT] (state, { appointmentId, declinationReason }) {
+    const appointment = findAppointment(appointmentId)
+    appointment.status = 'Declined'
+    appointment.declinationReason = declinationReason
+  },
+
+  [mutationTypes.ACCEPT_APPOINTMENT] (state, { appointmentId }) {
+    const appointment = findAppointment(appointmentId)
+    appointment.status = 'Confirmed'
   }
 }
 
