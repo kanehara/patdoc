@@ -9,9 +9,6 @@ const assert = require('assert')
 
 assert(process.env.NODE_ENV !== 'production')
 
-// Read in environment variables from .env
-require('dotenv').config()
-
 // Babel hook
 require('babel-core/register')
 
