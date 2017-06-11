@@ -19,8 +19,9 @@
             <div class="ui primary icon button confirm">Confirm</div>
             <div class="ui primary icon button cancel">Cancel</div>
           </div>
-          <div v-if="isUserPatient"
-               class="ui primary icon button cancel">Cancel
+          <div v-if="isUserPatient" class="ui primary icon button cancel"
+               @click="cancelAppointment({ patientId, appointmentId: appointment.id })">
+            Cancel
           </div>
         </div>
       </AppointmentDetails>
@@ -37,10 +38,10 @@
     components: {
       AppointmentDetails
     },
-    props: ['appointments'],
+    props: ['appointments', 'patientId'],
     methods: {
       ...mapActions({
-        cancelAppointments: actionTypes.CANCEL_APPOINTMENTS
+        cancelAppointment: actionTypes.CANCEL_APPOINTMENT
       })
     },
     computed: {

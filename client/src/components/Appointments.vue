@@ -15,6 +15,7 @@
     <div class="appointments">
       <UpcomingAppointments
         :appointments="upcomingAppointments"
+        :patientId="patientId"
         v-if="selectedTab === 'upcoming'">
       </UpcomingAppointments>
       <PastAppointments

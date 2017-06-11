@@ -51,16 +51,14 @@ const appointments = {
 
 export default {
   getAppointment (userId) {
-    return appointments[userId] ? Promise.resolve(appointments[userId])
+    return appointments[userId] ? Promise.resolve(appointments[userId].slice())
       : Promise.reject(`Cannot find appointments for user with id: ${userId}`)
   },
 
-  cancelAppointment (userId, appointmentIds) {
-    appointmentIds.forEach(id => {
-      const idx = appointments[userId].findIndex(a => a.id === id)
-      if (idx !== -1) {
-        delete appointments[userId][idx]
-      }
-    })
+  cancelAppointment (userId, appointmentId) {
+    const idx = appointments[userId].findIndex(a => a.id === appointmentId)
+    if (idx !== -1) {
+      appointments[userId].splice(idx, 1)
+    }
   }
 }

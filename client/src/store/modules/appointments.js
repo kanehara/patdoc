@@ -34,10 +34,10 @@ const actions = {
     }
   },
 
-  async [actionTypes.CANCEL_APPOINTMENTS] ({commit, state}, { patientId, appointmentIds }) {
+  async [actionTypes.CANCEL_APPOINTMENT] ({commit, state}, { patientId, appointmentId }) {
     try {
-      await appointmentService.cancelAppointment(patientId, appointmentIds)
-      commit(mutationTypes.CANCEL_APPOINTMENT, { appointmentIds })
+      await appointmentService.cancelAppointment(patientId, appointmentId)
+      commit(mutationTypes.CANCEL_APPOINTMENT, { appointmentId })
     } catch (err) {
       console.log(`Failed to cancel appointments with error: ${err}`)
       // TODO: display FE error message
@@ -54,13 +54,11 @@ const mutations = {
     state.appointments.push(appointment)
   },
 
-  [mutationTypes.CANCEL_APPOINTMENT] (state, { ids }) {
-    ids.forEach(id => {
-      const i = state.appointments.findIndex(a => a.id === id)
-      if (i !== -1) {
-        delete state.appointments[i]
-      }
-    })
+  [mutationTypes.CANCEL_APPOINTMENT] (state, { appointmentId }) {
+    const i = state.appointments.findIndex(a => a && a.id === appointmentId)
+    if (i !== -1) {
+      state.appointments.splice(i, 1)
+    }
   }
 }
 
