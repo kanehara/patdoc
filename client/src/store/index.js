@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import appointments from './modules/appointments'
+import medicalRecord from './modules/medical-records'
 import createLogger from 'vuex/dist/logger'
 import USER_TYPES from './user-types'
 
@@ -29,7 +30,8 @@ export default new Vuex.Store({
   getters,
   state,
   modules: {
-    appointments
+    appointments,
+    medicalRecord
   },
   strict: debug,
   plugins: debug ? [createLogger()] : []

@@ -6,13 +6,14 @@
               :url="filePostUrl"
               :autoProcessQueue="false"
               @vdropzone-file-added="fileAdded"
-              @vdropzone-removed-file="fileRemoved">
+              @vdropzone-removed-file="fileRemoved"
+              @vdropzone-success="fileUploaded">
       <!-- Optional parameters if any! -->
       <input type="hidden" name="token" value="xxx">
     </dropzone>
     <div class="buttons">
       <button v-if="!queueIsEmpty" class="ui secondary button cancel" @click="emptyQueue">Cancel</button>
-      <button v-if="!queueIsEmpty" class="ui primary button submit">Submit</button>
+      <button v-if="!queueIsEmpty" class="ui primary button submit" @click="processQueue">Submit</button>
     </div>
   </div>
 </template>
@@ -20,6 +21,7 @@
 <script>
   import Dropzone from 'vue2-dropzone'
   import config from '@/config'
+  import * as mutationTypes from '@/store/modules/medical-records/mutation-types'
 
   export default {
     components: {
@@ -48,6 +50,19 @@
       },
       emptyQueue () {
         this.$refs.dropzone.removeAllFiles()
+      },
+      processQueue () {
+        this.$refs.dropzone.processQueue()
+      },
+      fileUploaded ({name: filename, size}, { id, location }) {
+        this.$store.commit(mutationTypes.ADD_FILE, {
+          file: {
+            id,
+            filename,
+            size: `${Math.round(size / 1000)} KB`,
+            location
+          }
+        })
       }
     }
   }

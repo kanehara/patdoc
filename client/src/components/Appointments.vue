@@ -30,7 +30,7 @@
   import { mapGetters } from 'vuex'
   import UpcomingAppointments from './UpcomingAppointments'
   import PastAppointments from './PastAppointments'
-  import * as actionTypes from '../store/action-types'
+  import * as actionTypes from '../store/modules/appointments/action-types'
 
   export default {
     props: ['patientId'],

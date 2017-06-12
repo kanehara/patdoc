@@ -54,7 +54,7 @@
 
 <script>
   import { mapActions, mapGetters } from 'vuex'
-  import * as actionTypes from '../store/action-types'
+  import * as actionTypes from '../store/modules/appointments/action-types'
   import AppointmentDetails from './AppointmentDetails'
   import CancelAppointmentModal from './CancelAppointmentModal'
   import DeclineAppointmentModal from './DeclineAppointmentModal'

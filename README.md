@@ -20,6 +20,12 @@ running:
 
 The dev server is run on `localhost:8080`
 
+### Vue Chrome Dev Tool
+
+The Vue chrome dev tools [extension](https://chrome.google.com/webstore/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd?hl=en)
+allows for inspection of component and Vuex state.  It also
+offers a great time travelling feature to relive state mutations.
+
 ## Server
 
 The client requires the server to be running for retrieving and modifying
@@ -35,3 +41,17 @@ The server is run on `localhost:3000`
 
 The routes can be found in `src/routes`
 
+## Nice to Have's
+
+The following would be nice to have's that were not implemented
+due to time constraints:
+
+* Robust error handling when backend fails with reducer
+actions for failure
+* Mocha/chai node unit tests
+* E2E tests
+* Notifications for doctors and patients for new appointments
+* Profile pictures
+* Animations
+* Sorting appointments by status, time, etc.
+* Feature to schedule another appointment with past doctor
