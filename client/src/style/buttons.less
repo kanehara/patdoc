@@ -1,0 +1,15 @@
+@import './colors';
+
+.ui.button {
+  &.secondary {
+    background-color: @secondaryGray;
+
+    &:active, &:focus {
+      background-color: @secondaryGray;
+    }
+
+    &:hover {
+      background-color: @secondaryGrayHover;
+    }
+  }
+}

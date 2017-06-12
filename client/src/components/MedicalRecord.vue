@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="medicalRecord">
     <h1>MedicalRecord</h1>
     <dropzone id="fileDropzone"
               :url="filePostUrl"
@@ -10,8 +10,10 @@
       <!-- Optional parameters if any! -->
       <input type="hidden" name="token" value="xxx">
     </dropzone>
-    <div v-if="!queueIsEmpty">Submit</div>
-    <div v-if="!queueIsEmpty">Remove All</div>
+    <div class="buttons">
+      <button v-if="!queueIsEmpty" class="ui secondary button cancel">Cancel</button>
+      <button v-if="!queueIsEmpty" class="ui primary button submit">Submit</button>
+    </div>
   </div>
 </template>
 
@@ -49,13 +51,22 @@
 </script>
 
 <style lang="less">
+  @import '../style/colors';
+
+  @dropzoneGray: #f5f5f5;
+  @dropzoneGrayHover: #e6e6e6;
+
+  #medicalRecord {
+    padding: 0 10%;
+  }
+
   .vue-dropzone {
     font-family: 'Avenir', Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    background: #f5f5f5;
+    background: @dropzoneGray;
     &:hover {
-      background: #e6e6e6;
+      background: @dropzoneGrayHover;
     }
   }
 
@@ -63,4 +74,13 @@
     left: 30px;
     top: 195px;
   }
+
+  .vue-dropzone .dz-preview .dz-details {
+    background-color: @primaryBlue;
+  }
+
+  #fileDropzone {
+    margin-bottom: 25px;
+  }
+
 </style>

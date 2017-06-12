@@ -105,29 +105,17 @@
 </script>
 
 <style lang="less" scoped>
-  @positiveGreen: #0fbf40;
-  @cautionYellow: #ec8e22;
-  @negativeRed: #ed0f00;
-  @secondaryGray: #979797;
-  @secondaryGrayHover: #828282;
+  @import '../style/colors';
+  @import '../style/buttons';
+
+  .ui.button {
+    width: 90%;
+    margin: 5px 0;
+  }
 
   .status {
     text-align: left;
     font-weight: bold;
-  }
-
-  // Important for overriding semantic
-  .button {
-    width: 90%;
-    margin: 5px 0;
-
-    &.secondary {
-      background-color: @secondaryGray;
-
-      &:hover {
-        background-color: @secondaryGrayHover;
-      }
-    }
   }
 
   .confirmed {
