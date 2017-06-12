@@ -33,7 +33,8 @@ export default new Router({
           props: true
         }, {
           path: ':patientId/medicalRecord',
-          component: MedicalRecord
+          component: MedicalRecord,
+          props: true
         }
       ]
     }

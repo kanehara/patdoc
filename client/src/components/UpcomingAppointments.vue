@@ -20,16 +20,16 @@
           </div>
           <div slot="actions">
             <div v-if="isUserDoctor && appointment.status === 'Pending'">
-              <div class="ui primary icon button confirmed"
+              <div class="positive ui button"
                    @click="acceptAppointment({ appointmentId: appointment.id, patientId })">
                 Accept
               </div>
-              <div class="ui primary icon button cancel"
+              <div class="negative ui button"
                    @click="openModal(appointment.id)">
                 Decline
               </div>
             </div>
-            <div v-if="isUserPatient" class="ui primary icon button cancel"
+            <div v-if="isUserPatient" class="negative ui button"
                  @click="openModal(appointment.id)">
               Cancel
             </div>
@@ -132,10 +132,6 @@
 
   .confirmed {
     color: @positiveGreen;
-
-    &.button {
-      background-color: @positiveGreen !important;
-    }
   }
 
   .pending {
@@ -144,11 +140,5 @@
 
   .declined, .cancelled {
     color: @negativeRed;
-  }
-
-  .cancel {
-    &.button {
-      background-color: @negativeRed !important;
-    }
   }
 </style>

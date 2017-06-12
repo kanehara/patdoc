@@ -33,9 +33,5 @@ app data.  To start the server:
 
 The server is run on `localhost:3000`
 
-If developing, you can alternatively run `npm run start:dev` which does
-the same as `npm start` except using `nodemon`.
-
-***Note***: `nodemon` does not play nicely with Webpack HMR if Client is
-running in dev mode
+The routes can be found in `src/routes`
 
