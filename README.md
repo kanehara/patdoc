@@ -18,4 +18,18 @@ running:
     npm start
 ```
 
+The dev server is run on `localhost:8080`
+
 ## Server
+
+The client requires the server to be running for retrieving and modifying
+app data.  To start the server:
+
+```
+    cd server
+    npm install
+    npm start
+```
+
+The server is run on `localhost:3000`
+
