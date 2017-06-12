@@ -65,6 +65,21 @@ export function initAppointmentsRoutes (app) {
     }
   })
 
+  app.patch('/patients/:patientId/appointments/:appointmentId', ({params: { patientId, appointmentId }, body}, res) => {
+    const appointments = MOCK_APPOINTMENTS[patientId]
+    if (appointments) {
+      let appointment = appointments.find(a => a.id === Number(appointmentId))
+      if (appointment) {
+        appointment = { ...appointment, ...body }
+        res.send(appointment)
+      } else {
+        res.sendStatus(404)
+      }
+    } else {
+      res.sendStatus(404)
+    }
+  })
+
   app.put('/patients/:patientId/appointments', ({params: { patientId }, body}, res) => {
     if (MOCK_APPOINTMENTS[patientId]) {
       MOCK_APPOINTMENTS[patientId].push(body)
