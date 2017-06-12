@@ -4,7 +4,8 @@
   "description": "Node server for pacdoc",
   "main": "index.js",
   "scripts": {
-    "start": "NODE_ENV=dev nodemon --ignore 'client/*' index.js",
+    "start": "NODE_ENV=dev node index.js",
+    "start:dev": "NODE_ENV=dev nodemon index.js",
     "start:production": "npm run build && NODE_ENV=production node lib/index.js",
     "build": "babel src -d lib",
     "clean": "rimraf lib"
