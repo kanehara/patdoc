@@ -2,12 +2,15 @@ import multer from 'multer'
 import uuid from 'uuid/v1'
 import mkdirp from 'mkdirp'
 import fs from 'fs'
+import logger from '../logger'
+
+const PATH_PREFIX = '/tmp/patdoc/patients'
 
 const storage = multer.diskStorage({
   destination (req, file, cb) {
     const id = uuid()
     req.medicalRecordId = id
-    const filePath = `/tmp/patdoc/patients/${req.params.patientId}/medicalRecord/${id}`
+    const filePath = `${PATH_PREFIX}/${req.params.patientId}/medicalRecord/${id}`
     if (!fs.existsSync(filePath)) {
       mkdirp.sync(filePath)
     }
@@ -29,7 +32,13 @@ export function initMedicalRecordRoutes (app) {
   })
 
   app.delete('/patients/:patientId/medicalRecord/:medicalRecordId', ({ params: { patientId, medicalRecordId } }, res) => {
-    console.log('hit')
-    res.sendStatus(200)
+    fs.unlink(`${PATH_PREFIX}/${patientId}/medicalRecord/${medicalRecordId}`, (err) => {
+      if (err) {
+        logger.warn(`Error deleting medical record file with id: ${medicalRecordId} for patient with id: ${patientId} with error: ${err}`)
+        res.send(500)
+      } else {
+        res.send(200)
+      }
+    })
   })
 }
