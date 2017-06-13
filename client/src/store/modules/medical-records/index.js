@@ -8,6 +8,7 @@ const state = {
 }
 
 const getters = {
+  files: state => state.files
 }
 
 const actions = {

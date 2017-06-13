@@ -40,7 +40,8 @@ export default new Router({
           children: [
             {
               path: '',
-              component: MedicalRecordGrid
+              component: MedicalRecordGrid,
+              props: true
             }, {
               path: 'upload',
               component: MedicalRecordUpload,
