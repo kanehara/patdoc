@@ -8,6 +8,6 @@ export default {
   },
 
   async deleteFile ({ patientId, fileId }) {
-    const res = axios.delete()
+    axios.delete(`${config.API_HOST}/patients/${patientId}/medicalRecord/${fileId}`)
   }
 }

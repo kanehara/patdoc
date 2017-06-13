@@ -56,8 +56,8 @@ The following would be nice to have's that were not implemented
 due to time constraints:
 
 * JWT tokens to authenticate requests to API
-* Robust error handling when backend fails with reducer
-actions for failure
+* Robust error handling when backend fails with reducer actions for failure.
+At the moment everything is optimistic
 * Mocha/chai node unit tests
 * E2E tests
 * Notifications for doctors and patients for new appointments
