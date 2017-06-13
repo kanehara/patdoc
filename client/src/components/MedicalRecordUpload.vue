@@ -8,12 +8,15 @@
               @vdropzone-file-added="fileAdded"
               @vdropzone-removed-file="fileRemoved"
               @vdropzone-sending="sending"
-              @vdropzone-success="fileUploaded">
+              @vdropzone-success="fileUploaded"
+              @vdropzone-total-upload-progress="progress">
     </dropzone>
-    <div class="buttons">
-      <button v-if="!queueIsEmpty" class="ui secondary button cancel" @click="emptyQueue">Cancel</button>
-      <button v-if="!queueIsEmpty" class="ui primary button submit" @click="processQueue">Submit</button>
-    </div>
+    <transition name="fade">
+      <div class="buttons" v-if="!uploadComplete">
+        <button v-if="!queueIsEmpty" class="ui secondary button cancel" @click="emptyQueue">Cancel</button>
+        <button v-if="!queueIsEmpty" class="ui primary button submit" @click="processQueue">Submit</button>
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -28,7 +31,8 @@
     },
     data () {
       return {
-        numFilesInQueue: 0
+        numFilesInQueue: 0,
+        uploadComplete: false
       }
     },
     props: ['patientId'],
@@ -65,6 +69,13 @@
             location
           }
         })
+      },
+      progress (percentDone, totalBytes, totalBytesSent) {
+        if (percentDone === 100) {
+          // Show success indicator and navigate to medical record page after successful upload
+          this.uploadComplete = true
+          setTimeout(() => this.$router.push(`/patients/${this.patientId}/medicalRecord`), 850)
+        }
       }
     }
   }
@@ -101,6 +112,13 @@
 
   #fileDropzone {
     margin-bottom: 25px;
+  }
+
+  .fade-enter-active, .fade-leave-active {
+    transition: opacity 1s
+  }
+  .fade-enter, .fade-leave-to {
+    opacity: 0
   }
 
 </style>
