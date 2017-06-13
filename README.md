@@ -41,6 +41,13 @@ The server is run on `localhost:3000`
 
 The routes can be found in `src/routes`
 
+### Medical record file uploads
+
+File uploads will be stored in `/tmp/patdoc/patient/:patientId/medicalRecord/:medicalRecordId`.
+Where `:patientId` is the patient's ID and `:medicalRecordId` is a UUID
+for the medical record file.
+Ideally, files would eventually be stored in a DB such as Mongo with GridFs.
+
 ## Nice to Have's
 
 The following would be nice to have's that were not implemented

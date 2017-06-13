@@ -7,9 +7,8 @@
               :autoProcessQueue="false"
               @vdropzone-file-added="fileAdded"
               @vdropzone-removed-file="fileRemoved"
+              @vdropzone-sending="sending"
               @vdropzone-success="fileUploaded">
-      <!-- Optional parameters if any! -->
-      <input type="hidden" name="token" value="xxx">
     </dropzone>
     <div class="buttons">
       <button v-if="!queueIsEmpty" class="ui secondary button cancel" @click="emptyQueue">Cancel</button>
@@ -53,6 +52,9 @@
       },
       processQueue () {
         this.$refs.dropzone.processQueue()
+      },
+      sending (file, xhr, formData) {
+        formData.patientId = this.patientId
       },
       fileUploaded ({name: filename, size}, { id, location }) {
         this.$store.commit(mutationTypes.ADD_FILE, {
