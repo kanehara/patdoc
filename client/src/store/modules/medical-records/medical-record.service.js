@@ -1,33 +1,13 @@
-const MOCK_FILES = [
-  {
-    id: 1,
-    filename: 'test.pdf',
-    size: '64kb',
-    location: 'file://somelocation'
-  }, {
-    id: 2,
-    filename: 'test2.pdf',
-    size: '5kb',
-    location: 'file://somelocation2'
-  }, {
-    id: 3,
-    filename: 'test3.pdf',
-    size: '224kb',
-    location: 'file://somelocation3'
-  }, {
-    id: 4,
-    filename: 'test4.pdf',
-    size: '56kb',
-    location: 'file://somelocation4'
-  }
-]
+import config from '@/config'
+import axios from 'axios'
 
 export default {
   async getFiles ({ patientId }) {
-    return MOCK_FILES
+    const res = axios.get(`${config.API_HOST}/patients/${patientId}/medicalRecord`)
+    return res.data
   },
 
   async deleteFile ({ patientId, fileId }) {
-    // TODO: delete file
+    const res = axios.delete()
   }
 }

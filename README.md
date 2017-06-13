@@ -43,8 +43,8 @@ The routes can be found in `src/routes`
 
 ### Medical record files
 
-File uploads will be stored on the local computer in `/tmp/patdoc/patient/:patientId/medicalRecord/:medicalRecordId`.
-Where `:patientId` is the patient's ID and `:medicalRecordId` is a UUID for the medical record file.
+File uploads will be stored on the local computer in `/tmp/patdoc/patient/:patientId/medicalRecord/:fileId`.
+Where `:patientId` is the patient's ID and `:fileId` is a UUID for the medical record file.
 Ideally, files would eventually be stored in a DB such as Mongo with GridFs.
 
 ***NOTE: Links to files do not open due to a security block by browsers,

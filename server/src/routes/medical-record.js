@@ -9,7 +9,7 @@ const PATH_PREFIX = '/tmp/patdoc/patients'
 const storage = multer.diskStorage({
   destination (req, file, cb) {
     const id = uuid()
-    req.medicalRecordId = id
+    req.fileId = id
     const filePath = `${PATH_PREFIX}/${req.params.patientId}/medicalRecord/${id}`
     if (!fs.existsSync(filePath)) {
       mkdirp(filePath, err => {
@@ -44,17 +44,17 @@ async function buildMedicalRecordResponse (patientId) {
   try {
     const response = []
     const filePath = `${PATH_PREFIX}/${patientId}/medicalRecord`
-    const medicalRecordIds = await readDirectory(filePath)
-    for (let i = 0; i < medicalRecordIds.length; ++i) {
-      const medicalRecordId = medicalRecordIds[i]
-      const fileNames = await readDirectory(`${filePath}/${medicalRecordId}`)
+    const fileIds = await readDirectory(filePath)
+    for (let i = 0; i < fileIds.length; ++i) {
+      const fileId = fileIds[i]
+      const fileNames = await readDirectory(`${filePath}/${fileId}`)
       // There should only be one file per medical record ID
       const filename = fileNames[0]
-      const url = `file://${filePath}/${medicalRecordId}/${filename}`
+      const url = `file://${filePath}/${fileId}/${filename}`
       const fileStats = fs.statSync(url)
       const size = `${Math.round(fileStats.size / 1000)} KB`
       const medicalRecordResponse = {
-        id: medicalRecordIds[i],
+        id: fileIds[i],
         filename,
         url,
         size
@@ -72,7 +72,7 @@ export function initMedicalRecordRoutes (app) {
   app.post('/patients/:patientId/medicalRecord', upload.single('file'), (req, res) => {
     res.send({
       location: `file://${req.file.destination}`,
-      id: req.medicalRecordId
+      id: req.fileId
     })
   })
 
@@ -82,10 +82,10 @@ export function initMedicalRecordRoutes (app) {
       .catch(() => res.sendStatus(404))
   })
 
-  app.delete('/patients/:patientId/medicalRecord/:medicalRecordId', ({ params: { patientId, medicalRecordId } }, res) => {
-    fs.unlink(`${PATH_PREFIX}/${patientId}/medicalRecord/${medicalRecordId}`, (err) => {
+  app.delete('/patients/:patientId/medicalRecord/:fileId', ({ params: { patientId, fileId } }, res) => {
+    fs.unlink(`${PATH_PREFIX}/${patientId}/medicalRecord/${fileId}`, (err) => {
       if (err) {
-        logger.warn(`Error deleting medical record file with id: ${medicalRecordId} for patient with id: ${patientId} with error: ${err}`)
+        logger.warn(`Error deleting medical record file with id: ${fileId} for patient with id: ${patientId} with error: ${err}`)
         res.send(500)
       } else {
         res.send(200)
