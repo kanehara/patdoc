@@ -66,7 +66,7 @@
             id,
             filename,
             size: `${Math.round(size / 1000)} KB`,
-            location
+            url: `${location}/${filename}`
           }
         })
       },

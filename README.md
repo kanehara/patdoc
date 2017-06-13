@@ -53,6 +53,7 @@ Ideally, files would eventually be stored in a DB such as Mongo with GridFs.
 The following would be nice to have's that were not implemented
 due to time constraints:
 
+* JWT tokens to authenticate requests to API
 * Robust error handling when backend fails with reducer
 actions for failure
 * Mocha/chai node unit tests

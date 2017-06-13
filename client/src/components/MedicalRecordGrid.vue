@@ -4,7 +4,7 @@
       <button class="ui primary button">Upload Files</button>
     </router-link>
     <div class="ui four doubling cards">
-      <a v-for="file in files" class="ui card" :href="file.location" target="_blank">
+      <a v-for="file in files" class="ui card" :href="file.url" target="_blank">
           <div class="image">
             <img src="../assets/placeholder.png">
           </div>
