@@ -65,3 +65,4 @@ At the moment everything is optimistic
 * Animations
 * Sorting appointments by status, time, etc.
 * Feature to schedule another appointment with past doctor
+* Editing personal info

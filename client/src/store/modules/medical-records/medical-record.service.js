@@ -3,8 +3,13 @@ import axios from 'axios'
 
 export default {
   async getFiles ({ patientId }) {
-    const res = await axios.get(`${config.API_HOST}/patients/${patientId}/medicalRecord`)
-    return res.data
+    try {
+      const res = await axios.get(`${config.API_HOST}/patients/${patientId}/medicalRecord`)
+      return res.data
+    } catch (err) {
+      console.log(`Error retrieving appointments with err: ${err}`)
+      return []
+    }
   },
 
   async deleteFile ({ patientId, fileId }) {

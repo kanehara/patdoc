@@ -24,6 +24,11 @@
     created () {
       this.$store.dispatch(actionTypes.GET_FILES, { patientId: this.patientId })
     },
+    watch: {
+      '$route': function () {
+        this.$store.dispatch(actionTypes.GET_FILES, { patientId: this.patientId })
+      }
+    },
     computed: {
       ...mapGetters(['files'])
     }
