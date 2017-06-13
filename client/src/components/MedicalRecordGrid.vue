@@ -31,6 +31,10 @@
 </script>
 
 <style lang="less" scoped>
+  .header {
+    font-size: 1.1em;
+  }
+
   .ui.four.cards {
     margin: 20px 15%;
 

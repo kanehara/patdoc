@@ -50,9 +50,10 @@ async function buildMedicalRecordResponse (patientId) {
       const fileNames = await readDirectory(`${filePath}/${fileId}`)
       // There should only be one file per medical record ID
       const filename = fileNames[0]
-      const url = `file://${filePath}/${fileId}/${filename}`
-      const fileStats = fs.statSync(url)
+      const path = `${filePath}/${fileId}/${filename}`
+      const fileStats = fs.statSync(path)
       const size = `${Math.round(fileStats.size / 1000)} KB`
+      const url = `file://${path}`
       const medicalRecordResponse = {
         id: fileIds[i],
         filename,

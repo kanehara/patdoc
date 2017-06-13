@@ -3,11 +3,11 @@ import axios from 'axios'
 
 export default {
   async getFiles ({ patientId }) {
-    const res = axios.get(`${config.API_HOST}/patients/${patientId}/medicalRecord`)
+    const res = await axios.get(`${config.API_HOST}/patients/${patientId}/medicalRecord`)
     return res.data
   },
 
   async deleteFile ({ patientId, fileId }) {
-    axios.delete(`${config.API_HOST}/patients/${patientId}/medicalRecord/${fileId}`)
+    await axios.delete(`${config.API_HOST}/patients/${patientId}/medicalRecord/${fileId}`)
   }
 }
