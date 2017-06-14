@@ -8,7 +8,8 @@ const state = {
 }
 
 const getters = {
-  patients: state => state.patients
+  getPatients: state => state.patients,
+  getPatient: (state, getters) => (id) => state.patients.find(p => p._id === id)
 }
 
 const actions = {

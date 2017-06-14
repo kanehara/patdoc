@@ -6,25 +6,31 @@
         <img class="ui medium circular image" src="../assets/placeholder.png">
       </div>
       <div class="info">
-        <div><b>Name:</b> {{ name }}</div>
-        <div><b>Age:</b> {{ age }}</div>
-        <div><b>Email:</b> {{ email }}</div>
-        <div><b>Mailing Address:</b> {{ address }}</div>
-        <div><b>Phone Number:</b> {{ name }}</div>
+        <div><b>Name:</b> {{ patient.name }}</div>
+        <div><b>Age:</b> {{ patient.age }}</div>
+        <div><b>Email:</b> {{ patient.emailAddress }}</div>
+        <div><b>Mailing Address:</b> {{ patient.mailingAddress }}</div>
+        <div><b>Phone Number:</b> {{ patient.phoneNumber }}</div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+  import * as actionTypes from '../store/modules/patients/action-types'
+
   export default {
-    data () {
-      return {
-        name: 'Yohei Kanehara',
-        age: 24,
-        email: 'kanehara@umich.edu',
-        address: '1850 N Clark St. Chicago, IL 60614',
-        phoneNumber: 2488913545
+    computed: {
+      patient () {
+        const patient = this.$store.getters.getPatient(this.$route.params.patientId)
+        return patient || { name: '', age: '', emailAddress: '', mailingAddress: '', phoneNumber: '' }
+      }
+    },
+
+    created () {
+      const patient = this.$store.getters.getPatient(this.$route.params.patientId)
+      if (!patient) {
+        this.$store.dispatch(actionTypes.GET_PATIENTS)
       }
     }
   }

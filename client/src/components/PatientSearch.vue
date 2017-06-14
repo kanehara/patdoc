@@ -2,7 +2,7 @@
   <div>
     <h1>Patient Search</h1>
     <div class="ui divided items">
-      <PatientSearchRow v-for="patient in patients" :key="patient._id" :patient="patient"></PatientSearchRow>
+      <PatientSearchRow v-for="patient in getPatients" :key="patient._id" :patient="patient"></PatientSearchRow>
     </div>
   </div>
 </template>
@@ -20,7 +20,7 @@
       this.$store.dispatch(actionTypes.GET_PATIENTS)
     },
     computed: {
-      ...mapGetters(['patients'])
+      ...mapGetters(['getPatients'])
     }
   }
 </script>
