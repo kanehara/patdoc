@@ -28,38 +28,40 @@ async function initDb () {
 }
 
 async function loadAuth () {
-  const saltRounds = 10
+  const saltRounds = 12
   const promises = []
 
   // Patients
   let password = await bcrypt.hash('pencil', saltRounds)
-  promises.push(createAuth({ emailAddress: 'pencilvester@test.com', password }))
+  let userType = 'patient'
+  promises.push(createAuth({ emailAddress: 'pencilvester@test.com', password, userType }))
   password = await bcrypt.hash('jessica', saltRounds)
-  promises.push(createAuth({ emailAddress: 'morty@test.com', password }))
+  promises.push(createAuth({ emailAddress: 'morty@test.com', password, userType }))
   password = await bcrypt.hash('schwifty', saltRounds)
-  promises.push(createAuth({ emailAddress: 'rick@test.com', password }))
+  promises.push(createAuth({ emailAddress: 'rick@test.com', password, userType }))
   password = await bcrypt.hash('horses', saltRounds)
-  promises.push(createAuth({ emailAddress: 'beth@test.com', password }))
+  promises.push(createAuth({ emailAddress: 'beth@test.com', password, userType }))
   password = await bcrypt.hash('apples', saltRounds)
-  promises.push(createAuth({ emailAddress: 'jerry@test.com', password }))
+  promises.push(createAuth({ emailAddress: 'jerry@test.com', password, userType }))
   password = await bcrypt.hash('phoenix', saltRounds)
-  promises.push(createAuth({ emailAddress: 'birdperson@test.com', password }))
+  promises.push(createAuth({ emailAddress: 'birdperson@test.com', password, userType }))
   password = await bcrypt.hash('top', saltRounds)
-  promises.push(createAuth({ emailAddress: 'summer@test.com', password }))
+  promises.push(createAuth({ emailAddress: 'summer@test.com', password, userType }))
   password = await bcrypt.hash('clockwork', saltRounds)
-  promises.push(createAuth({ emailAddress: 'gearhead@test.com', password }))
+  promises.push(createAuth({ emailAddress: 'gearhead@test.com', password, userType }))
   password = await bcrypt.hash('icet', saltRounds)
-  promises.push(createAuth({ emailAddress: 'watert@test.com', password }))
+  promises.push(createAuth({ emailAddress: 'watert@test.com', password, userType }))
   password = await bcrypt.hash('bird', saltRounds)
-  promises.push(createAuth({ emailAddress: 'tammy@test.com', password }))
+  promises.push(createAuth({ emailAddress: 'tammy@test.com', password, userType }))
 
   // Doctors
+  userType = 'doctor'
   password = await bcrypt.hash('marty', saltRounds)
-  promises.push(createAuth({ emailAddress: 'doc@test.com', password }))
+  promises.push(createAuth({ emailAddress: 'doc@test.com', password, userType }))
   password = await bcrypt.hash('zimmer', saltRounds)
-  promises.push(createAuth({ emailAddress: 'hans@test.com', password }))
+  promises.push(createAuth({ emailAddress: 'hans@test.com', password, userType }))
   password = await bcrypt.hash('c137', saltRounds)
-  promises.push(createAuth({ emailAddress: 'sanchez@test.com', password }))
+  promises.push(createAuth({ emailAddress: 'sanchez@test.com', password, userType }))
   return Promise.all(promises)
 }
 
@@ -175,8 +177,8 @@ async function loadDoctors () {
   return Promise.all(promises)
 }
 
-async function createAuth ({ emailAddress, password }) {
-  Auth.create({ emailAddress, password })
+async function createAuth ({ emailAddress, password, userType }) {
+  Auth.create({ emailAddress, password, userType })
 }
 
 async function createPatient ({ name, age, emailAddress, mailingAddress, phoneNumber }) {

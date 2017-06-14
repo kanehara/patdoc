@@ -1,2 +1,5 @@
 export * from './appointments'
 export * from './medical-record'
+export * from './auth'
+export * from './doctor'
+export * from './patient'
