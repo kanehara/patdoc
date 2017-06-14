@@ -7,9 +7,10 @@ import MedicalRecordUpload from '@/components/MedicalRecordUpload'
 import MedicalRecordGrid from '@/components/MedicalRecordGrid'
 import Home from '@/components/Home'
 import PatientFrame from '@/components/PatientFrame'
-import _400 from '@components/_400'
-import _404 from '@components/_404'
-import _500 from '@components/_500'
+import _400 from '@/components/_400'
+import _404 from '@/components/_404'
+import _500 from '@/components/_500'
+import PatientSearch from '@/components/PatientSearch'
 
 Vue.use(Router)
 
@@ -27,6 +28,9 @@ export default new Router({
     }, {
       path: '/500',
       component: _500
+    }, {
+      path: '/search',
+      component: PatientSearch
     }, {
       path: '/patients',
       component: PatientFrame,
