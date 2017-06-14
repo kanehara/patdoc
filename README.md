@@ -66,6 +66,34 @@ container already exists
 This will pull and start a mongo container named `patdocdb` and should
 only have to be ran once to pull down and start the container.
 
+`db:create` will also run a script to populate the database with the 10 patients and
+3 doctors with the following credentials:
+
+```
+# Patients
+
+pencilvester@test.com:pencil
+morty@test.com:jessica
+rick@test.com:schwifty
+beth@test.com:horses
+jerry@test.com:apples
+birdperson@test.com:phoenix
+summer@test.com:top
+gearhead@test.com:clockwork
+watert@test.com:icet
+tammy@test.com:bird
+
+# Doctors
+
+doc@test.com:marty
+hans@test.com:zimmer
+sanchez@test.com:c137
+
+```
+
+The script to populate the database can be found in `src/db-script/init` and can be run
+independently via `npm run db:init`
+
 To start and stop the mongo container afterwards run the following respectively:
 
 ```
