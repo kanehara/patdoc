@@ -14,7 +14,7 @@ connection.once('open', () => {
       process.exit()
     })
     .catch(err => {
-      logger.error('Error loading initializing DB: ', err)
+      logger.error('Error initializing DB: ', err)
       process.exit()
     })
 })
