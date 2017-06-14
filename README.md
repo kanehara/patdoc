@@ -64,9 +64,9 @@ To create and run the docker container run in the `server` directory:
 container already exists
 
 This will pull and start a mongo container named `patdocdb` and should
-only have to be ran once to pull down and start the container.
+only be run once to pull down and start the container.
 
-`db:create` will also run a script to populate the database with the 10 patients and
+`db:create` will also run `npm run db:init` which populates the database with 10 patients and
 3 doctors with the following credentials:
 
 ```
@@ -91,10 +91,9 @@ sanchez@test.com:c137
 
 ```
 
-The script to populate the database can be found in `src/db-script/init` and can be run
-independently via `npm run db:init`
+The full script can be found in `src/db-script/init`
 
-To start and stop the mongo container afterwards run the following respectively:
+The mongo container can be started and stopped with te following:
 
 ```
     npm run db:start
@@ -107,7 +106,8 @@ The docker mongo container is accessible at `localhost:27017`
 
 File uploads are stored on the local computer in `/tmp/patdoc/patient/:patientId/medicalRecord/:fileId`.
 Where `:patientId` is the patient's ID and `:fileId` is a UUID for the medical record file.
-Ideally, files would eventually be stored in Mongo with GridFs.
+Ideally, files would eventually either be stored in Mongo with GridFs and streamed
+to the user or stored on a server.
 
 ***NOTE: Links to local files do not open due to a security block by browsers,
 they can be opened by copying link and manually opening in new page***
