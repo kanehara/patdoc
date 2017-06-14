@@ -2,24 +2,30 @@ import app from './app'
 import http from 'http'
 import morgan from 'morgan'
 import logger from './logger'
+import mongoose from 'mongoose'
+import connect from './db'
 
-/**
- * Get port from environment and store in Express.
- */
-const port = process.env.PORT || '3000'
-app.set('port', port)
+connect()
 
-/**
- * Logger
- */
-app.use(morgan('combined', {stream: logger.stream}))
+mongoose.connection.once('open', () => {
+  /**
+   * Get port from environment and store in Express.
+   */
+  const port = process.env.PORT || '3000'
+  app.set('port', port)
 
-/**
- * Create HTTP server.
- */
-const server = http.createServer(app)
+  /**
+   * Logger
+   */
+  app.use(morgan('combined', {stream: logger.stream}))
 
-/**
- * Listen on provided port, on all network interfaces.
- */
-server.listen(port, () => logger.info('Express server listening on %d', port))
+  /**
+   * Create HTTP server.
+   */
+  const server = http.createServer(app)
+
+  /**
+   * Listen on provided port, on all network interfaces.
+   */
+  server.listen(port, () => logger.info('Express server listening on %d', port))
+})

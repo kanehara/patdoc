@@ -6,14 +6,20 @@
   "scripts": {
     "start": "NODE_ENV=dev nodemon index.js",
     "start:production": "npm run build && NODE_ENV=production node lib/index.js",
+    "db:create": "docker run -itd -p 27017:27017 -v /tmp/mongodb:/data/db --name patdocdb -d mongo && npm run db:init",
+    "db:init": "node src/db-script/init",
+    "db:start": "docker start patdocdb",
+    "db:stop": "docker stop patdocdb",
     "build": "babel src -d lib",
     "clean": "rimraf lib"
   },
   "author": "Yohei Kanehara (kanehara@umich.edu)",
   "dependencies": {
+    "bcrypt": "^1.0.2",
     "body-parser": "^1.17.2",
     "express": "^4.15.3",
     "mkdirp": "^0.5.1",
+    "mongoose": "^4.10.6",
     "morgan": "^1.8.2",
     "multer": "^1.3.0",
     "uuid": "^3.0.1",

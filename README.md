@@ -9,8 +9,9 @@ The client is build with the [Vue.js](https://vuejs.org/) framework.
 Routing is implemented with [vue-router](https://router.vuejs.org/en/) and state management is implemented
 with [vuex](https://vuex.vuejs.org/en/).  Assets are bundled using [Webpack](https://webpack.github.io/)
 
-There is a dev server for serving the client locally.  This server can be started by
-running:
+### Setup
+
+#### 1. Install and start client dev server
 
 ```
     cd client
@@ -28,8 +29,11 @@ offers a great time travelling feature to relive state mutations.
 
 ## Server
 
-The client requires the server to be running for retrieving and modifying
-app data.  To start the server:
+The server serves a REST api for the Client to retrieve data
+
+### Set up
+
+#### 1. Server bootup
 
 ```
     cd server
@@ -41,13 +45,71 @@ The server is run on `localhost:3000`
 
 The routes can be found in `src/routes`
 
+#### 2. Mongo bootup
+
+Server data is persisted in a Mongo Docker container.
+
+Please create a directory at `/tmp/mongodb` which is where the mongo
+volume will be mounted on the computer.
+
+To create and run the docker container run in the `server` directory:
+
+```
+    npm run db:create
+```
+
+***Note:*** This requires docker to be installed on the machine
+
+***Note:*** This should only run once or else docker will complain that the
+container already exists
+
+This will pull and start a mongo container named `patdocdb` and should
+only be run once to pull down and start the container.
+
+`db:create` will also run `npm run db:init` which populates the database with 10 patients and
+3 doctors with the following credentials:
+
+```
+# Patients
+
+pencilvester@test.com:pencil
+morty@test.com:jessica
+rick@test.com:schwifty
+beth@test.com:horses
+jerry@test.com:apples
+birdperson@test.com:phoenix
+summer@test.com:top
+gearhead@test.com:clockwork
+watert@test.com:icet
+tammy@test.com:bird
+
+# Doctors
+
+doc@test.com:marty
+hans@test.com:zimmer
+sanchez@test.com:c137
+
+```
+
+The full script can be found in `src/db-script/init`
+
+The mongo container can be started and stopped with te following:
+
+```
+    npm run db:start
+    npm run db:stop
+```
+
+The docker mongo container is accessible at `localhost:27017`
+
 ### Medical record files
 
-File uploads will be stored on the local computer in `/tmp/patdoc/patient/:patientId/medicalRecord/:fileId`.
+File uploads are stored on the local computer in `/tmp/patdoc/patient/:patientId/medicalRecord/:fileId`.
 Where `:patientId` is the patient's ID and `:fileId` is a UUID for the medical record file.
-Ideally, files would eventually be stored in a DB such as Mongo with GridFs.
+Ideally, files would eventually either be stored in Mongo with GridFs and streamed
+to the user or stored on a server.
 
-***NOTE: Links to files do not open due to a security block by browsers,
+***NOTE: Links to local files do not open due to a security block by browsers,
 they can be opened by copying link and manually opening in new page***
 
 ## Nice to Have's

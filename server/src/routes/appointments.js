@@ -1,100 +1,68 @@
-// Map of user ID to their appointments
-const MOCK_APPOINTMENTS = {
-  1: [
-    {
-      id: 1,
-      date: new Date('October 13, 2017 11:13:00'),
-      subject: 'Wart removal',
-      notes: 'I need a wart removed from my thumb.',
-      doctor: 'Dr. Hans Zimmer',
-      status: 'Confirmed'
-    }, {
-      id: 2,
-      date: new Date('October 14, 2017 11:13:00'),
-      subject: 'Knee surgery',
-      notes: 'Knee surgery to be done',
-      doctor: 'Dr. Hans Zimmer',
-      status: 'Pending'
-    }, {
-      id: 3,
-      date: new Date('October 13, 2017 01:13:00'),
-      subject: 'Complex heart procedure',
-      notes: 'Some complex procdure',
-      doctor: 'Dr. Hans Zimmer',
-      status: 'Pending'
-    }, {
-      id: 4,
-      date: new Date('January 13, 2017 11:13:00'),
-      subject: 'Wart removal',
-      notes: 'I need a wart removed from my thumb.',
-      doctor: 'Dr. Hans Zimmer',
-      status: 'Confirmed'
-    }, {
-      id: 5,
-      date: new Date('March 13, 2017 11:13:00'),
-      subject: 'Wart removal',
-      notes: 'I need a wart removed from my thumb.',
-      doctor: 'Dr. Hans Zimmer',
-      status: 'Confirmed'
-    }, {
-      id: 6,
-      date: new Date('May 13, 2017 11:13:00'),
-      subject: 'Wart removal',
-      notes: 'I need a wart removed from my thumb.',
-      doctor: 'Dr. Hans Zimmer',
-      status: 'Pending'
-    }
-  ],
-  2: [],
-  3: []
+import { Appointment } from '../models'
+import logger from '../logger'
+
+/**
+ * Builds client friendly response based on mongo result
+ */
+function buildResponse (appointment) {
+  const response = {
+    id: appointment._id,
+    date: appointment.date,
+    subject: appointment.subject,
+    notes: appointment.notes,
+    doctor: appointment.doctor.name,
+    status: appointment.status
+  }
+  return response
 }
 
+// TODO: determine correct response code based on error
 export function initAppointmentsRoutes (app) {
   app.get('/patients/:patientId/appointments', ({params: { patientId }}, res) => {
-    const appointments = MOCK_APPOINTMENTS[patientId]
-    appointments ? res.send(appointments) : res.sendStatus(404)
-  })
-
-  app.get('/patients/:patientId/appointments/:appointmentId', ({params: { patientId, appointmentId }}, res) => {
-    const appointments = MOCK_APPOINTMENTS[patientId]
-    if (appointments) {
-      const appointment = appointments.find(a => a.id === Number(appointmentId))
-      appointment ? res.send(appointment) : res.sendStatus(404)
-    } else {
-      res.sendStatus(404)
-    }
+    Appointment.findOne({ patient: patientId })
+      .then(a => res.send(buildResponse(a)))
+      .catch(err => {
+        logger.error(`Error trying to retrieve appointments for patient with id: ${patientId} with err: ${err}`)
+        res.sendStatus(404)
+      })
   })
 
   app.patch('/patients/:patientId/appointments/:appointmentId', ({params: { patientId, appointmentId }, body}, res) => {
-    const appointments = MOCK_APPOINTMENTS[patientId]
-    if (appointments) {
-      let appointment = appointments.find(a => a.id === Number(appointmentId))
-      if (appointment) {
-        appointment = { ...appointment, ...body }
-        res.send(appointment)
-      } else {
-        res.sendStatus(404)
-      }
-    } else {
-      res.sendStatus(404)
-    }
+    Appointment.findById(appointmentId)
+      .then(app => {
+        app = {...app, ...body}
+        app.save()
+          .then(updatedApp => res.send(buildResponse(updatedApp)))
+          .catch(err => {
+            logger.error(`Error trying to save appintment with id: ${appointmentId} with err: ${err}`)
+            res.sendStatus(404)
+          })
+      })
+      .catch(err => {
+        logger.error(`Error trying to retriev appointment with id: ${appointmentId} with error: ${err}`)
+      })
   })
 
   app.put('/patients/:patientId/appointments', ({params: { patientId }, body}, res) => {
-    if (MOCK_APPOINTMENTS[patientId]) {
-      MOCK_APPOINTMENTS[patientId].push(body)
-    } else {
-      MOCK_APPOINTMENTS[patientId] = [body]
+    if (patientId !== body.patient) {
+      logger.warn(`The patient ID: ${patientId} in PUT path to create an appointment does not match the ID in the body: ${body.patient}`)
+      res.send(400)
     }
+    const app = new Appointment(body)
+    app.save()
+      .then(app => res.send(buildResponse(app)))
+      .catch(err => {
+        logger.error(`Error creating new appointment: ${err}`)
+      })
   })
 
   app.delete('/patients/:patientId/appointments/:appointmentId', ({params: { patientId, appointmentId }}, res) => {
-    const appointments = MOCK_APPOINTMENTS[patientId]
-    if (appointments) {
-      const idx = appointments.findIndex(a => a.id === Number(appointmentId))
-      idx !== -1 ? appointments.slice(idx, 1) : res.send(404)
-    } else {
-      res.send(404)
-    }
+    Appointment.remove({_id: appointmentId, patient: patientId})
+      .then(() => res.sendStatus(200))
+      .catch(err => {
+        logger.error(`Error trying to delete appointment for patient with id: ${patientId} 
+                      and appointment id: ${appointmentId} with error: ${err}`)
+        res.sendStatus(500)
+      })
   })
 }
