@@ -1,7 +1,6 @@
 <template>
-  <h1>MedicalRecord</h1>
+  <div id="medicalRecord">
+    <h1>Medical Record</h1>
+    <router-view></router-view>
+  </div>
 </template>
-
-<script>
-
-</script>

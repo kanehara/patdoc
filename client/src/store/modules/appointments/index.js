@@ -1,6 +1,6 @@
-import appointmentService from '@/service/appointment.service'
-import * as mutationTypes from '../mutation-types'
-import * as actionTypes from '../action-types'
+import appointmentService from './appointment.service'
+import * as mutationTypes from './mutation-types'
+import * as actionTypes from './action-types'
 
 // Initial state
 const state = {
@@ -30,17 +30,15 @@ const actions = {
       commit(mutationTypes.RECEIVE_APPOINTMENTS, { appointments })
     } catch (err) {
       console.log(`Failed to get appointments with error: ${err}`)
-      // TODO: display FE error message
     }
   },
 
-  async [actionTypes.CANCEL_APPOINTMENT] ({commit, state}, { patientId, appointmentId }) {
+  async [actionTypes.CANCEL_APPOINTMENT] ({commit}, { patientId, appointmentId }) {
     try {
       await appointmentService.cancelAppointment({ patientId, appointmentId })
       commit(mutationTypes.CANCEL_APPOINTMENT, { appointmentId })
     } catch (err) {
       console.log(`Failed to cancel appointments with error: ${err}`)
-      // TODO: display FE error message
     }
   },
 
@@ -50,7 +48,6 @@ const actions = {
       commit(mutationTypes.DECLINE_APPOINTMENT, { appointmentId, declinationReason })
     } catch (err) {
       console.log(`Failed to decline appointment with error: ${err}`)
-      // TODO: display FE error message
     }
   },
 

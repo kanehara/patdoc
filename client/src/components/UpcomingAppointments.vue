@@ -20,16 +20,16 @@
           </div>
           <div slot="actions">
             <div v-if="isUserDoctor && appointment.status === 'Pending'">
-              <div class="ui primary icon button confirmed"
+              <div class="positive ui button"
                    @click="acceptAppointment({ appointmentId: appointment.id, patientId })">
                 Accept
               </div>
-              <div class="ui primary icon button cancel"
+              <div class="negative ui button"
                    @click="openModal(appointment.id)">
                 Decline
               </div>
             </div>
-            <div v-if="isUserPatient" class="ui primary icon button cancel"
+            <div v-if="isUserPatient" class="negative ui button"
                  @click="openModal(appointment.id)">
               Cancel
             </div>
@@ -54,7 +54,7 @@
 
 <script>
   import { mapActions, mapGetters } from 'vuex'
-  import * as actionTypes from '../store/action-types'
+  import * as actionTypes from '../store/modules/appointments/action-types'
   import AppointmentDetails from './AppointmentDetails'
   import CancelAppointmentModal from './CancelAppointmentModal'
   import DeclineAppointmentModal from './DeclineAppointmentModal'
@@ -105,37 +105,21 @@
 </script>
 
 <style lang="less" scoped>
-  @positiveGreen: #0fbf40;
-  @cautionYellow: #ec8e22;
-  @negativeRed: #ed0f00;
-  @secondaryGray: #979797;
-  @secondaryGrayHover: #828282;
+  @import '../style/colors';
+  @import '../style/buttons';
+
+  .ui.button {
+    width: 90%;
+    margin: 5px 0;
+  }
 
   .status {
     text-align: left;
     font-weight: bold;
   }
 
-  // Important for overriding semantic
-  .button {
-    width: 90%;
-    margin: 5px 0;
-
-    &.secondary {
-      background-color: @secondaryGray;
-
-      &:hover {
-        background-color: @secondaryGrayHover;
-      }
-    }
-  }
-
   .confirmed {
     color: @positiveGreen;
-
-    &.button {
-      background-color: @positiveGreen !important;
-    }
   }
 
   .pending {
@@ -144,11 +128,5 @@
 
   .declined, .cancelled {
     color: @negativeRed;
-  }
-
-  .cancel {
-    &.button {
-      background-color: @negativeRed !important;
-    }
   }
 </style>
