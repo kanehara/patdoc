@@ -6,6 +6,9 @@
   "scripts": {
     "start": "NODE_ENV=dev nodemon index.js",
     "start:production": "npm run build && NODE_ENV=production node lib/index.js",
+    "db:create": "docker run -itd -p 27017:27017 -v /tmp/mongodb:/data/db --name patdocdb -d mongo",
+    "db:start": "docker start patdocdb",
+    "db:stop": "docker stop patdocdb",
     "build": "babel src -d lib",
     "clean": "rimraf lib"
   },
