@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import appointments from './modules/appointments'
 import medicalRecord from './modules/medical-records'
+import users from './modules/patients'
 import createLogger from 'vuex/dist/logger'
 import USER_TYPES from './user-types'
 
@@ -13,16 +14,17 @@ const actions = {}
 
 const getters = {
   isUserPatient: state => {
-    return state.loggedInUserType === USER_TYPES.PATIENT
+    return state.userType === USER_TYPES.PATIENT
   },
   isUserDoctor: state => {
-    return state.loggedInUserType === USER_TYPES.DOCTOR
+    return state.userType === USER_TYPES.DOCTOR
   }
 }
 
 const state = {
   // TODO: set state on login
-  loggedInUserType: USER_TYPES.DOCTOR
+  userType: USER_TYPES.DOCTOR,
+  userId: ''
 }
 
 export default new Vuex.Store({
@@ -31,7 +33,8 @@ export default new Vuex.Store({
   state,
   modules: {
     appointments,
-    medicalRecord
+    medicalRecord,
+    users
   },
   strict: debug,
   plugins: debug ? [createLogger()] : []
