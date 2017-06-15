@@ -9,7 +9,7 @@ export function initAuthRoutes (app) {
         if (auth) {
           bcrypt.compare(password, auth._doc.password)
             .then(passMatch => {
-              passMatch ? res.send(auth._doc.userType) : res.sendStatus(401)
+              passMatch ? res.send({userType: auth._doc.userType, userId: auth._doc._id}) : res.sendStatus(401)
             })
         } else {
           res.sendStatus(401)

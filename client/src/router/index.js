@@ -11,14 +11,19 @@ import _400 from '@/components/_400'
 import _404 from '@/components/_404'
 import _500 from '@/components/_500'
 import PatientSearch from '@/components/PatientSearch'
+import Login from '@/components/Login'
 
 Vue.use(Router)
 
 export default new Router({
+  mode: 'history',
   routes: [
     {
       path: '/',
       component: Home
+    }, {
+      path: '/login',
+      component: Login
     }, {
       path: '/400',
       component: _400
