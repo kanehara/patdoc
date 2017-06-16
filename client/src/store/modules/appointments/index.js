@@ -24,7 +24,7 @@ const getters = {
 }
 
 const actions = {
-  async [actionTypes.GET_APPOINTMENTS] ({commit}, patientId) {
+  async [actionTypes.GET_APPOINTMENTS] ({ commit }, patientId) {
     try {
       const appointments = await appointmentService.getAppointments({ patientId })
       commit(mutationTypes.RECEIVE_APPOINTMENTS, { appointments })
@@ -33,7 +33,7 @@ const actions = {
     }
   },
 
-  async [actionTypes.CANCEL_APPOINTMENT] ({commit}, { patientId, appointmentId }) {
+  async [actionTypes.CANCEL_APPOINTMENT] ({ commit }, { patientId, appointmentId }) {
     try {
       await appointmentService.cancelAppointment({ patientId, appointmentId })
       commit(mutationTypes.CANCEL_APPOINTMENT, { appointmentId })
@@ -42,7 +42,7 @@ const actions = {
     }
   },
 
-  async [actionTypes.DECLINE_APPOINTMENT] ({commit}, { patientId, appointmentId, declinationReason }) {
+  async [actionTypes.DECLINE_APPOINTMENT] ({ commit }, { patientId, appointmentId, declinationReason }) {
     try {
       await appointmentService.declineAppointment({ patientId, appointmentId, declinationReason })
       commit(mutationTypes.DECLINE_APPOINTMENT, { appointmentId, declinationReason })
@@ -51,13 +51,21 @@ const actions = {
     }
   },
 
-  async [actionTypes.ACCEPT_APPOINTMENT] ({commit}, { patientId, appointmentId }) {
+  async [actionTypes.ACCEPT_APPOINTMENT] ({ commit }, { patientId, appointmentId }) {
     try {
       await appointmentService.acceptAppointment({ patientId, appointmentId })
       commit(mutationTypes.ACCEPT_APPOINTMENT, { appointmentId })
     } catch (err) {
       console.log(`Failed to accept appointment with error: ${err}`)
-      // TODO: display FE error message
+    }
+  },
+
+  async [actionTypes.SCHEDULE_APPOINTMENT] ({ dispatch }, payload) {
+    try {
+      await appointmentService.scheduleAppointment(payload)
+      dispatch(actionTypes.GET_APPOINTMENTS, payload.patientId)
+    } catch (err) {
+      console.log(`Failed to schedule appointment: ${err}`)
     }
   }
 }

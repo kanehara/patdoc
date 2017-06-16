@@ -36,7 +36,7 @@
         <label>Notes</label>
         <textarea rows="3" v-model="notes"></textarea>
       </div>
-      <button class="ui button" :disabled="missingFields">Submit</button>
+      <button class="ui button" :disabled="missingFields" @click="submitNewAppointment">Submit</button>
     </div>
   </div>
 </template>
@@ -45,9 +45,11 @@
   import Datepicker from 'vuejs-datepicker'
   import Timepicker from 'vue2-timepicker'
   import DoctorPicker from './DoctorPicker'
-  import { mapGetters } from 'vuex'
+  import { mapGetters, mapActions } from 'vuex'
+  import * as actionTypes from '../store/modules/appointments/action-types'
 
   export default {
+    props: ['patientId'],
     data () {
       return {
         date: new Date(),
@@ -61,6 +63,25 @@
         notes: null
       }
     },
+    methods: {
+      ...mapActions({
+        scheduleAppointment: actionTypes.SCHEDULE_APPOINTMENT
+      }),
+      submitNewAppointment () {
+        if (!this.missingFields) {
+          const { date, time, doctor, subject, notes } = this
+          const payload = {
+            date,
+            time,
+            doctor,
+            subject,
+            notes,
+            patientId: this.patientId
+          }
+          this.scheduleAppointment(payload)
+        }
+      }
+    },
     components: {
       Datepicker,
       Timepicker,
@@ -69,7 +90,7 @@
     computed: {
       ...mapGetters(['isUserPatient']),
       missingFields () {
-        return !this.date || !this.time || !this.doctor || !this.subject
+        return !this.date || !this.time || (this.isUserPatient && !this.doctor) || !this.subject
       }
     }
   }

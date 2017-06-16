@@ -10,12 +10,12 @@
           :declinationReason="appointment.declinationReason">
           <div class="status" slot="status">
             <span :class="{
-              confirmed: appointment.status === 'Confirmed',
-              pending: appointment.status === 'Pending',
-              cancelled: appointment.status === 'Cancelled',
-              declined: appointment.status === 'Declined'
+              confirmed: appointment.status === statusTypes.CONFIRMED,
+              pending: appointment.status === statusTypes.PENDING,
+              cancelled: appointment.status === statusTypes.CANCELLED,
+              declined: appointment.status === statusTypes.DECLINED
             }">
-              {{ appointment.status }}
+              {{ appointment.status | capJustFirstChar }}
             </span>
           </div>
           <div slot="actions">
@@ -58,12 +58,14 @@
   import AppointmentDetails from './AppointmentDetails'
   import CancelAppointmentModal from './CancelAppointmentModal'
   import DeclineAppointmentModal from './DeclineAppointmentModal'
+  import config from '@/config'
 
   export default {
     data () {
       return {
         showModal: false,
-        appointmentIdSelected: null
+        appointmentIdSelected: null,
+        statusTypes: config.APPOINTMENT_STATUS_TYPES
       }
     },
     components: {
@@ -100,6 +102,12 @@
     },
     computed: {
       ...mapGetters(['isUserDoctor', 'isUserPatient'])
+    },
+    filters: {
+      capJustFirstChar (status) {
+        const lowerCaseStatus = status.toLowerCase()
+        return lowerCaseStatus.charAt(0).toUpperCase() + lowerCaseStatus.slice(1)
+      }
     }
   }
 </script>
