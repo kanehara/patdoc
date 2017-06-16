@@ -4,7 +4,7 @@ import logger from '../logger'
 export default app => {
   app.get('/patients/:patientId/appointments', async ({params: { patientId }}, res) => {
     try {
-      const apps = await Appointment.find({ patient: patientId })
+      const apps = await Appointment.find({ patient: patientId }).populate('doctor').populate('patient')
       if (apps && apps.length) {
         res.send(apps)
       } else {
@@ -18,7 +18,7 @@ export default app => {
 
   app.patch('/patients/:patientId/appointments/:appointmentId', async ({params: { patientId, appointmentId }, body}, res) => {
     try {
-      const app = await Appointment.findById(appointmentId)
+      const app = await Appointment.findById(appointmentId).populate('doctor').populate('patient')
       if (app.patient !== patientId) {
         res.sendStatus(400)
       }
@@ -42,7 +42,7 @@ export default app => {
         res.sendStatus(400)
       }
       const app = new Appointment(body)
-      const savedApp = await app.save()
+      const savedApp = await app.save().populate('doctor').populate('patient')
       if (savedApp) {
         res.send(savedApp)
       } else {
