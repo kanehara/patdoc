@@ -56,7 +56,7 @@ async function loadAuth () {
   promises.push(createAuth({ emailAddress: 'tammy@test.com', password, userType }))
 
   // Doctors
-  userType = config.USER_TYPES.PATIENT
+  userType = config.USER_TYPES.DOCTOR
   password = await bcrypt.hash('marty', saltRounds)
   promises.push(createAuth({ emailAddress: 'doc@test.com', password, userType }))
   password = await bcrypt.hash('zimmer', saltRounds)
