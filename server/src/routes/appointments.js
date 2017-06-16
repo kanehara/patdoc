@@ -5,7 +5,7 @@ import logger from '../logger'
 export default app => {
   app.get('/patients/:patientId/appointments', ({params: { patientId }}, res) => {
     Appointment.find({ patient: patientId })
-      .then(apps => apps && apps.length ? res.send(apps) : res.sendStatus([]))
+      .then(apps => apps && apps.length ? res.send(apps) : res.send([]))
       .catch(err => {
         logger.error(`Error trying to retrieve appointments for patient with id: ${patientId} with err: ${err}`)
         res.sendStatus(500)
@@ -24,7 +24,7 @@ export default app => {
           })
       })
       .catch(err => {
-        logger.error(`Error trying to retriev appointment with id: ${appointmentId} with error: ${err}`)
+        logger.error(`Error trying to retrieve appointment with id: ${appointmentId} with error: ${err}`)
       })
   })
 
