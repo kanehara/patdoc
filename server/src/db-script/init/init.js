@@ -1,6 +1,6 @@
 import connect from '../../db'
 import logger from '../../logger'
-import { Patient, Doctor, Auth } from '../../models/index'
+import { Patient, Doctor, Auth, Appointment } from '../../models/index'
 import mongoose from 'mongoose'
 import bcrypt from 'bcrypt'
 import config from '../../config'
@@ -25,7 +25,7 @@ connection.on('error', (err) => {
 })
 
 async function initDb () {
-  return Promise.all([loadAuth(), loadPatients(), loadDoctors()])
+  return Promise.all([loadAuth(), loadPatients(), loadDoctors(), loadAppointmentCollection()])
 }
 
 async function loadAuth () {
@@ -176,6 +176,11 @@ async function loadDoctors () {
   }))
 
   return Promise.all(promises)
+}
+
+async function loadAppointmentCollection () {
+  // Create empty appointment to create collection for initial queries to appointment collection
+  Appointment.create({})
 }
 
 async function createAuth ({ emailAddress, password, userType }) {
