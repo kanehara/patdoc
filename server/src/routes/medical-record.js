@@ -69,7 +69,7 @@ async function buildMedicalRecordResponse (patientId) {
   }
 }
 
-export function initMedicalRecordRoutes (app) {
+export default app => {
   app.post('/patients/:patientId/medicalRecord', upload.single('file'), (req, res) => {
     res.send({
       location: `file://${req.file.destination}`,

@@ -1,8 +1,9 @@
 import connect from '../../db'
 import logger from '../../logger'
-import { Patient, Doctor, Auth } from '../../models/index'
+import { Patient, Doctor, Auth, Appointment } from '../../models/index'
 import mongoose from 'mongoose'
 import bcrypt from 'bcrypt'
+import config from '../../config'
 const connection = mongoose.connection
 
 connect()
@@ -24,7 +25,7 @@ connection.on('error', (err) => {
 })
 
 async function initDb () {
-  return Promise.all([loadAuth(), loadPatients(), loadDoctors()])
+  return Promise.all([loadAuth(), loadPatients(), loadDoctors(), loadAppointmentCollection()])
 }
 
 async function loadAuth () {
@@ -33,7 +34,7 @@ async function loadAuth () {
 
   // Patients
   let password = await bcrypt.hash('pencil', saltRounds)
-  let userType = 'patient'
+  let userType = config.USER_TYPES.PATIENT
   promises.push(createAuth({ emailAddress: 'pencilvester@test.com', password, userType }))
   password = await bcrypt.hash('jessica', saltRounds)
   promises.push(createAuth({ emailAddress: 'morty@test.com', password, userType }))
@@ -55,7 +56,7 @@ async function loadAuth () {
   promises.push(createAuth({ emailAddress: 'tammy@test.com', password, userType }))
 
   // Doctors
-  userType = 'doctor'
+  userType = config.USER_TYPES.DOCTOR
   password = await bcrypt.hash('marty', saltRounds)
   promises.push(createAuth({ emailAddress: 'doc@test.com', password, userType }))
   password = await bcrypt.hash('zimmer', saltRounds)
@@ -175,6 +176,11 @@ async function loadDoctors () {
   }))
 
   return Promise.all(promises)
+}
+
+async function loadAppointmentCollection () {
+  // Create empty appointment to create collection for initial queries to appointment collection
+  Appointment.create({})
 }
 
 async function createAuth ({ emailAddress, password, userType }) {

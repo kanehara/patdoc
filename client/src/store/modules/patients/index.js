@@ -9,7 +9,7 @@ const state = {
 
 const getters = {
   getPatients: state => state.patients,
-  getPatient: (state, getters) => (id) => state.patients.find(p => p._id === id)
+  getPatient: state => (id) => state.patients.find(p => p._id === id)
 }
 
 const actions = {
@@ -18,7 +18,16 @@ const actions = {
       const patients = await patientService.getAllPatients()
       commit(mutationTypes.RECEIVE_PATIENTS, {patients})
     } catch (err) {
-      console.log(`Failed to get users with error: ${err}`)
+      console.log(`Failed to get patients with error: ${err}`)
+    }
+  },
+
+  async [actionTypes.GET_PATIENT] ({commit}, patientId) {
+    try {
+      const patient = await patientService.getPatient(patientId)
+      commit(mutationTypes.RECEIVE_PATIENTS, { patients: patient })
+    } catch (err) {
+      console.log(`Failed to get patient with id: ${patientId} with err: ${err}`)
     }
   }
 }

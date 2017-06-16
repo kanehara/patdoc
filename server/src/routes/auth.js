@@ -1,23 +1,14 @@
-import { Auth } from '../models'
-import logger from '../logger'
-import bcrypt from 'bcrypt'
+import passport from 'passport'
+import jwt from 'jsonwebtoken'
+import config from '../config'
 
-export function initAuthRoutes (app) {
-  app.post('/auth', ({body: { emailAddress, password }}, res) => {
-    Auth.findOne({ emailAddress })
-      .then(auth => {
-        if (auth) {
-          bcrypt.compare(password, auth._doc.password)
-            .then(passMatch => {
-              passMatch ? res.send(auth._doc.userType) : res.sendStatus(401)
-            })
-        } else {
-          res.sendStatus(401)
-        }
-      })
-      .catch(err => {
-        logger.error(`Error getting patients with err: ${err}`)
-        res.sendStatus(500)
-      })
+export default (app) => {
+  app.post('/login', passport.authenticate('local'), (req, res) => {
+    if (req.user) {
+      const token = jwt.sign(req.user, config.jwtSecret)
+      res.send({auth: req.user, token})
+    } else {
+      res.status(401).send({error: 'Error logging in!'})
+    }
   })
 }

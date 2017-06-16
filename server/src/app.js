@@ -1,6 +1,9 @@
 import express from 'express'
 import bodyParser from 'body-parser'
-import * as routes from './routes'
+import initRoutes from './routes'
+import passport from 'passport'
+// Initialize passport settings
+require('./passport')
 
 const app = express()
 
@@ -21,16 +24,18 @@ app.use((req, res, next) => {
 })
 
 /**
+ * Passport init
+ */
+app.use(passport.initialize())
+app.use(passport.session())
+
+/**
  * Health check endpoint
  */
 app.get('/healthz', (req, res) => {
   res.send('Healthy as a horse')
 })
 
-routes.initAppointmentsRoutes(app)
-routes.initMedicalRecordRoutes(app)
-routes.initAuthRoutes(app)
-routes.initDoctorRoutes(app)
-routes.initPatientRoutes(app)
+initRoutes(app)
 
 export default app

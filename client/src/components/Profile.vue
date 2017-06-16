@@ -17,20 +17,23 @@
 </template>
 
 <script>
+  import { mapGetters } from 'vuex'
   import * as actionTypes from '../store/modules/patients/action-types'
 
   export default {
+    props: ['patientId'],
     computed: {
+      ...mapGetters(['getPatient']),
       patient () {
-        const patient = this.$store.getters.getPatient(this.$route.params.patientId)
+        const patient = this.getPatient(this.patientId)
         return patient || { name: '', age: '', emailAddress: '', mailingAddress: '', phoneNumber: '' }
       }
     },
 
     created () {
-      const patient = this.$store.getters.getPatient(this.$route.params.patientId)
+      const patient = this.getPatient(this.patientId)
       if (!patient) {
-        this.$store.dispatch(actionTypes.GET_PATIENTS)
+        this.$store.dispatch(actionTypes.GET_PATIENT, this.patientId)
       }
     }
   }

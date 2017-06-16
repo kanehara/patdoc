@@ -26,6 +26,7 @@ export default {
   .header {
     position: absolute;
     top: 0;
+    left: 0;
     width: 100%;
     text-align: center;
     font-size: 1.5em;

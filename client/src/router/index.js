@@ -11,14 +11,20 @@ import _400 from '@/components/_400'
 import _404 from '@/components/_404'
 import _500 from '@/components/_500'
 import PatientSearch from '@/components/PatientSearch'
+import Login from '@/components/Login'
+import authGuard from './authGuard'
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
+  mode: 'history',
   routes: [
     {
       path: '/',
       component: Home
+    }, {
+      path: '/login',
+      component: Login
     }, {
       path: '/400',
       component: _400
@@ -43,7 +49,8 @@ export default new Router({
           redirect: ':patientId/profile'
         }, {
           path: ':patientId/profile',
-          component: Profile
+          component: Profile,
+          props: true
         }, {
           path: ':patientId/appointments',
           component: Appointments,
@@ -68,3 +75,8 @@ export default new Router({
     }
   ]
 })
+
+// Guard routes if user is not logged in
+authGuard(router)
+
+export default router
