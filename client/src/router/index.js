@@ -8,6 +8,7 @@ import MedicalRecordGrid from '@/components/MedicalRecordGrid'
 import PatientFrame from '@/components/PatientFrame'
 import _400 from '@/components/_400'
 import _401 from '@/components/_401'
+import _403 from '@/components/_403'
 import _404 from '@/components/_404'
 import _500 from '@/components/_500'
 import PatientSearch from '@/components/PatientSearch'
@@ -31,6 +32,9 @@ const router = new Router({
     }, {
       path: '/401',
       component: _401
+    }, {
+      path: '/403',
+      component: _403
     }, {
       path: '/404',
       component: _404

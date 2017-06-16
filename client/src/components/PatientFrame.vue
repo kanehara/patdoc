@@ -15,7 +15,7 @@
     },
     beforeRouteEnter (to, from, next) {
       if (store.state.login.userId !== to.params.patientId) {
-        next('/401')
+        next('/403')
       }
       next()
     }
