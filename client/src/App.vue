@@ -1,7 +1,10 @@
 <template>
   <div id="app">
     <router-link to="/" class="header">PatDoc</router-link>
-    <button v-if="isUserAuthenticated" class="ui button logout tiny" @click="logout">Logout</button>
+    <button v-if="isUserAuthenticated" class="ui button logout mini" @click="logout">
+      <i class="sign out icon"></i>
+      Logout
+    </button>
     <router-view></router-view>
   </div>
 </template>
