@@ -77,10 +77,13 @@ export default app => {
     })
   })
 
-  app.get('/patients/:patientId/medicalRecord', ({ params: { patientId } }, res) => {
-    buildMedicalRecordResponse(patientId)
-      .then(response => res.send(response))
-      .catch(() => res.sendStatus(404))
+  app.get('/patients/:patientId/medicalRecord', async ({ params: { patientId } }, res) => {
+    try {
+      const response = await buildMedicalRecordResponse(patientId)
+      res.send(response)
+    } catch (err) {
+      res.sendStatus(404)
+    }
   })
 
   app.delete('/patients/:patientId/medicalRecord/:fileId', ({ params: { patientId, fileId } }, res) => {
