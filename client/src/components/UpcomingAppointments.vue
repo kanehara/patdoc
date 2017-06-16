@@ -17,7 +17,7 @@
             <b>Reason for Declining:</b> {{ app.declinationReason }}
           </div>
           <div slot="actions">
-            <div v-if="isUserDoctor && app.status === 'Pending'">
+            <div v-if="isUserDoctor && app.status === statusTypes.PENDING">
               <div class="positive ui button"
                    @click="acceptAppointment({ appointmentId: app.id, patientId })">
                 Accept
