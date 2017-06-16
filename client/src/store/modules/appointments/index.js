@@ -9,18 +9,21 @@ const state = {
   selected: []
 }
 
-const getters = {
-  allAppointments: state => state.appointments,
+const filterForDoctor = (a, rootState) =>
+  rootState.login.userType === config.USER_TYPES.DOCTOR ? a.doctor._id === rootState.login.userId : true
 
-  pastAppointments: state => {
-    return state.appointments
+const getters = {
+  allAppointments: (state, getters, rootState) => state.appointments.filter(a => filterForDoctor(a, rootState)),
+
+  pastAppointments: (state, getters) => {
+    return getters.allAppointments
       .filter(a => new Date(a.date) < new Date())
       .filter(a => a.status === config.APPOINTMENT_STATUS_TYPES.CONFIRMED)
       .sort((a, b) => new Date(b.date) - new Date(a.date))
   },
 
-  upcomingAppointments: state => {
-    return state.appointments
+  upcomingAppointments: (state, getters) => {
+    return getters.allAppointments
       .filter(a => new Date(a.date) >= new Date())
       .sort((a, b) => new Date(a.date) - new Date(b.date))
   }

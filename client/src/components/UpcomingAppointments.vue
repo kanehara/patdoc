@@ -23,12 +23,12 @@
                 Accept
               </div>
               <div class="negative ui button"
-                   @click="openModal(app.id)">
+                   @click="openModal(app._id)">
                 Decline
               </div>
             </div>
-            <div v-if="isUserPatient" class="negative ui button"
-                 @click="openModal(app.id)">
+            <div v-if="isUserPatient && app.status !== statusTypes.CANCELLED" class="negative ui button"
+                 @click="openModal(app._id)">
               Cancel
             </div>
           </div>
