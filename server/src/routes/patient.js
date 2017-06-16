@@ -1,7 +1,7 @@
 import { Patient } from '../models'
 import logger from '../logger'
 
-export function initPatientRoutes (app) {
+export default app => {
   app.get('/patients', (req, res) => {
     Patient.find({})
       .then(patients => res.send(patients))

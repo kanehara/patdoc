@@ -2,8 +2,8 @@ import { Auth } from '../models'
 import logger from '../logger'
 import bcrypt from 'bcrypt'
 
-export function initAuthRoutes (app) {
-  app.post('/auth', ({body: { emailAddress, password }}, res) => {
+export default app => {
+  app.post('/login', ({body: { emailAddress, password }}, res) => {
     Auth.findOne({ emailAddress })
       .then(auth => {
         if (auth) {

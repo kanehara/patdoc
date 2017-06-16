@@ -2,7 +2,7 @@ import { Appointment } from '../models'
 import logger from '../logger'
 
 // TODO: determine correct response code based on error
-export function initAppointmentsRoutes (app) {
+export default app => {
   app.get('/patients/:patientId/appointments', ({params: { patientId }}, res) => {
     Appointment.find({ patient: patientId })
       .then(apps => apps && apps.length ? res.send(apps) : res.sendStatus([]))

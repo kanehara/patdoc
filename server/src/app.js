@@ -1,6 +1,6 @@
 import express from 'express'
 import bodyParser from 'body-parser'
-import * as routes from './routes'
+import initRoutes from './routes'
 
 const app = express()
 
@@ -27,10 +27,6 @@ app.get('/healthz', (req, res) => {
   res.send('Healthy as a horse')
 })
 
-routes.initAppointmentsRoutes(app)
-routes.initMedicalRecordRoutes(app)
-routes.initAuthRoutes(app)
-routes.initDoctorRoutes(app)
-routes.initPatientRoutes(app)
+initRoutes(app)
 
 export default app
