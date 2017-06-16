@@ -4,11 +4,12 @@
     <div class="ui form">
       <p>* Required fields</p>
       <div class="fields">
-        <div class="four wide field">
+        <div class="four wide field datepicker">
           <label>Date*</label>
-          <datepicker v-model="date"></datepicker>
+          <datepicker :value="date" v-model="date"></datepicker>
+          <i class="caret down icon"></i>
         </div>
-        <div class="four wide field">
+        <div class="four wide field timepicker">
           <label>Time*</label>
           <timepicker
             v-model="time"
@@ -16,6 +17,7 @@
             :minute-interval="5"
             hide-clear-button="true">
           </timepicker>
+          <i class="caret down icon"></i>
         </div>
       </div>
       <div class="field" v-if="isUserPatient">
@@ -79,6 +81,16 @@
 
     textarea {
       resize: none
+    }
+
+    .datepicker, .timepicker {
+      position: relative;
+
+      .icon.caret.down {
+        position: absolute;
+        right: 10px;
+        top: 38px;
+      }
     }
   }
   @media(min-width: 768px) {
