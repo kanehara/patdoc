@@ -12,10 +12,11 @@ import _404 from '@/components/_404'
 import _500 from '@/components/_500'
 import PatientSearch from '@/components/PatientSearch'
 import Login from '@/components/Login'
+import authGuard from './authGuard'
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
   mode: 'history',
   routes: [
     {
@@ -74,3 +75,8 @@ export default new Router({
     }
   ]
 })
+
+// Guard routes if user is not logged in
+authGuard(router)
+
+export default router
