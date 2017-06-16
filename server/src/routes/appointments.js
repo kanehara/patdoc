@@ -42,7 +42,7 @@ export default app => {
         res.sendStatus(400)
       }
       const app = new Appointment(body)
-      const savedApp = await app.save().populate('doctor').populate('patient')
+      const savedApp = await app.save()
       if (savedApp) {
         res.send(savedApp)
       } else {
