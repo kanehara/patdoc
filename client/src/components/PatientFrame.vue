@@ -16,7 +16,6 @@
     },
     beforeRouteEnter (to, from, next) {
       const loginState = store.state.login
-      console.log(loginState)
       // Only doctors and logged in patients can see their info
       if (loginState.userType !== config.USER_TYPES.DOCTOR && loginState.userId !== to.params.patientId) {
         next('/403')
