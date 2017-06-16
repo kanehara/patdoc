@@ -88,9 +88,15 @@
       DoctorPicker
     },
     computed: {
-      ...mapGetters(['isUserPatient']),
+      ...mapGetters(['isUserPatient', 'allAppointments']),
       missingFields () {
         return !this.date || !this.time || (this.isUserPatient && !this.doctor) || !this.subject
+      }
+    },
+    watch: {
+      allAppointments (newVal) {
+        // Redirect to appointments page after new appointment is saved
+        this.$router.push(`/patients/${this.patientId}/appointments`)
       }
     }
   }

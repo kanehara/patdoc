@@ -9,6 +9,8 @@ const state = {
 }
 
 const getters = {
+  allAppointments: state => state.appointments,
+
   pastAppointments: state => {
     return state.appointments
       .filter(a => new Date(a.date) < new Date())
