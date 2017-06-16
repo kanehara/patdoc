@@ -2,7 +2,7 @@
   <div>
     <div id="doctor-picker">
       <div class="select" @click="displaySelection = !displaySelection">
-        {{ selectedDoctor.name }}
+        <p>{{ selectedDoctor.name }}</p>
         <i class="caret down icon"></i>
       </div>
       <div class="selection field" v-if="displaySelection">
@@ -64,6 +64,10 @@
     border: @selectBorder;
     border-radius: @selectBorderRadius;
     position: relative;
+
+    p {
+      margin: 10px;
+    }
 
     .icon.caret.down {
       position: absolute;
