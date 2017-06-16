@@ -2,29 +2,35 @@
   <div>
     <h2>New Appointment</h2>
     <div class="ui form">
+      <p>* Required fields</p>
       <div class="fields">
         <div class="four wide field">
-          <label>Date</label>
-          <datepicker></datepicker>
+          <label>Date*</label>
+          <datepicker v-model="date"></datepicker>
         </div>
         <div class="four wide field">
-          <label>Time</label>
-          <timepicker></timepicker>
+          <label>Time*</label>
+          <timepicker
+            v-model="time"
+            format="hh:mm A"
+            :minute-interval="5"
+            hide-clear-button="true">
+          </timepicker>
         </div>
       </div>
       <div class="field" v-if="isUserPatient">
-        <label>Doctor</label>
+        <label>Doctor*</label>
         <DoctorPicker></DoctorPicker>
       </div>
       <div class="field">
-        <label>Subject</label>
+        <label>Subject*</label>
         <input type="text"/>
       </div>
       <div class="field">
         <label>Notes</label>
         <textarea rows="3"></textarea>
       </div>
-      <button class="ui button">Submit</button>
+      <button class="ui button" :disabled="missingFields">Submit</button>
     </div>
   </div>
 </template>
@@ -36,13 +42,29 @@
   import { mapGetters } from 'vuex'
 
   export default {
+    data () {
+      return {
+        date: new Date(),
+        time: {
+          hh: '12',
+          mm: '00',
+          A: 'AM'
+        },
+        doctor: null,
+        subject: null,
+        notes: null
+      }
+    },
     components: {
       Datepicker,
       Timepicker,
       DoctorPicker
     },
     computed: {
-      ...mapGetters(['isUserPatient'])
+      ...mapGetters(['isUserPatient']),
+      missingFields () {
+
+      }
     }
   }
 </script>
@@ -66,9 +88,11 @@
   }
 
   @dropdownBorder: 1px solid #ccc;
+  @dropdownHeight: 282px;
 
   // Overrides
   .time-picker {
+    @timePickerWidth: 15em;
     font-family: inherit !important;
     width: initial !important;
 
@@ -76,6 +100,13 @@
       top: ~"calc(2.3em + 6px)" !important;
       box-shadow: none;
       border: @dropdownBorder;
+      height: @dropdownHeight !important;
+      width: @timePickerWidth !important;
+
+      .select-list {
+        height: @dropdownHeight - 4px !important;
+        width: @timePickerWidth !important;
+      }
     }
 
     input.display-time {
