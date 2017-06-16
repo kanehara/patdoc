@@ -1,18 +1,39 @@
 <template>
   <div id="app">
     <router-link to="/" class="header">PatDoc</router-link>
+    <button v-if="isUserAuthenticated" class="ui button logout mini" @click="logout">
+      <i class="sign out icon"></i>
+      Logout
+    </button>
     <router-view></router-view>
   </div>
 </template>
 
 <script>
-export default {
-  name: 'app'
+  import { mapGetters, mapMutations } from 'vuex'
+  import * as mutationTypes from './store/modules/login/mutation-types'
+
+  export default {
+    name: 'app',
+    computed: {
+      ...mapGetters(['isUserAuthenticated'])
+    },
+    methods: {
+      ...mapMutations({
+        commitLogout: mutationTypes.LOGOUT
+      }),
+      logout () {
+        this.commitLogout()
+        this.$router.push('/login')
+      }
+    }
 }
 </script>
 
 <style lang="less">
   @import './style/buttons';
+
+  @headerTop: 10px;
 
   #app {
     font-family: 'Avenir', Helvetica, Arial, sans-serif;
@@ -25,11 +46,16 @@ export default {
 
   .header {
     position: absolute;
-    top: 0;
+    top: @headerTop;
     left: 0;
     width: 100%;
     text-align: center;
     font-size: 1.5em;
-    padding: .25em 0;
+  }
+
+  .logout.button {
+    position: absolute;
+    top: @headerTop;
+    right: 20px;
   }
 </style>

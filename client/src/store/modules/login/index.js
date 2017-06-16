@@ -14,6 +14,15 @@ const setInitialState = state => {
 const state = {}
 setInitialState(state)
 
+const getters = {
+  isUserPatient: state => state.userType.toUpperCase() === config.USER_TYPES.PATIENT,
+  isUserDoctor: state => state.userType.toUpperCase() === config.USER_TYPES.DOCTOR,
+  loginFailed: state => state.loginFailed,
+  isUserAuthenticated: state => state.token,
+  redirectToSearch: (state, getters) => getters.isUserDoctor && getters.isUserAuthenticated,
+  redirectToProfile: (state, getters) => getters.isUserPatient && getters.isUserAuthenticated
+}
+
 const actions = {
   async [actionTypes.SUBMIT_LOGIN] ({ commit }, payload) {
     try {
@@ -40,15 +49,11 @@ const mutations = {
   [mutationTypes.LOGIN_FAILURE] (state) {
     setInitialState(state)
     state.loginFailed = true
-  }
-}
+  },
 
-const getters = {
-  isUserPatient: state => state.userType.toUpperCase() === config.USER_TYPES.PATIENT,
-  isUserDoctor: state => state.userType.toUpperCase() === config.USER_TYPES.DOCTOR,
-  loginFailed: state => state.loginFailed,
-  redirectToSearch: (state, getters) => getters.isUserDoctor && !state.loginFailed,
-  redirectToProfile: (state, getters) => getters.isUserPatient && !state.loginFailed
+  [mutationTypes.LOGOUT] (state) {
+    setInitialState(state)
+  }
 }
 
 export default {

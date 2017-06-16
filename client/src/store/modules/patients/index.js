@@ -1,5 +1,6 @@
 import * as actionTypes from './action-types'
 import * as mutationTypes from './mutation-types'
+import { LOGOUT } from '../login/mutation-types'
 import patientService from './patient.service'
 
 // Initial state
@@ -35,6 +36,10 @@ const actions = {
 const mutations = {
   [mutationTypes.RECEIVE_PATIENTS] (state, {patients}) {
     state.patients = patients
+  },
+
+  [LOGOUT] (state) {
+    state.patients = []
   }
 }
 

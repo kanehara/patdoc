@@ -12,7 +12,10 @@
           <input type="password" name="password" v-model="password">
         </div>
       </div>
-      <button class="ui button" type="submit" @click.prevent="submitLogin">Submit</button>
+      <button class="ui button" type="submit" @click.prevent="submitLogin">
+        <i class="sign in icon"></i>
+        Login
+      </button>
       <h4 v-if="loginFailed" class="loginFail">Login failed!</h4>
     </form>
   </div>
@@ -61,7 +64,6 @@
 
   .ui.form .fields {
     flex-direction: column;
-    width: 20%;
     margin: auto;
     margin-bottom: 20px;
   }

@@ -25,7 +25,7 @@
       ...mapGetters(['getPatients'])
     },
     beforeRouteEnter (to, from, next) {
-      if (store.state.login.userId !== config.USER_TYPES.DOCTOR) {
+      if (store.state.login.userType !== config.USER_TYPES.DOCTOR) {
         next('/403')
       }
       next()
