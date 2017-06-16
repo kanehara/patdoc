@@ -3,6 +3,7 @@ import logger from '../../logger'
 import { Patient, Doctor, Auth } from '../../models/index'
 import mongoose from 'mongoose'
 import bcrypt from 'bcrypt'
+import config from '../../config'
 const connection = mongoose.connection
 
 connect()
@@ -33,7 +34,7 @@ async function loadAuth () {
 
   // Patients
   let password = await bcrypt.hash('pencil', saltRounds)
-  let userType = 'patient'
+  let userType = config.USER_TYPES.PATIENT
   promises.push(createAuth({ emailAddress: 'pencilvester@test.com', password, userType }))
   password = await bcrypt.hash('jessica', saltRounds)
   promises.push(createAuth({ emailAddress: 'morty@test.com', password, userType }))
@@ -55,7 +56,7 @@ async function loadAuth () {
   promises.push(createAuth({ emailAddress: 'tammy@test.com', password, userType }))
 
   // Doctors
-  userType = 'doctor'
+  userType = config.USER_TYPES.PATIENT
   password = await bcrypt.hash('marty', saltRounds)
   promises.push(createAuth({ emailAddress: 'doc@test.com', password, userType }))
   password = await bcrypt.hash('zimmer', saltRounds)

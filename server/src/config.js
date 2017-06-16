@@ -4,5 +4,9 @@ export default {
     USER: process.env.DB_USER || '',
     PASS: process.env.DB_PASS || ''
   },
-  jwtSecret: process.env.JWT_SECRET || 'StrawberrySmiggles'
+  jwtSecret: process.env.JWT_SECRET || 'StrawberrySmiggles',
+  USER_TYPES: {
+    DOCTOR: 'DOCTOR',
+    PATIENT: 'PATIENT'
+  }
 }
