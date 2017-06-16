@@ -19,7 +19,7 @@
           <div slot="actions">
             <div v-if="isUserDoctor && app.status === statusTypes.PENDING">
               <div class="positive ui button"
-                   @click="acceptAppointment({ appointmentId: app.id, patientId })">
+                   @click="acceptAppointment({ appointmentId: app._id, patientId })">
                 Accept
               </div>
               <div class="negative ui button"

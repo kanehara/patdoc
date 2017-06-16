@@ -63,18 +63,19 @@ const actions = {
     }
   },
 
-  async [actionTypes.SCHEDULE_APPOINTMENT] ({ dispatch }, payload) {
+  async [actionTypes.SCHEDULE_APPOINTMENT] ({ commit }, payload) {
     try {
-      await appointmentService.scheduleAppointment(payload)
-      dispatch(actionTypes.GET_APPOINTMENTS, payload.patientId)
+      const appointment = await appointmentService.scheduleAppointment(payload)
+      commit(mutationTypes.ADD_APPOINTMENT, appointment)
     } catch (err) {
       console.log(`Failed to schedule appointment: ${err}`)
     }
   }
 }
 
-const findAppointment = appointmentId => {
-  const i = state.appointments.findIndex(a => a && a.id === appointmentId)
+const findAppointment = (state, appointmentId) => {
+  console.log(state.appointments)
+  const i = state.appointments.findIndex(a => a && a._id === appointmentId)
   if (i !== -1) {
     return state.appointments[i]
   }
@@ -85,23 +86,23 @@ const mutations = {
     state.appointments = appointments
   },
 
-  [mutationTypes.ADD_APPOINTMENT] (state, { appointment }) {
+  [mutationTypes.ADD_APPOINTMENT] (state, appointment) {
     state.appointments.push(appointment)
   },
 
   [mutationTypes.CANCEL_APPOINTMENT] (state, { appointmentId }) {
-    findAppointment(appointmentId).status = 'Cancelled'
+    findAppointment(state, appointmentId).status = config.APPOINTMENT_STATUS_TYPES.CANCELLED
   },
 
   [mutationTypes.DECLINE_APPOINTMENT] (state, { appointmentId, declinationReason }) {
-    const appointment = findAppointment(appointmentId)
-    appointment.status = 'Declined'
+    const appointment = findAppointment(state, appointmentId)
+    appointment.status = config.APPOINTMENT_STATUS_TYPES.DECLINED
     appointment.declinationReason = declinationReason
   },
 
   [mutationTypes.ACCEPT_APPOINTMENT] (state, { appointmentId }) {
-    const appointment = findAppointment(appointmentId)
-    appointment.status = 'Confirmed'
+    const appointment = findAppointment(state, appointmentId)
+    appointment.status = config.APPOINTMENT_STATUS_TYPES.CONFIRMED
   }
 }
 

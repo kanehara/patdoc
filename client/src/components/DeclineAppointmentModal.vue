@@ -2,7 +2,7 @@
   <Modal>
     <h1 slot="header">Reason for Declining</h1>
     <div slot="body">
-      <div v-if="showRequiredMessage">Reason for declining required!</div>
+      <div v-if="showRequiredMessage" class="error">Reason for declining required!</div><br/>
       <div class="ui form">
         <div class="field">
           <textarea v-model.trim="declinationReason"
@@ -51,9 +51,16 @@
   }
 </script>
 
-<style scoped>
+<style scoped lang="less">
+  @import '../style/colors';
+
   .ui.form textarea {
     width: 80%;
     resize: none;
+  }
+
+  .error {
+    color: @negativeRed;
+    font-weight: bold;
   }
 </style>

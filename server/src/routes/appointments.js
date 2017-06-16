@@ -6,32 +6,33 @@ export default app => {
     try {
       const apps = await Appointment.find({ patient: patientId }).populate('doctor').populate('patient')
       if (apps && apps.length) {
-        res.send(apps)
+        return res.send(apps)
       } else {
-        res.send([])
+        return res.send([])
       }
     } catch (err) {
       logger.error(`Error trying to retrieve appointments for patient with id: ${patientId} with err: ${err}`)
-      res.sendStatus(500)
+      return res.sendStatus(500)
     }
   })
 
   app.patch('/patients/:patientId/appointments/:appointmentId', async ({params: { patientId, appointmentId }, body}, res) => {
     try {
       const app = await Appointment.findById(appointmentId).populate('doctor').populate('patient')
-      if (app.patient !== patientId) {
-        res.sendStatus(400)
+      if (app.patient.id !== patientId) {
+        return res.sendStatus(400)
       }
-      const updatedApp = {...app, ...body}
-      const savedApp = await updatedApp.save()
-      if (savedApp) {
-        res.send(savedApp)
+      Object.assign(app, body)
+      const updatedApp = await app.save()
+      if (updatedApp.errors) {
+        logger.error(`Error saving updated appointment: ${updatedApp.errors}`)
+        return res.sendStatus(500)
       } else {
-        res.sendStatus(500)
+        return res.send(updatedApp._doc)
       }
     } catch (err) {
-      logger.error(`Error trying to patch appintment with id: ${appointmentId} with err: ${err}`)
-      res.sendStatus(500)
+      logger.error(`Error trying to patch appointment with id: ${appointmentId} with err: ${err}`)
+      return res.sendStatus(500)
     }
   })
 
@@ -39,29 +40,29 @@ export default app => {
     try {
       if (patientId !== body.patient) {
         logger.warn(`The patient ID: ${patientId} in POST path for an appointment does not match the ID in the body: ${body.patient}`)
-        res.sendStatus(400)
+        return res.sendStatus(400)
       }
       const app = new Appointment(body)
       const savedApp = await app.save()
       if (savedApp) {
-        res.send(savedApp)
+        return res.send(savedApp)
       } else {
-        res.sendStatus(500)
+        return res.sendStatus(500)
       }
     } catch (err) {
       logger.error(`Error creating new appointment: ${err}`)
-      res.sendStatus(500)
+      return res.sendStatus(500)
     }
   })
 
   app.delete('/patients/:patientId/appointments/:appointmentId', async ({params: { patientId, appointmentId }}, res) => {
     try {
       await Appointment.remove({_id: appointmentId, patient: patientId})
-      res.sendStatus(200)
+      return res.sendStatus(200)
     } catch (err) {
       logger.error(`Error trying to delete appointment for patient with id: ${patientId} 
                       and appointment id: ${appointmentId} with error: ${err}`)
-      res.sendStatus(500)
+      return res.sendStatus(500)
     }
   })
 }
