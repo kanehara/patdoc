@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <router-link to="/" class="header">PatDoc</router-link>
-    <button class="ui button logout" @click="logout">Logout</button>
+    <button v-if="isUserAuthenticated" class="ui button logout tiny" @click="logout">Logout</button>
     <router-view></router-view>
   </div>
 </template>
@@ -30,6 +30,8 @@
 <style lang="less">
   @import './style/buttons';
 
+  @headerTop: 10px;
+
   #app {
     font-family: 'Avenir', Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
@@ -41,11 +43,16 @@
 
   .header {
     position: absolute;
-    top: 0;
+    top: @headerTop;
     left: 0;
     width: 100%;
     text-align: center;
     font-size: 1.5em;
-    padding: .25em 0;
+  }
+
+  .logout.button {
+    position: absolute;
+    top: @headerTop;
+    right: 20px;
   }
 </style>

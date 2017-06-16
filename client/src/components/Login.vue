@@ -61,7 +61,6 @@
 
   .ui.form .fields {
     flex-direction: column;
-    width: 20%;
     margin: auto;
     margin-bottom: 20px;
   }
