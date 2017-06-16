@@ -117,14 +117,11 @@ they can be opened by copying link and manually opening in new page***
 The following would be nice to have's that were not implemented
 due to time constraints:
 
-* JWT tokens to authenticate requests to API
 * Robust error handling when backend fails with reducer actions for failure.
-At the moment everything is optimistic
+At the moment many things are optimistic
+* Mongo discriminator model for Doctor and Patient models
 * Mocha/chai node unit tests
 * E2E tests
 * Notifications for doctors and patients for new appointments
-* Profile pictures
-* Animations
-* Sorting appointments by status, time, etc.
 * Feature to schedule another appointment with past doctor
 * Editing personal info

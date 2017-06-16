@@ -1,9 +1,10 @@
-import { Auth } from './models'
+import { Auth, Doctor, Patient } from './models'
 import bcrypt from 'bcrypt'
 import passport from 'passport'
 import { Strategy as LocalStrategy } from 'passport-local'
 import {Strategy as JwtStrategy, ExtractJwt} from 'passport-jwt'
 import config from './config'
+import logger from './logger'
 
 // Passport user deserialize methods
 passport.serializeUser((user, done) => done(null, user._id))
@@ -21,24 +22,33 @@ passport.deserializeUser(async (id, done) => {
 passport.use(new LocalStrategy({usernameField: 'emailAddress'}, async (emailAddress, password, done) => {
   try {
     // Find user
-    const auth = await Auth.findOne({ emailAddress })
-    if (!auth) {
+    const result = await Auth.findOne({ emailAddress })
+    if (!result || !result._doc) {
       return done(null, false)
     }
 
+    const auth = result._doc
     // Check password
-    const isEqual = await bcrypt.compare(password, auth._doc.password)
+    const isEqual = await bcrypt.compare(password, auth.password)
     if (!isEqual) {
       return done(null, false)
     }
 
     // Return user info
-    const user = {
-      _id: auth._doc._id,
-      emailAddress: auth._doc.emailAddress,
-      userType: auth._doc.userType
+    if (auth.userType === config.USER_TYPES.DOCTOR) {
+      const result = await Doctor.findOne({ emailAddress: auth.emailAddress })
+      const doctor = result._doc
+      doctor.userType = config.USER_TYPES.DOCTOR
+      return done(null, doctor)
+    } else if (auth.userType === config.USER_TYPES.PATIENT) {
+      const result = await Patient.findOne({ emailAddress: auth.emailAddress })
+      const patient = result._doc
+      patient.userType = config.USER_TYPES.PATIENT
+      return done(null, patient)
+    } else {
+      logger.error(`Invalid user type found in auth table: ${auth.userType}`)
+      return done(null, false)
     }
-    return done(null, user)
   } catch (e) {
     done(e, false)
   }

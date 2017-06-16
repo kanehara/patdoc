@@ -19,7 +19,7 @@
 </template>
 
 <script>
- import * as actionTypes from '../store/modules/login/action-types'
+ import * as loginActionTypes from '../store/modules/login/action-types'
  import { mapActions, mapGetters } from 'vuex'
 
  export default {
@@ -30,15 +30,23 @@
      }
    },
    computed: {
-     ...mapGetters(['loginFailed'])
+     ...mapGetters(['loginFailed', 'redirectToSearch', 'redirectToProfile', 'userId'])
    },
    methods: {
      ...mapActions({
-       dispatchLogin: actionTypes.SUBMIT_LOGIN
+       dispatchLogin: loginActionTypes.SUBMIT_LOGIN
      }),
      submitLogin () {
        const { emailAddress, password } = this
        this.dispatchLogin({ emailAddress, password })
+     }
+   },
+   watch: {
+     redirectToSearch: function () {
+       this.$router.push('/search')
+     },
+     redirectToProfile: function () {
+       this.$router.push(`/patients/${this.$store.state.login.userId}/profile`)
      }
    }
  }

@@ -48,7 +48,8 @@ export default new Router({
           redirect: ':patientId/profile'
         }, {
           path: ':patientId/profile',
-          component: Profile
+          component: Profile,
+          props: true
         }, {
           path: ':patientId/appointments',
           component: Appointments,

@@ -40,9 +40,11 @@ const mutations = {
 }
 
 const getters = {
-  isUserPatient: state => state.userType === USER_TYPES.PATIENT,
-  isUserDoctor: state => state.userType === USER_TYPES.DOCTOR,
-  loginFailed: state => state.loginFailed
+  isUserPatient: state => state.userType.toUpperCase() === USER_TYPES.PATIENT,
+  isUserDoctor: state => state.userType.toUpperCase() === USER_TYPES.DOCTOR,
+  loginFailed: state => state.loginFailed,
+  redirectToSearch: (state, getters) => getters.isUserDoctor && !state.loginFailed,
+  redirectToProfile: (state, getters) => getters.isUserPatient && !state.loginFailed
 }
 
 export default {
