@@ -65,13 +65,17 @@
     }
   }
 
+  @dropdownBorder: 1px solid #ccc;
+
   // Overrides
   .time-picker {
     font-family: inherit !important;
     width: initial !important;
 
     .dropdown {
-      top: ~"calc(2.3em + 7px)" !important;
+      top: ~"calc(2.3em + 6px)" !important;
+      box-shadow: none;
+      border: @dropdownBorder;
     }
 
     input.display-time {
