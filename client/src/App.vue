@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <div class="header">PatDoc</div>
+    <router-link to="/" class="header">PatDoc</router-link>
     <router-view></router-view>
   </div>
 </template>
