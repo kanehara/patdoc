@@ -10,7 +10,7 @@
         <div><b>Age:</b> {{ patient.age }}</div>
         <div><b>Email:</b> {{ patient.emailAddress }}</div>
         <div><b>Mailing Address:</b> {{ patient.mailingAddress }}</div>
-        <div><b>Phone Number:</b> {{ patient.phoneNumber }}</div>
+        <div><b>Phone Number:</b> {{ patient.phoneNumber | formatPhoneNumber }}</div>
       </div>
     </div>
   </div>
@@ -29,11 +29,16 @@
         return patient || { name: '', age: '', emailAddress: '', mailingAddress: '', phoneNumber: '' }
       }
     },
-
     created () {
       const patient = this.getPatient(this.patientId)
       if (!patient) {
         this.$store.dispatch(actionTypes.GET_PATIENT, this.patientId)
+      }
+    },
+    filters: {
+      formatPhoneNumber (number) {
+        const numberString = number.toString()
+        return `(${numberString.substr(0, 3)}) ${numberString.substr(3, 3)}-${numberString.substr(6)}`
       }
     }
   }

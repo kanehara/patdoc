@@ -1,13 +1,29 @@
 <template>
   <div id="app">
     <router-link to="/" class="header">PatDoc</router-link>
+    <button class="ui button logout" @click="logout">Logout</button>
     <router-view></router-view>
   </div>
 </template>
 
 <script>
-export default {
-  name: 'app'
+  import { mapGetters, mapMutations } from 'vuex'
+  import * as mutationTypes from './store/modules/login/mutation-types'
+
+  export default {
+    name: 'app',
+    computed: {
+      ...mapGetters(['isUserAuthenticated'])
+    },
+    methods: {
+      ...mapMutations({
+        commitLogout: mutationTypes.LOGOUT
+      }),
+      logout () {
+        this.commitLogout()
+        this.$router.push('/login')
+      }
+    }
 }
 </script>
 
