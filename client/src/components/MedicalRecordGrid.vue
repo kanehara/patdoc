@@ -1,7 +1,7 @@
 <template>
   <div>
-    <router-link to="medicalRecord/upload">
-      <button class="ui primary button">Upload Files</button>
+    <router-link to="medicalRecord/upload" tag="button" class="ui primary button">
+      Upload Files
     </router-link>
     <div class="ui four doubling cards">
       <a v-for="file in files" class="ui card" :href="file.url" target="_blank">
