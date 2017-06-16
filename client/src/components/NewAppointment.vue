@@ -6,7 +6,11 @@
       <div class="fields">
         <div class="four wide field datepicker">
           <label>Date*</label>
-          <datepicker :value="date" v-model="date"></datepicker>
+          <datepicker
+            ref="datepicker"
+            :value="date"
+            v-model="date">
+          </datepicker>
           <i class="caret down icon"></i>
         </div>
         <div class="four wide field timepicker">
@@ -15,14 +19,14 @@
             v-model="time"
             format="hh:mm A"
             :minute-interval="5"
-            hide-clear-button="true">
+            :hide-clear-button="true">
           </timepicker>
           <i class="caret down icon"></i>
         </div>
       </div>
       <div class="field" v-if="isUserPatient">
         <label>Doctor*</label>
-        <DoctorPicker></DoctorPicker>
+        <DoctorPicker v-model="doctor"></DoctorPicker>
       </div>
       <div class="field">
         <label>Subject*</label>
@@ -64,9 +68,7 @@
     },
     computed: {
       ...mapGetters(['isUserPatient']),
-      missingFields () {
-
-      }
+      missingFields: () => !this.date || !this.time || !this.doctor || !this.subject
     }
   }
 </script>
@@ -80,7 +82,16 @@
     text-align: left;
 
     textarea {
-      resize: none
+      resize: none;
+      box-sizing: border-box;
+    }
+
+    input {
+      box-sizing: border-box;
+    }
+
+    .caret.down.icon {
+      pointer-events: none;
     }
 
     .datepicker, .timepicker {
@@ -100,6 +111,7 @@
   }
 
   @dropdownBorder: 1px solid #ccc;
+  @dropdownBoxShadow: 0 1px 6px rgba(0,0,0,0.15);
   @dropdownHeight: 282px;
 
   // Overrides
@@ -127,6 +139,10 @@
   }
 
   @hoverBorder: 1px solid @secondaryBlue;
+
+  .vdp-datepicker__calendar {
+    box-shadow: @dropdownBoxShadow;
+  }
 
   // Date hover
   .vdp-datepicker__calendar .cell:not(.blank):not(.disabled).day:hover, .vdp-datepicker__calendar .cell:not(.blank):not(.disabled).month:hover, .vdp-datepicker__calendar .cell:not(.blank):not(.disabled).year:hover {

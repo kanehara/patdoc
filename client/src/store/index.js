@@ -4,6 +4,7 @@ import appointments from './modules/appointments'
 import medicalRecord from './modules/medical-records'
 import patients from './modules/patients'
 import login from './modules/login'
+import doctors from './modules/doctors'
 import createLogger from 'vuex/dist/logger'
 import createPersistedState from 'vuex-persistedstate'
 
@@ -16,7 +17,8 @@ export default new Vuex.Store({
     appointments,
     medicalRecord,
     patients,
-    login
+    login,
+    doctors
   },
   strict: debug,
   plugins: debug ? [createLogger(), createPersistedState()] : [createPersistedState()]
