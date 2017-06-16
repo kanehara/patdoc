@@ -1,10 +1,12 @@
 <template>
   <div>
     <div id="doctor-picker">
-      <select class="ui fluid dropdown" @click="displaySelection = !displaySelection">
-      </select>
-      <div class="selection" v-if="displaySelection">
-        <div class="doctor" v-for="doctor in doctors">
+      <div class="select" @click="displaySelection = !displaySelection">
+        {{ selectedDoctor.name }}
+        <i class="caret down icon"></i>
+      </div>
+      <div class="selection field" v-if="displaySelection">
+        <div class="doctor" v-for="doctor in doctors" @click="selectDoctor(doctor)">
           {{ doctor.name }}
         </div>
       </div>
@@ -24,6 +26,12 @@
       return {
         selectedDoctor: {},
         displaySelection: false
+      }
+    },
+    methods: {
+      selectDoctor (doctor) {
+        this.displaySelection = false
+        this.selectedDoctor = doctor
       }
     },
     computed: {
@@ -46,16 +54,27 @@
 <style lang="less" scoped>
   @import '../style/colors';
 
-  @dropdownBorder: 1px solid #ccc;
+  @selectBorder: 1px solid rgba(34,36,38,.15);
+  @selectBorderRadius: .28571429rem;
   @dropdownBoxShadow: 0 1px 6px rgba(0,0,0,0.15);
 
-  .ui.form select {
+
+  .select {
     height: 43px;
+    border: @selectBorder;
+    border-radius: @selectBorderRadius;
+    position: relative;
+
+    .icon.caret.down {
+      position: absolute;
+      right: 3px;
+      top: 14px;
+    }
   }
 
   .selection {
     position: absolute;
-    border: @dropdownBorder;
+    border: @selectBorder;
     box-shadow: @dropdownBoxShadow;
     width: 100%;
     background: white;

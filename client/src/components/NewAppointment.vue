@@ -110,7 +110,7 @@
     }
   }
 
-  @dropdownBorder: 1px solid #ccc;
+  @dropdownBorder: 1px solid rgba(34,36,38,.15);
   @dropdownBoxShadow: 0 1px 6px rgba(0,0,0,0.15);
   @dropdownHeight: 282px;
 
