@@ -1,6 +1,7 @@
 import appointmentService from './appointment.service'
 import * as mutationTypes from './mutation-types'
 import * as actionTypes from './action-types'
+import config from '@/config'
 
 // Initial state
 const state = {
@@ -14,7 +15,7 @@ const getters = {
   pastAppointments: state => {
     return state.appointments
       .filter(a => new Date(a.date) < new Date())
-      .filter(a => a.status === 'Confirmed')
+      .filter(a => a.status === config.APPOINTMENT_STATUS_TYPES.CONFIRMED)
       .sort((a, b) => new Date(b.date) - new Date(a.date))
   },
 
