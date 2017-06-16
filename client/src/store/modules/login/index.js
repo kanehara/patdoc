@@ -1,17 +1,18 @@
-import config, { USER_TYPES } from '@/config'
+import config from '@/config'
 import * as actionTypes from './action-types'
 import * as mutationTypes from './mutation-types'
 import axios from 'axios'
 
-const initialState = {
-  userType: '',
-  userId: '',
-  emailAddress: '',
-  loginFailed: false,
-  token: null
+const setInitialState = state => {
+  state.userType = ''
+  state.userId = ''
+  state.emailAddress = ''
+  state.loginFailed = false
+  state.token = null
 }
 
-const state = { ...initialState }
+const state = {}
+setInitialState(state)
 
 const actions = {
   async [actionTypes.SUBMIT_LOGIN] ({ commit }, payload) {
@@ -37,13 +38,14 @@ const mutations = {
   },
 
   [mutationTypes.LOGIN_FAILURE] (state) {
-    state = { ...initialState, loginFailed: true }
+    setInitialState(state)
+    state.loginFailed = true
   }
 }
 
 const getters = {
-  isUserPatient: state => state.userType.toUpperCase() === USER_TYPES.PATIENT,
-  isUserDoctor: state => state.userType.toUpperCase() === USER_TYPES.DOCTOR,
+  isUserPatient: state => state.userType.toUpperCase() === config.USER_TYPES.PATIENT,
+  isUserDoctor: state => state.userType.toUpperCase() === config.USER_TYPES.DOCTOR,
   loginFailed: state => state.loginFailed,
   redirectToSearch: (state, getters) => getters.isUserDoctor && !state.loginFailed,
   redirectToProfile: (state, getters) => getters.isUserPatient && !state.loginFailed

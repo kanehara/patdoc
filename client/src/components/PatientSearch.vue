@@ -11,6 +11,8 @@
   import * as actionTypes from '../store/modules/patients/action-types'
   import { mapGetters } from 'vuex'
   import PatientSearchRow from './PatientSearchRow.vue'
+  import store from '@/store'
+  import config from '@/config'
 
   export default {
     components: {
@@ -21,6 +23,12 @@
     },
     computed: {
       ...mapGetters(['getPatients'])
+    },
+    beforeRouteEnter (to, from, next) {
+      if (store.state.login.userId !== config.USER_TYPES.DOCTOR) {
+        next('/403')
+      }
+      next()
     }
   }
 </script>

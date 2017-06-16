@@ -5,6 +5,7 @@ import medicalRecord from './modules/medical-records'
 import users from './modules/patients'
 import login from './modules/login'
 import createLogger from 'vuex/dist/logger'
+import createPersistedState from 'vuex-persistedstate'
 
 Vue.use(Vuex)
 
@@ -18,5 +19,5 @@ export default new Vuex.Store({
     login
   },
   strict: debug,
-  plugins: debug ? [createLogger()] : []
+  plugins: debug ? [createLogger(), createPersistedState()] : [createPersistedState()]
 })

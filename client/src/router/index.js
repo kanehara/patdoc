@@ -5,9 +5,10 @@ import Appointments from '@/components/Appointments'
 import MedicalRecord from '@/components/MedicalRecord'
 import MedicalRecordUpload from '@/components/MedicalRecordUpload'
 import MedicalRecordGrid from '@/components/MedicalRecordGrid'
-import Home from '@/components/Home'
 import PatientFrame from '@/components/PatientFrame'
 import _400 from '@/components/_400'
+import _401 from '@/components/_401'
+import _403 from '@/components/_403'
 import _404 from '@/components/_404'
 import _500 from '@/components/_500'
 import PatientSearch from '@/components/PatientSearch'
@@ -21,13 +22,19 @@ const router = new Router({
   routes: [
     {
       path: '/',
-      component: Home
+      redirect: '/login'
     }, {
       path: '/login',
       component: Login
     }, {
       path: '/400',
       component: _400
+    }, {
+      path: '/401',
+      component: _401
+    }, {
+      path: '/403',
+      component: _403
     }, {
       path: '/404',
       component: _404
@@ -72,6 +79,9 @@ const router = new Router({
           ]
         }
       ]
+    }, {
+      path: '*',
+      component: _404
     }
   ]
 })
