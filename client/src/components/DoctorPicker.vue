@@ -46,7 +46,9 @@
       this.$store.dispatch(actionTypes.GET_DOCTORS)
     },
     watch: {
-      selectedDoctor: (doctor) => this.$emit('input', doctor)
+      selectedDoctor (doctor) {
+        this.$emit('input', doctor)
+      }
     }
   }
 </script>

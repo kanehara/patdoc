@@ -30,11 +30,11 @@
       </div>
       <div class="field">
         <label>Subject*</label>
-        <input type="text"/>
+        <input type="text" v-model="subject"/>
       </div>
       <div class="field">
         <label>Notes</label>
-        <textarea rows="3"></textarea>
+        <textarea rows="3" v-model="notes"></textarea>
       </div>
       <button class="ui button" :disabled="missingFields">Submit</button>
     </div>
@@ -68,7 +68,9 @@
     },
     computed: {
       ...mapGetters(['isUserPatient']),
-      missingFields: () => !this.date || !this.time || !this.doctor || !this.subject
+      missingFields () {
+        return !this.date || !this.time || !this.doctor || !this.subject
+      }
     }
   }
 </script>
