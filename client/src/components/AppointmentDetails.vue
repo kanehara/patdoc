@@ -7,7 +7,7 @@
       <div class="subject">{{ subject }}</div>
       <div>
         <slot name="status"></slot>
-        <div><b>With:</b> {{ person }}</div>
+        <div><b>With:</b> {{ person.name }}</div>
         <div><b>Date:</b>{{ date | formatDate }}</div>
         <div><b>Time:</b>{{ date | formatTime }}</div>
       </div>
