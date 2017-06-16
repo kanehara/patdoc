@@ -1,13 +1,13 @@
-import appointments from './appointments'
-import medicalRecord from './medical-record'
-import auth from './auth'
-import doctor from './doctor'
-import patient from './patient'
+import initAppointmentRoutes from './appointments'
+import initMedicalRecordRoutes from './medical-record'
+import initAuthRoutes from './auth'
+import initDoctorRoutes from './doctor'
+import initPatientRoutes from './patient'
 
 export default app => {
-  appointments(app)
-  medicalRecord(app)
-  auth(app)
-  doctor(app)
-  patient(app)
+  initAppointmentRoutes(app)
+  initMedicalRecordRoutes(app)
+  initAuthRoutes(app)
+  initDoctorRoutes(app)
+  initPatientRoutes(app)
 }
