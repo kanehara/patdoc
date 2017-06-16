@@ -4,16 +4,16 @@
       <img src="../assets/placeholder.png">
     </div>
     <div class="content">
-      <div class="subject">{{ subject }}</div>
+      <div class="subject">{{ appointment.subject }}</div>
       <div>
         <slot name="status"></slot>
         <div><b>With:</b> {{ person.name }}</div>
-        <div><b>Date:</b>{{ date | formatDate }}</div>
-        <div><b>Time:</b>{{ date | formatTime }}</div>
+        <div><b>Date:</b> {{ appointment.date | formatDate }}</div>
+        <div><b>Time:</b> {{ appointment.date | formatTime }}</div>
       </div>
       <div class="description">
-        <div v-if="notes && notes.length"><b>Notes:</b> {{ notes }}</div>
-        <div v-if="declinationReason && declinationReason.length"><b>Reason for Declining:</b> {{ declinationReason }}</div>
+        <div v-if="appointment.notes && appointment.notes.length"><b>Notes:</b> {{ appointment.notes }}</div>
+        <slot name="declinationReason"></slot>
       </div>
     </div>
     <div class="actions">
@@ -24,9 +24,22 @@
 
 <script>
   import dateFormat from 'dateformat'
+  import { mapGetters } from 'vuex'
 
   export default {
-    props: ['date', 'person', 'subject', 'notes', 'declinationReason'],
+    props: ['appointment'],
+    computed: {
+      ...mapGetters(['isUserPatient', 'isUserDoctor']),
+      person () {
+        if (this.isUserPatient) {
+          return this.appointment.doctor
+        } else if (this.isUserDoctor) {
+          return this.appointment.patient
+        } else {
+          console.error('Invalid user type found when computing appointment details')
+        }
+      }
+    },
     filters: {
       formatDate (date) {
         return dateFormat(date, 'shortDate')

@@ -24,7 +24,7 @@ export default {
       date,
       subject,
       notes,
-      doctor: doctor._id,
+      doctor,
       patient: patientId,
       status: config.APPOINTMENT_STATUS_TYPES.PENDING
     }

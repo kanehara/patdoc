@@ -73,7 +73,8 @@
           const payload = {
             date,
             time,
-            doctor,
+            // If doctor is not selected, this means the logged in user is a doctor
+            doctor: doctor || this.$store.state.login.userId,
             subject,
             notes,
             patientId: this.patientId

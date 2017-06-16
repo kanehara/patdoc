@@ -1,13 +1,11 @@
 <template>
   <div class="ui divided items">
     <template v-for="appointment in appointments">
-      <AppointmentDetails
-        :date="appointment.date"
-        :person="appointment.doctor"
-        :subject="appointment.subject"
-        :notes="appointment.notes">
-      </AppointmentDetails>
+      <AppointmentDetails :appointment="appointment"></AppointmentDetails>
     </template>
+    <div v-if="noAppointments">
+      <h3>No past appointments</h3>
+    </div>
   </div>
 </template>
 
@@ -17,7 +15,12 @@
     components: {
       AppointmentDetails
     },
-    props: ['appointments']
+    props: ['appointments'],
+    computed: {
+      noAppointments () {
+        return !this.appointments || !this.appointments.length
+      }
+    }
   }
 </script>
 

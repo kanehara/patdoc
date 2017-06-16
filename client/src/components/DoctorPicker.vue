@@ -47,7 +47,7 @@
     },
     watch: {
       selectedDoctor (doctor) {
-        this.$emit('input', doctor)
+        this.$emit('input', doctor._id)
       }
     }
   }

@@ -1,41 +1,42 @@
 <template xmlns="http://www.w3.org/1999/html">
   <div>
     <div class="ui divided items">
-      <template v-for="appointment in appointments">
-        <AppointmentDetails
-          :date="appointment.date"
-          :person="appointment.doctor"
-          :subject="appointment.subject"
-          :notes="appointment.notes"
-          :declinationReason="appointment.declinationReason">
+      <template v-for="app in appointments">
+        <AppointmentDetails :appointment="app">
           <div class="status" slot="status">
             <span :class="{
-              confirmed: appointment.status === statusTypes.CONFIRMED,
-              pending: appointment.status === statusTypes.PENDING,
-              cancelled: appointment.status === statusTypes.CANCELLED,
-              declined: appointment.status === statusTypes.DECLINED
+              confirmed: app.status === statusTypes.CONFIRMED,
+              pending: app.status === statusTypes.PENDING,
+              cancelled: app.status === statusTypes.CANCELLED,
+              declined: app.status === statusTypes.DECLINED
             }">
-              {{ appointment.status | capJustFirstChar }}
+              {{ app.status | capJustFirstChar }}
             </span>
           </div>
+          <div v-if="app.declinationReason && app.declinationReason.length" slot="status">
+            <b>Reason for Declining:</b> {{ app.declinationReason }}
+          </div>
           <div slot="actions">
-            <div v-if="isUserDoctor && appointment.status === 'Pending'">
+            <div v-if="isUserDoctor && app.status === 'Pending'">
               <div class="positive ui button"
-                   @click="acceptAppointment({ appointmentId: appointment.id, patientId })">
+                   @click="acceptAppointment({ appointmentId: app.id, patientId })">
                 Accept
               </div>
               <div class="negative ui button"
-                   @click="openModal(appointment.id)">
+                   @click="openModal(app.id)">
                 Decline
               </div>
             </div>
             <div v-if="isUserPatient" class="negative ui button"
-                 @click="openModal(appointment.id)">
+                 @click="openModal(app.id)">
               Cancel
             </div>
           </div>
         </AppointmentDetails>
       </template>
+      <div v-if="noAppointments">
+        <h3>No upcoming appointments</h3>
+      </div>
     </div>
     <template v-if="isUserPatient && showModal">
       <CancelAppointmentModal
@@ -101,7 +102,10 @@
       }
     },
     computed: {
-      ...mapGetters(['isUserDoctor', 'isUserPatient'])
+      ...mapGetters(['isUserDoctor', 'isUserPatient']),
+      noAppointments () {
+        return !this.appointments || !this.appointments.length
+      }
     },
     filters: {
       capJustFirstChar (status) {
