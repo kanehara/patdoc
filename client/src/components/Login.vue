@@ -62,21 +62,25 @@
     color: @negativeRed;
   }
 
-  .ui.form .fields {
-    flex-direction: column;
-    margin: auto;
-    margin-bottom: 20px;
+  .ui.form {
+    text-align: center;
+
+    .fields {
+      flex-direction: column;
+      margin: auto;
+      margin-bottom: 20px;
+    }
+
+    input[type=text], input[type=password] {
+      width: initial;
+    }
+
+    .fields .field {
+      margin-bottom: 20px;
+    }
   }
 
   form {
     padding-top: 20px;
-  }
-
-  .ui.form input[type=text], .ui.form input[type=password] {
-    width: initial;
-  }
-
-  .ui.form .fields .field {
-    margin-bottom: 20px;
   }
 </style>

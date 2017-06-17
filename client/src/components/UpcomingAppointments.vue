@@ -17,18 +17,18 @@
             <b>Reason for Declining:</b> {{ app.declinationReason }}
           </div>
           <div slot="actions">
-            <div v-if="isUserDoctor && app.status === statusTypes.PENDING">
+            <div v-if="showAcceptDecline(app)">
               <div class="positive ui button"
                    @click="acceptAppointment({ appointmentId: app._id, patientId })">
                 Accept
               </div>
               <div class="negative ui button"
-                   @click="openModal(app._id)">
+                   @click="openDeclineModal(app._id)">
                 Decline
               </div>
             </div>
-            <div v-if="isUserPatient && app.status !== statusTypes.CANCELLED" class="negative ui button"
-                 @click="openModal(app._id)">
+            <div v-if="showCancel(app)" class="negative ui button"
+                 @click="openCancelModal(app._id)">
               Cancel
             </div>
           </div>
@@ -38,13 +38,13 @@
         <h3>No upcoming appointments</h3>
       </div>
     </div>
-    <template v-if="isUserPatient && showModal">
+    <template v-if="showCancelModal">
       <CancelAppointmentModal
         @cancel="closeModal"
         @confirm="confirmCancellation">
       </CancelAppointmentModal>
     </template>
-    <template v-if="isUserDoctor && showModal">
+    <template v-if="showDeclineModal">
       <DeclineAppointmentModal
         @cancel="closeModal"
         @confirm="confirmDeclination">
@@ -61,10 +61,16 @@
   import DeclineAppointmentModal from './DeclineAppointmentModal'
   import config from '@/config'
 
+  const isPending = appointment => appointment.status === config.APPOINTMENT_STATUS_TYPES.PENDING
+  const isCancelled = appointment => appointment.status === config.APPOINTMENT_STATUS_TYPES.CANCELLED
+  const initiatedByPatient = appointment => appointment.initiatedByUserType === config.USER_TYPES.PATIENT
+  const initiatedByDoctor = appointment => appointment.initiatedByUserType === config.USER_TYPES.DOCTOR
+
   export default {
     data () {
       return {
-        showModal: false,
+        showDeclineModal: false,
+        showCancelModal: false,
         appointmentIdSelected: null,
         statusTypes: config.APPOINTMENT_STATUS_TYPES
       }
@@ -81,8 +87,12 @@
         declineAppointment: actionTypes.DECLINE_APPOINTMENT,
         acceptAppointment: actionTypes.ACCEPT_APPOINTMENT
       }),
-      openModal (appointmentId) {
-        this.showModal = true
+      openDeclineModal (appointmentId) {
+        this.showDeclineModal = true
+        this.appointmentIdSelected = appointmentId
+      },
+      openCancelModal (appointmentId) {
+        this.showCancelModal = true
         this.appointmentIdSelected = appointmentId
       },
       confirmCancellation () {
@@ -97,8 +107,16 @@
       },
       closeModal () {
         this.declinationReason = ''
-        this.showModal = false
-        this.showDeclinationReasonRequiredMessage = false
+        this.showCancelModal = false
+        this.showDeclineModal = false
+      },
+      showAcceptDecline (app) {
+        return (this.isUserDoctor && initiatedByPatient(app) && isPending(app)) ||
+          (this.isUserPatient && initiatedByDoctor(app) && isPending(app))
+      },
+      showCancel (app) {
+        return (this.isUserPatient && initiatedByPatient(app) && !isCancelled(app)) ||
+          (this.isUserDoctor && initiatedByDoctor(app) && isPending(app))
       }
     },
     computed: {
