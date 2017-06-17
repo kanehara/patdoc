@@ -4,7 +4,7 @@
     <div class="ui form">
       <div class="fields">
         <div class="field">
-          <input type="text" placeholder="Search" v-model="searchInput" @keyup="searchPatients"/>
+          <input type="text" placeholder="Search by Name" v-model="searchInput" @keyup="searchPatients"/>
         </div>
       </div>
     </div>
