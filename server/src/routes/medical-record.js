@@ -3,6 +3,7 @@ import uuid from 'uuid/v1'
 import mkdirp from 'mkdirp'
 import fs from 'fs'
 import logger from '../logger'
+import rimraf from 'rimraf'
 
 const PATH_PREFIX = '/tmp/patdoc/patients'
 
@@ -87,7 +88,7 @@ export default app => {
   })
 
   app.delete('/patients/:patientId/medicalRecord/:fileId', ({ params: { patientId, fileId } }, res) => {
-    fs.unlink(`${PATH_PREFIX}/${patientId}/medicalRecord/${fileId}`, (err) => {
+    rimraf(`${PATH_PREFIX}/${patientId}/medicalRecord/${fileId}`, (err) => {
       if (err) {
         logger.warn(`Error deleting medical record file with id: ${fileId} for patient with id: ${patientId} with error: ${err}`)
         return res.send(500)
