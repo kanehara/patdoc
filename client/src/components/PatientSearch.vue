@@ -1,6 +1,13 @@
 <template>
-  <div>
+  <div id="patient-search">
     <h1>Patient Search</h1>
+    <div class="ui form">
+      <div class="fields">
+        <div class="field">
+          <input type="text" placeholder="Search"/>
+        </div>
+      </div>
+    </div>
     <div class="ui divided items">
       <PatientSearchRow v-for="patient in getPatients" :key="patient._id" :patient="patient"></PatientSearchRow>
     </div>
@@ -34,9 +41,12 @@
 </script>
 
 <style lang="less" scoped>
+  #patient-search {
+    margin: 20px 20%;
+  }
+
   .items {
     text-align: left;
-    margin: 20px 20%;
   }
 
   .ui.divided.items>.item:first-child {
@@ -45,5 +55,14 @@
 
   .ui.divided.items>.item:last-child {
     padding-bottom: 1em !important;
+  }
+
+  .ui.form .fields .field {
+    margin: auto;
+    width: 100%;
+
+    input {
+      box-sizing: border-box;
+    }
   }
 </style>
