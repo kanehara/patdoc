@@ -9,6 +9,7 @@
           <datepicker
             ref="datepicker"
             :value="date"
+            :disabled="disabledDates"
             v-model="date">
           </datepicker>
           <i class="caret down icon"></i>
@@ -48,11 +49,13 @@
   import { mapGetters, mapActions } from 'vuex'
   import * as actionTypes from '../store/modules/appointments/action-types'
 
+  const TOMORROW = new Date()
+  TOMORROW.setDate(new Date().getDate() + 1)
   export default {
     props: ['patientId'],
     data () {
       return {
-        date: new Date(),
+        date: TOMORROW,
         time: {
           hh: '12',
           mm: '00',
@@ -60,7 +63,10 @@
         },
         doctor: null,
         subject: null,
-        notes: null
+        notes: null,
+        disabledDates: {
+          to: new Date()
+        }
       }
     },
     methods: {
