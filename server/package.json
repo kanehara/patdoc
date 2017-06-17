@@ -37,6 +37,7 @@
     "babel-preset-es2015-node": "^6.1.1",
     "babel-preset-stage-2": "^6.24.1",
     "chai": "^4.0.2",
+    "chai-datetime": "^1.4.1",
     "chai-http": "^3.0.0",
     "eslint": "^3.19.0",
     "mocha": "^3.4.2",
