@@ -1,18 +1,19 @@
 <template>
   <div>
-    <NavBar></NavBar>
+    <PatientNavBar :patientId="patientId"></PatientNavBar>
     <router-view></router-view>
   </div>
 </template>
 
 <script>
-  import NavBar from '@/components/NavBar'
+  import PatientNavBar from '@/components/PatientNavBar'
   import store from '@/store'
   import config from '@/config'
 
   export default {
+    props: ['patientId'],
     components: {
-      NavBar
+      PatientNavBar
     },
     beforeRouteEnter (to, from, next) {
       const loginState = store.state.login
