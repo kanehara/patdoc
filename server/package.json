@@ -11,7 +11,8 @@
     "db:start": "docker start patdocdb",
     "db:stop": "docker stop patdocdb",
     "build": "babel src -d lib",
-    "clean": "rimraf lib"
+    "clean": "rimraf lib",
+    "test": "NODE_ENV=test mocha --compilers js:babel-core/register 'test/**/*.spec.js'"
   },
   "author": "Yohei Kanehara (kanehara@umich.edu)",
   "dependencies": {
@@ -35,7 +36,11 @@
     "babel-core": "^6.25.0",
     "babel-preset-es2015-node": "^6.1.1",
     "babel-preset-stage-2": "^6.24.1",
+    "chai": "^4.0.2",
+    "chai-http": "^3.0.0",
     "eslint": "^3.19.0",
+    "mocha": "^3.4.2",
+    "mockgoose": "^7.3.3",
     "nodemon": "^1.11.0",
     "rimraf": "^2.6.1"
   },
