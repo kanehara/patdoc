@@ -7,5 +7,6 @@ export const Appointment = mongoose.model('Appointment', new Schema({
   notes: String,
   doctor: { type: Schema.Types.ObjectId, ref: 'Doctor' },
   patient: { type: Schema.Types.ObjectId, ref: 'Patient' },
-  status: String
+  status: String,
+  initiatedByUserType: String
 }))
