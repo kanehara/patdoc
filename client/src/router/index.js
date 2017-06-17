@@ -49,6 +49,7 @@ const router = new Router({
     }, {
       path: '/patients',
       component: PatientFrame,
+      props: true,
       children: [
         {
           path: '',
