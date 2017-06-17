@@ -3,49 +3,13 @@
 A simple SPA for patients and doctors to schedule appointments and
 keep track of medical records
 
-## Client
+## Setup
 
-The client is build with the [Vue.js](https://vuejs.org/) framework.
-Routing is implemented with [vue-router](https://router.vuejs.org/en/) and state management is implemented
-with [vuex](https://vuex.vuejs.org/en/).  Assets are bundled using [Webpack](https://webpack.github.io/)
-
-### Setup
-
-#### 1. Install and start client dev server
-
-```
-    cd client
-    npm install
-    npm start
-```
-
-The dev server is run on `localhost:8080`
-
-### Vue Chrome Dev Tool
-
-The Vue chrome dev tools [extension](https://chrome.google.com/webstore/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd?hl=en)
-allows for inspection of component and Vuex state.  It also
-offers a great time travelling feature to relive state mutations.
-
-## Server
+### 1. Standup server
 
 The server serves a REST api for the Client to retrieve data
 
-### Set up
-
-#### 1. Server bootup
-
-```
-    cd server
-    npm install
-    npm start
-```
-
-The server is run on `localhost:3000`
-
-The routes can be found in `src/routes`
-
-#### 2. Mongo bootup
+#### 1.a. Mongo bootup
 
 Server data is persisted in a Mongo Docker container.
 
@@ -60,14 +24,21 @@ To create and run the docker container run in the `server` directory:
 
 ***Note:*** This requires docker to be installed on the machine
 
-***Note:*** This should only run once or else docker will complain that the
-container already exists
-
 This will pull and start a mongo container named `patdocdb` and should
 only be run once to pull down and start the container.
 
-`db:create` will also run `npm run db:init` which populates the database with 10 patients and
-3 doctors with the following credentials:
+***Note:*** This should only run once or else docker will complain that the
+container already exists
+
+#### 1.b. Load users
+
+Run the following to load the DB:
+
+```
+    npm run db:init
+```
+
+This will load the DB with the following users:
 
 ```
 # Patients
@@ -102,6 +73,44 @@ The mongo container can be started and stopped with te following:
 
 The docker mongo container is accessible at `localhost:27017`
 
+#### 1.c. Server bootup
+
+```
+    cd server
+    npm install
+    npm start
+```
+
+The server is run on `localhost:3000`
+
+The routes can be found in `src/routes`
+
+### 2. Standup Client
+
+The client is build with the [Vue.js](https://vuejs.org/) framework.
+Routing is implemented with [vue-router](https://router.vuejs.org/en/) and state management is implemented
+with [vuex](https://vuex.vuejs.org/en/).  Assets are bundled using [Webpack](https://webpack.github.io/)
+
+#### 1.a. Install and start client dev server
+
+```
+    cd client
+    npm install
+    npm start
+```
+
+The dev server is run on `localhost:8080`
+
+The app should now be fully functional locally.
+
+## Supplementary
+
+### Vue Chrome Dev Tool
+
+The Vue chrome dev tools [extension](https://chrome.google.com/webstore/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd?hl=en)
+allows for inspection of component and Vuex state.  It also
+offers a great time travelling feature to relive state mutations.
+
 ### Medical record files
 
 File uploads are stored on the local computer in `/tmp/patdoc/patient/:patientId/medicalRecord/:fileId`.
@@ -121,7 +130,6 @@ due to time constraints:
     * Robust error handling and reducers when backend fails. At the moment most things are optimistic
     * Protected API endpoints
     * Mongo discriminator model for Doctor and Patient models
-    * Mocha/chai node unit tests
     * E2E tests
     * Store medical records in Mongo with GridFS or on remote server
     * Break out components into modules
