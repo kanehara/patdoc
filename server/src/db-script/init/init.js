@@ -33,8 +33,8 @@ async function loadAuth () {
   const promises = []
 
   // Patients
-  let password = await bcrypt.hash('pencil', saltRounds)
   let userType = config.USER_TYPES.PATIENT
+  let password = await bcrypt.hash('pencil', saltRounds)
   promises.push(createAuth({ emailAddress: 'pencilvester@test.com', password, userType }))
   password = await bcrypt.hash('jessica', saltRounds)
   promises.push(createAuth({ emailAddress: 'morty@test.com', password, userType }))
@@ -180,17 +180,17 @@ async function loadDoctors () {
 
 async function loadAppointmentCollection () {
   // Create empty appointment to create collection for initial queries to appointment collection
-  Appointment.create({})
+  return Appointment.create({})
 }
 
 async function createAuth ({ emailAddress, password, userType }) {
-  Auth.create({ emailAddress, password, userType })
+  return Auth.create({ emailAddress, password, userType })
 }
 
 async function createPatient ({ name, age, emailAddress, mailingAddress, phoneNumber }) {
-  Patient.create({ name, age, emailAddress, mailingAddress, phoneNumber })
+  return Patient.create({ name, age, emailAddress, mailingAddress, phoneNumber })
 }
 
 async function createDoctor ({ name, emailAddress, hospital, specialty }) {
-  Doctor.create({ name, emailAddress, hospital, specialty })
+  return Doctor.create({ name, emailAddress, hospital, specialty })
 }
