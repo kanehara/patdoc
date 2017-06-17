@@ -1,0 +1,1 @@
+export const RECEIVE_DOCTORS = 'RECEIVE_DOCTORS'

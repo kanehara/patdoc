@@ -2,6 +2,8 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Profile from '@/components/Profile'
 import Appointments from '@/components/Appointments'
+import AppointmentList from '@/components/AppointmentList'
+import NewAppointment from '@/components/NewAppointment'
 import MedicalRecord from '@/components/MedicalRecord'
 import MedicalRecordUpload from '@/components/MedicalRecordUpload'
 import MedicalRecordGrid from '@/components/MedicalRecordGrid'
@@ -61,7 +63,18 @@ const router = new Router({
         }, {
           path: ':patientId/appointments',
           component: Appointments,
-          props: true
+          props: true,
+          children: [
+            {
+              path: '',
+              component: AppointmentList,
+              props: true
+            }, {
+              path: 'new',
+              component: NewAppointment,
+              props: true
+            }
+          ]
         }, {
           path: ':patientId/medicalRecord',
           component: MedicalRecord,

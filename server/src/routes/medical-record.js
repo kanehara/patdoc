@@ -71,25 +71,28 @@ async function buildMedicalRecordResponse (patientId) {
 
 export default app => {
   app.post('/patients/:patientId/medicalRecord', upload.single('file'), (req, res) => {
-    res.send({
+    return res.send({
       location: `file://${req.file.destination}`,
       id: req.fileId
     })
   })
 
-  app.get('/patients/:patientId/medicalRecord', ({ params: { patientId } }, res) => {
-    buildMedicalRecordResponse(patientId)
-      .then(response => res.send(response))
-      .catch(() => res.sendStatus(404))
+  app.get('/patients/:patientId/medicalRecord', async ({ params: { patientId } }, res) => {
+    try {
+      const response = await buildMedicalRecordResponse(patientId)
+      return res.send(response)
+    } catch (err) {
+      return res.sendStatus(404)
+    }
   })
 
   app.delete('/patients/:patientId/medicalRecord/:fileId', ({ params: { patientId, fileId } }, res) => {
     fs.unlink(`${PATH_PREFIX}/${patientId}/medicalRecord/${fileId}`, (err) => {
       if (err) {
         logger.warn(`Error deleting medical record file with id: ${fileId} for patient with id: ${patientId} with error: ${err}`)
-        res.send(500)
+        return res.send(500)
       } else {
-        res.send(200)
+        return res.send(200)
       }
     })
   })

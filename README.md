@@ -117,11 +117,15 @@ they can be opened by copying link and manually opening in new page***
 The following would be nice to have's that were not implemented
 due to time constraints:
 
-* Robust error handling when backend fails with reducer actions for failure.
-At the moment many things are optimistic
-* Mongo discriminator model for Doctor and Patient models
-* Mocha/chai node unit tests
-* E2E tests
-* Notifications for doctors and patients for new appointments
-* Feature to schedule another appointment with past doctor
-* Editing personal info
+* Robustness
+    * Robust error handling and reducers when backend fails. At the moment most things are optimistic
+    * Protected API endpoints
+    * Mongo discriminator model for Doctor and Patient models
+    * Mocha/chai node unit tests
+    * E2E tests
+    * Store medical records in Mongo with GridFS or on remote server
+* Features
+    * Notifications for doctors and patients for new appointments
+    * Feature to schedule another appointment with past doctor
+    * Editing personal info
+    * Better appointment sorting

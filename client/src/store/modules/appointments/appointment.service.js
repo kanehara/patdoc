@@ -9,13 +9,32 @@ export default {
 
   async cancelAppointment ({ patientId, appointmentId }) {
     const res = await axios
-      .patch(`${config.API_HOST}/patients/${patientId}/appointments/${appointmentId}`, { status: 'Cancelled' })
+      .patch(`${config.API_HOST}/patients/${patientId}/appointments/${appointmentId}`, { status: config.APPOINTMENT_STATUS_TYPES.CANCELLED })
     return res.data
   },
 
   async declineAppointment ({ patientId, appointmentId, declinationReason }) {
     const res = await axios
-      .patch(`${config.API_HOST}/patients/${patientId}/appointments/${appointmentId}`, { status: 'Declined', declinationReason })
+      .patch(`${config.API_HOST}/patients/${patientId}/appointments/${appointmentId}`, { status: config.APPOINTMENT_STATUS_TYPES.DECLINED, declinationReason })
+    return res.data
+  },
+
+  async scheduleAppointment ({ date, subject, notes, doctor, patientId }) {
+    const appointment = {
+      date,
+      subject,
+      notes,
+      doctor,
+      patient: patientId,
+      status: config.APPOINTMENT_STATUS_TYPES.PENDING
+    }
+    const res = await axios.post(`${config.API_HOST}/patients/${patientId}/appointments`, appointment)
+    return res.data
+  },
+
+  async acceptAppointment ({ patientId, appointmentId }) {
+    const res = await axios
+      .patch(`${config.API_HOST}/patients/${patientId}/appointments/${appointmentId}`, { status: config.APPOINTMENT_STATUS_TYPES.CONFIRMED })
     return res.data
   }
 }

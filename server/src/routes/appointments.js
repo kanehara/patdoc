@@ -1,54 +1,68 @@
 import { Appointment } from '../models'
 import logger from '../logger'
 
-// TODO: determine correct response code based on error
 export default app => {
-  app.get('/patients/:patientId/appointments', ({params: { patientId }}, res) => {
-    Appointment.find({ patient: patientId })
-      .then(apps => apps && apps.length ? res.send(apps) : res.send([]))
-      .catch(err => {
-        logger.error(`Error trying to retrieve appointments for patient with id: ${patientId} with err: ${err}`)
-        res.sendStatus(500)
-      })
-  })
-
-  app.patch('/patients/:patientId/appointments/:appointmentId', ({params: { patientId, appointmentId }, body}, res) => {
-    Appointment.findById(appointmentId)
-      .then(app => {
-        app = {...app, ...body}
-        app.save()
-          .then(updatedApp => updatedApp ? res.send(updatedApp) : res.sendStatus(500))
-          .catch(err => {
-            logger.error(`Error trying to save appintment with id: ${appointmentId} with err: ${err}`)
-            res.sendStatus(500)
-          })
-      })
-      .catch(err => {
-        logger.error(`Error trying to retrieve appointment with id: ${appointmentId} with error: ${err}`)
-      })
-  })
-
-  app.put('/patients/:patientId/appointments', ({params: { patientId }, body}, res) => {
-    if (patientId !== body.patient) {
-      logger.warn(`The patient ID: ${patientId} in PUT path to create an appointment does not match the ID in the body: ${body.patient}`)
-      res.sendStatus(400)
+  app.get('/patients/:patientId/appointments', async ({params: { patientId }}, res) => {
+    try {
+      const apps = await Appointment.find({ patient: patientId }).populate('doctor').populate('patient')
+      if (apps && apps.length) {
+        return res.send(apps)
+      } else {
+        return res.send([])
+      }
+    } catch (err) {
+      logger.error(`Error trying to retrieve appointments for patient with id: ${patientId} with err: ${err}`)
+      return res.sendStatus(500)
     }
-    const app = new Appointment(body)
-    app.save()
-      .then(app => app ? res.send(app) : res.sendStatus(500))
-      .catch(err => {
-        logger.error(`Error creating new appointment: ${err}`)
-        res.sendStatus(500)
-      })
   })
 
-  app.delete('/patients/:patientId/appointments/:appointmentId', ({params: { patientId, appointmentId }}, res) => {
-    Appointment.remove({_id: appointmentId, patient: patientId})
-      .then(() => res.sendStatus(200))
-      .catch(err => {
-        logger.error(`Error trying to delete appointment for patient with id: ${patientId} 
+  app.patch('/patients/:patientId/appointments/:appointmentId', async ({params: { patientId, appointmentId }, body}, res) => {
+    try {
+      const app = await Appointment.findById(appointmentId).populate('doctor').populate('patient')
+      if (app.patient.id !== patientId) {
+        return res.sendStatus(400)
+      }
+      Object.assign(app, body)
+      const updatedApp = await app.save()
+      if (updatedApp.errors) {
+        logger.error(`Error saving updated appointment: ${updatedApp.errors}`)
+        return res.sendStatus(500)
+      } else {
+        return res.send(updatedApp._doc)
+      }
+    } catch (err) {
+      logger.error(`Error trying to patch appointment with id: ${appointmentId} with err: ${err}`)
+      return res.sendStatus(500)
+    }
+  })
+
+  app.post('/patients/:patientId/appointments', async ({params: { patientId }, body}, res) => {
+    try {
+      if (patientId !== body.patient) {
+        logger.warn(`The patient ID: ${patientId} in POST path for an appointment does not match the ID in the body: ${body.patient}`)
+        return res.sendStatus(400)
+      }
+      const app = new Appointment(body)
+      const savedApp = await app.save()
+      if (savedApp) {
+        return res.send(savedApp)
+      } else {
+        return res.sendStatus(500)
+      }
+    } catch (err) {
+      logger.error(`Error creating new appointment: ${err}`)
+      return res.sendStatus(500)
+    }
+  })
+
+  app.delete('/patients/:patientId/appointments/:appointmentId', async ({params: { patientId, appointmentId }}, res) => {
+    try {
+      await Appointment.remove({_id: appointmentId, patient: patientId})
+      return res.sendStatus(200)
+    } catch (err) {
+      logger.error(`Error trying to delete appointment for patient with id: ${patientId} 
                       and appointment id: ${appointmentId} with error: ${err}`)
-        res.sendStatus(500)
-      })
+      return res.sendStatus(500)
+    }
   })
 }
