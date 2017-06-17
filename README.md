@@ -124,8 +124,10 @@ due to time constraints:
     * Mocha/chai node unit tests
     * E2E tests
     * Store medical records in Mongo with GridFS or on remote server
+    * Break out components into modules
 * Features
     * Notifications for doctors and patients for new appointments
-    * Feature to schedule another appointment with past doctor
+    * Scheduling another appointment with past doctor
+    * Un-cancel appointments
     * Editing personal info
     * Better appointment sorting

@@ -4,13 +4,7 @@
       Upload Files
     </router-link>
     <div class="ui four doubling cards">
-      <a v-for="file in files" class="ui card" :href="file.url" target="_blank">
-          <div class="image">
-            <img src="../assets/placeholder.png">
-          </div>
-          <div class="header">{{ file.filename }}</div>
-          <div class="meta">{{ file.size }}</div>
-      </a>
+      <MedicalRecordFileCard v-for="file in files" :file="file" :patientId="patientId" :key="file.id"></MedicalRecordFileCard>
     </div>
   </div>
 </template>
@@ -18,9 +12,16 @@
 <script>
   import * as actionTypes from '../store/modules/medical-records/action-types'
   import { mapGetters } from 'vuex'
+  import MedicalRecordFileCard from './MedicalRecordFileCard'
 
   export default {
+    components: {
+      MedicalRecordFileCard
+    },
     props: ['patientId'],
+    computed: {
+      ...mapGetters(['files'])
+    },
     created () {
       this.$store.dispatch(actionTypes.GET_FILES, { patientId: this.patientId })
     },
@@ -28,24 +29,6 @@
       '$route': function () {
         this.$store.dispatch(actionTypes.GET_FILES, { patientId: this.patientId })
       }
-    },
-    computed: {
-      ...mapGetters(['files'])
     }
   }
 </script>
-
-<style lang="less" scoped>
-  .header {
-    font-size: 1.1em;
-  }
-
-  .ui.four.cards {
-    margin: 20px 15%;
-
-    a {
-      text-decoration: none;
-      color: initial;
-    }
-  }
-</style>

@@ -20,7 +20,8 @@ const getters = {
   loginFailed: state => state.loginFailed,
   isUserAuthenticated: state => state.token,
   redirectToSearch: (state, getters) => getters.isUserDoctor && getters.isUserAuthenticated,
-  redirectToProfile: (state, getters) => getters.isUserPatient && getters.isUserAuthenticated
+  redirectToProfile: (state, getters) => getters.isUserPatient && getters.isUserAuthenticated,
+  userEmailAddress: state => state.emailAddress
 }
 
 const actions = {
