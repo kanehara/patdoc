@@ -19,14 +19,15 @@ export default {
     return res.data
   },
 
-  async scheduleAppointment ({ date, subject, notes, doctor, patientId }) {
+  async scheduleAppointment ({ date, subject, notes, doctor, patientId, initiatedByUserType }) {
     const appointment = {
       date,
       subject,
       notes,
       doctor,
       patient: patientId,
-      status: config.APPOINTMENT_STATUS_TYPES.PENDING
+      status: config.APPOINTMENT_STATUS_TYPES.PENDING,
+      initiatedByUserType
     }
     const res = await axios.post(`${config.API_HOST}/patients/${patientId}/appointments`, appointment)
     return res.data

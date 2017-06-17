@@ -48,6 +48,7 @@
   import DoctorPicker from './DoctorPicker'
   import { mapGetters, mapActions } from 'vuex'
   import * as actionTypes from '../store/modules/appointments/action-types'
+  import config from '@/config'
 
   const TOMORROW = new Date()
   TOMORROW.setDate(new Date().getDate() + 1)
@@ -76,14 +77,16 @@
       submitNewAppointment () {
         if (!this.missingFields) {
           const { date, time, doctor, subject, notes } = this
+          // If doctor is not selected, this means the logged in user is a doctor
+          const initiatedByUserType = doctor ? config.USER_TYPES.PATIENT : config.USER_TYPES.DOCTOR
           const payload = {
             date,
             time,
-            // If doctor is not selected, this means the logged in user is a doctor
             doctor: doctor || this.$store.state.login.userId,
             subject,
             notes,
-            patientId: this.patientId
+            patientId: this.patientId,
+            initiatedByUserType: initiatedByUserType
           }
           this.scheduleAppointment(payload)
         }
