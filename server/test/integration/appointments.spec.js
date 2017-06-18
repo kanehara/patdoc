@@ -64,6 +64,14 @@ describe('Appointments', () => {
     expect(a1.initiatedByUserType).to.equal(a2.initiatedByUserType)
   }
 
+  const patchAppointment = async ({patientId = patients[0]._id, appointmentId, payload} = {}) => {
+    const res = await request(server)
+      .patch(`/patients/${patientId}/appointments/${appointmentId}`)
+      .send(payload)
+    expect(res).to.have.status(200)
+    return res.body
+  }
+
   describe('POST', () => {
     it('successfully creates an appointment', async () => {
       const createDate = new Date()
@@ -127,6 +135,72 @@ describe('Appointments', () => {
       await Promise.all(promises)
       const appointments = await getAppointments()
       expect(appointments).to.have.lengthOf(6)
+    })
+  })
+
+  describe('PATCH', () => {
+    it('updates all fields', async () => {
+      const createdAppointment = await createAppointment()
+      const date = new Date()
+      const patchedAppointment = await patchAppointment({appointmentId: createdAppointment._id, payload: {
+        date,
+        subject: 'new subject',
+        notes: 'new notes',
+        doctor: doctors[1]._id,
+        patient: patients[1]._id,
+        status: config.APPOINTMENT_STATUS_TYPES.CONFIRMED,
+        initiatedByUserType: config.USER_TYPES.PATIENT
+      }})
+      expect(new Date(patchedAppointment.date)).to.equalDate(date)
+      expect(patchedAppointment.subject).to.equal('new subject')
+      expect(patchedAppointment.notes).to.equal('new notes')
+      expect(patchedAppointment.doctor).to.deep.equal(doctors[1]._id)
+      expect(patchedAppointment.patient).to.deep.equal(patients[1]._id)
+      expect(patchedAppointment.status).to.equal(config.APPOINTMENT_STATUS_TYPES.CONFIRMED)
+      expect(patchedAppointment.initiatedByUserType).to.equal(config.USER_TYPES.PATIENT)
+    })
+
+    it('updates date', async () => {
+      const createdAppointment = await createAppointment()
+      const date = new Date()
+      const patchedAppointment = await patchAppointment({appointmentId: createdAppointment._id, payload: { date }})
+      expect(new Date(patchedAppointment.date)).to.equalDate(date)
+    })
+
+    it('updates subject', async () => {
+      const createdAppointment = await createAppointment()
+      const patchedAppointment = await patchAppointment({appointmentId: createdAppointment._id, payload: { subject: 'new subject' }})
+      expect(patchedAppointment.subject).to.equal('new subject')
+    })
+
+    it('updates notes', async () => {
+      const createdAppointment = await createAppointment()
+      const patchedAppointment = await patchAppointment({appointmentId: createdAppointment._id, payload: { notes: 'new notes' }})
+      expect(patchedAppointment.notes).to.equal('new notes')
+    })
+
+    it('updates doctor', async () => {
+      const createdAppointment = await createAppointment()
+      const patchedAppointment = await patchAppointment({appointmentId: createdAppointment._id, payload: { doctor: doctors[1] }})
+      expect(patchedAppointment.doctor).to.deep.equal(doctors[1])
+    })
+
+    it('updates patient', async () => {
+      const createdAppointment = await createAppointment()
+      const patchedAppointment = await patchAppointment({appointmentId: createdAppointment._id, payload: { patient: patients[1] }})
+      expect(patchedAppointment.patient).to.deep.equal(patients[1])
+    })
+
+    it('updates status', async () => {
+      const createdAppointment = await createAppointment()
+      const patchedAppointment = await patchAppointment({appointmentId: createdAppointment._id, payload: { status: config.APPOINTMENT_STATUS_TYPES.CONFIRMED }})
+      expect(patchedAppointment.status).to.equal(config.APPOINTMENT_STATUS_TYPES.CONFIRMED)
+    })
+
+    it('updates initiatedByUserType', async () => {
+      const createdAppointment = await createAppointment()
+      const patchedAppointment = await patchAppointment({appointmentId: createdAppointment._id, payload: { initiatedByUserType: config.USER_TYPES.PATIENT }})
+      expect(patchedAppointment.initiatedByUserType).to.equal(config.USER_TYPES.PATIENT)
     })
   })
 })
