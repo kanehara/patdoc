@@ -59,5 +59,22 @@ describe('Appointments', () => {
       expect(createdAppointment.status).to.equal(config.APPOINTMENT_STATUS_TYPES.PENDING)
       expect(createdAppointment.initiatedByUserType).to.equal(config.USER_TYPES.DOCTOR)
     })
+
+    it('returns 400 response if body patient ID does not match path', async () => {
+      try {
+        await request(server)
+          .post(`/patients/${patients[1]._id}/appointments`)
+          .send({
+            date: new Date(),
+            subject: 'test',
+            doctor: doctors[0]._id,
+            patient: patients[0]._id,
+            status: config.APPOINTMENT_STATUS_TYPES.PENDING,
+            initiatedByUserType: config.USER_TYPES.DOCTOR
+          })
+      } catch (err) {
+        expect(err.response).to.have.status(400)
+      }
+    })
   })
 })
