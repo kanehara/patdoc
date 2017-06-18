@@ -48,6 +48,22 @@ describe('Appointments', () => {
     return res.body
   }
 
+  const getAppointment = async ({ patient = patients[0] }) => {
+    const res = await request(server)
+      .get(`/patients/${patient._id}/appointments`)
+    expect(res).to.have.status(200)
+    return res.body
+  }
+
+  const assertEqualAppointments = (a1, a2) => {
+    expect(new Date(a1.date)).to.equalDate(new Date(a2.date))
+    expect(a1.subject).to.equal(a2.subject)
+    expect(a1.doctor).to.deep.equal(a2.doctor)
+    expect(a1.patient).to.deep.equal(a2.patient)
+    expect(a1.status).to.equal(a2.status)
+    expect(a1.initiatedByUserType).to.equal(a2.initiatedByUserType)
+  }
+
   describe('POST', () => {
     it('successfully creates an appointment', async () => {
       const createDate = new Date()
@@ -75,6 +91,16 @@ describe('Appointments', () => {
       } catch (err) {
         expect(err.response).to.have.status(400)
       }
+    })
+  })
+
+  describe('GET', () => {
+    it('returns created appointment', async () => {
+      const createDate = new Date()
+      const createdAppointment = await createAppointment({ date: createDate })
+      const patientAppointments = await getAppointment({})
+      const foundAppointment = patientAppointments.find(a => a._id === createdAppointment._id)
+      assertEqualAppointments(createdAppointment, foundAppointment)
     })
   })
 })
