@@ -78,8 +78,8 @@ describe('Appointments', () => {
       const createdAppointment = await createAppointment({ date: createDate })
       expect(new Date(createdAppointment.date)).to.equalDate(createDate)
       expect(createdAppointment.subject).to.equal('test subject')
-      expect(createdAppointment.doctor).to.equal(doctors[0]._id)
-      expect(createdAppointment.patient).to.equal(patients[0]._id)
+      expect(createdAppointment.doctor._id).to.equal(doctors[0]._id)
+      expect(createdAppointment.patient._id).to.equal(patients[0]._id)
       expect(createdAppointment.status).to.equal(config.APPOINTMENT_STATUS_TYPES.PENDING)
       expect(createdAppointment.initiatedByUserType).to.equal(config.USER_TYPES.DOCTOR)
     })
@@ -132,9 +132,11 @@ describe('Appointments', () => {
       promises.push(createAppointment())
       promises.push(createAppointment())
       promises.push(createAppointment())
-      await Promise.all(promises)
-      const appointments = await getAppointments()
-      expect(appointments).to.have.lengthOf(6)
+      const createdAppointments = await Promise.all(promises)
+      const retrievedAppointments = await getAppointments()
+      createdAppointments.forEach(appointment => {
+        expect(retrievedAppointments.find(a => a._id === appointment._id)).to.be.ok
+      })
     })
   })
 
@@ -215,6 +217,45 @@ describe('Appointments', () => {
     it('returns 500 response if appointmentId is invalid', async () => {
       try {
         await patchAppointment({appointmentId: 'invalid'})
+      } catch (err) {
+        expect(err.response).to.have.status(500)
+      }
+    })
+  })
+
+  describe('DELETE', () => {
+    it('deletes appointment', async () => {
+      const createdAppointment = await createAppointment()
+      await request(server)
+        .delete(`/patients/${createdAppointment.patient._id}/appointments/${createdAppointment._id}`)
+      const appointments = await getAppointments()
+      expect(appointments.find(a => a._id === createdAppointment._id)).to.be.undefined
+    })
+
+    it('invalid appointmentId returns 500', async () => {
+      try {
+        const createdAppointment = await createAppointment()
+        await request(server)
+          .delete(`/patients/${createdAppointment.patient._id}/appointments/invalid`)
+      } catch (err) {
+        expect(err.response).to.have.status(500)
+      }
+    })
+
+    it('invalid patientId returns 500', async () => {
+      try {
+        const createdAppointment = await createAppointment()
+        await request(server)
+          .delete(`/patients/invalid/appointments/${createdAppointment._id}`)
+      } catch (err) {
+        expect(err.response).to.have.status(500)
+      }
+    })
+
+    it('invalid patientId and appointmentId returns 500', async () => {
+      try {
+        await request(server)
+          .delete(`/patients/invalid/appointments/invalid`)
       } catch (err) {
         expect(err.response).to.have.status(500)
       }
