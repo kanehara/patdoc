@@ -77,7 +77,7 @@ async function loadPatients () {
   promises.push(createPatient({
     name: 'Jerry Smith',
     age: 41,
-    emailAddress: 'rick@test.com',
+    emailAddress: 'jerry@test.com',
     mailingAddress: '123 Glenn Ave. Chicago, IL 60614',
     phoneNumber: 2481239191
   }))

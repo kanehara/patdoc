@@ -21,7 +21,16 @@ describe('Patients', () => {
     const res = await request(server)
       .get('/patients')
     expect(res).to.have.status(200)
-    expect(res.body).to.have.lengthOf(10)
+    expect(res.body.find(p => p.emailAddress === 'pencilvester@test.com')).to.be.ok
+    expect(res.body.find(p => p.emailAddress === 'morty@test.com')).to.be.ok
+    expect(res.body.find(p => p.emailAddress === 'rick@test.com')).to.be.ok
+    expect(res.body.find(p => p.emailAddress === 'beth@test.com')).to.be.ok
+    expect(res.body.find(p => p.emailAddress === 'jerry@test.com')).to.be.ok
+    expect(res.body.find(p => p.emailAddress === 'birdperson@test.com')).to.be.ok
+    expect(res.body.find(p => p.emailAddress === 'summer@test.com')).to.be.ok
+    expect(res.body.find(p => p.emailAddress === 'gearhead@test.com')).to.be.ok
+    expect(res.body.find(p => p.emailAddress === 'watert@test.com')).to.be.ok
+    expect(res.body.find(p => p.emailAddress === 'tammy@test.com')).to.be.ok
   })
 
   it('GET to retrieve a single patient', async () => {

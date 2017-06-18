@@ -22,7 +22,8 @@ describe('Doctor', () => {
     const response = await request(server)
       .get('/doctors')
     expect(response).to.have.status(200)
-    expect(response.body).to.have.lengthOf(3)
     expect(response.body.find(d => d.emailAddress === 'doc@test.com')).to.be.ok
+    expect(response.body.find(d => d.emailAddress === 'sanchez@test.com')).to.be.ok
+    expect(response.body.find(d => d.emailAddress === 'hans@test.com')).to.be.ok
   })
 })

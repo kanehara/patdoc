@@ -94,9 +94,9 @@ export default app => {
     rimraf(`${PATH_PREFIX}/${patientId}/medicalRecord/${fileId}`, (err) => {
       if (err) {
         logger.warn(`Error deleting medical record file with id: ${fileId} for patient with id: ${patientId} with error: ${err}`)
-        return res.send(500)
+        return res.sendStatus(500)
       } else {
-        return res.send(200)
+        return res.sendStatus(200)
       }
     })
   })
