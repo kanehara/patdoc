@@ -33,7 +33,7 @@ describe('Appointments', () => {
     date = new Date(),
     subject = 'test subject',
     status = config.APPOINTMENT_STATUS_TYPES.PENDING,
-    initiatedByUserType = config.USER_TYPES.DOCTOR}) => {
+    initiatedByUserType = config.USER_TYPES.DOCTOR} = {}) => {
     const res = await request(server)
       .post(`/patients/${patient._id}/appointments`)
       .send({
@@ -48,7 +48,7 @@ describe('Appointments', () => {
     return res.body
   }
 
-  const getAppointment = async ({ patient = patients[0] }) => {
+  const getAppointments = async ({ patient = patients[0] } = {}) => {
     const res = await request(server)
       .get(`/patients/${patient._id}/appointments`)
     expect(res).to.have.status(200)
@@ -98,22 +98,35 @@ describe('Appointments', () => {
     it('returns created appointment', async () => {
       const createDate = new Date()
       const createdAppointment = await createAppointment({ date: createDate })
-      const patientAppointments = await getAppointment({})
+      const patientAppointments = await getAppointments()
       const foundAppointment = patientAppointments.find(a => a._id === createdAppointment._id)
       assertEqualAppointments(createdAppointment, foundAppointment)
     })
 
     it('returns 500 for invalid id', async () => {
       try {
-        await getAppointment({patient: { _id: 'invalid' }})
+        await getAppointments({patient: { _id: 'invalid' }})
       } catch (err) {
         expect(err.response).to.have.status(500)
       }
     })
 
     it('returns [] for user without appointments', async () => {
-      const response = await getAppointment({patient: patients[9]})
+      const response = await getAppointments({patient: patients[9]})
       expect(response).to.deep.equal([])
+    })
+
+    it('all appointments are returned if creating multiple appointments', async () => {
+      const promises = []
+      promises.push(createAppointment())
+      promises.push(createAppointment())
+      promises.push(createAppointment())
+      promises.push(createAppointment())
+      promises.push(createAppointment())
+      promises.push(createAppointment())
+      await Promise.all(promises)
+      const appointments = await getAppointments()
+      expect(appointments).to.have.lengthOf(6)
     })
   })
 })
