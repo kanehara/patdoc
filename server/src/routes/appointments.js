@@ -44,8 +44,9 @@ export default app => {
       }
       const app = new Appointment(body)
       const savedApp = await app.save()
-      if (savedApp) {
-        return res.send(savedApp)
+      const populatedApp = await Appointment.findById(savedApp._id).populate('doctor').populate('patient')
+      if (populatedApp._doc) {
+        return res.send(populatedApp._doc)
       } else {
         return res.sendStatus(500)
       }

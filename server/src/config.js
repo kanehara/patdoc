@@ -8,5 +8,12 @@ export default {
   USER_TYPES: {
     DOCTOR: 'DOCTOR',
     PATIENT: 'PATIENT'
-  }
+  },
+  APPOINTMENT_STATUS_TYPES: {
+    CONFIRMED: 'CONFIRMED',
+    PENDING: 'PENDING',
+    CANCELLED: 'CANCELLED',
+    DECLINED: 'DECLINED'
+  },
+  MEDICAL_RECORD_PATH_PREFIX: '/tmp/patdoc/patients'
 }
