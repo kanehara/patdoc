@@ -74,8 +74,10 @@ async function buildMedicalRecordResponse (patientId) {
 export default app => {
   app.post('/patients/:patientId/medicalRecord', upload.single('file'), (req, res) => {
     return res.send({
-      location: `file://${req.file.destination}`,
-      id: req.fileId
+      id: req.fileId,
+      filename: req.file.filename,
+      url: `file://${req.file.destination}/${req.file.filename}`,
+      size: `${Math.round(req.file.size / 1000)} KB`
     })
   })
 
