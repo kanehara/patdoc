@@ -4,8 +4,9 @@ import mkdirp from 'mkdirp'
 import fs from 'fs'
 import logger from '../logger'
 import rimraf from 'rimraf'
+import config from '../../src/config'
 
-const PATH_PREFIX = '/tmp/patdoc/patients'
+const PATH_PREFIX = config.MEDICAL_RECORD_PATH_PREFIX
 
 const storage = multer.diskStorage({
   destination (req, file, cb) {

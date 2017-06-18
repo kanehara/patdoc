@@ -14,5 +14,6 @@ export default {
     PENDING: 'PENDING',
     CANCELLED: 'CANCELLED',
     DECLINED: 'DECLINED'
-  }
+  },
+  MEDICAL_RECORD_PATH_PREFIX: '/tmp/patdoc/patients'
 }
