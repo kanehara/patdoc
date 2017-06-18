@@ -64,7 +64,7 @@ describe('Appointments', () => {
     expect(a1.initiatedByUserType).to.equal(a2.initiatedByUserType)
   }
 
-  const patchAppointment = async ({patientId = patients[0]._id, appointmentId, payload} = {}) => {
+  const patchAppointment = async ({patientId = patients[0]._id, appointmentId, payload = {}} = {}) => {
     const res = await request(server)
       .patch(`/patients/${patientId}/appointments/${appointmentId}`)
       .send(payload)
@@ -201,6 +201,23 @@ describe('Appointments', () => {
       const createdAppointment = await createAppointment()
       const patchedAppointment = await patchAppointment({appointmentId: createdAppointment._id, payload: { initiatedByUserType: config.USER_TYPES.PATIENT }})
       expect(patchedAppointment.initiatedByUserType).to.equal(config.USER_TYPES.PATIENT)
+    })
+
+    it('returns 400 response if patientId does not match appointment patient', async () => {
+      try {
+        const createdAppointment = await createAppointment()
+        await patchAppointment({patientId: 'invalid', appointmentId: createdAppointment._id})
+      } catch (err) {
+        expect(err.response).to.have.status(400)
+      }
+    })
+
+    it('returns 500 response if appointmentId is invalid', async () => {
+      try {
+        await patchAppointment({appointmentId: 'invalid'})
+      } catch (err) {
+        expect(err.response).to.have.status(500)
+      }
     })
   })
 })
