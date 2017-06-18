@@ -102,5 +102,18 @@ describe('Appointments', () => {
       const foundAppointment = patientAppointments.find(a => a._id === createdAppointment._id)
       assertEqualAppointments(createdAppointment, foundAppointment)
     })
+
+    it('returns 500 for invalid id', async () => {
+      try {
+        await getAppointment({patient: { _id: 'invalid' }})
+      } catch (err) {
+        expect(err.response).to.have.status(500)
+      }
+    })
+
+    it('returns [] for user without appointments', async () => {
+      const response = await getAppointment({patient: patients[9]})
+      expect(response).to.deep.equal([])
+    })
   })
 })
